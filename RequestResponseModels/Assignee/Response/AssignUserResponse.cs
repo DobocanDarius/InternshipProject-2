@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.Assignee.Response
 {
-    internal class AssignUserResponse
+    public class AssignUserResponse
     {
+        public string Message;
     }
 }

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.Assignee.Request
 {
-    internal class AssignUserRequest
+    public class AssignUserRequest
     {
+       public int UserId { get; set; }
+       public int TicketId { get; set; }
     }
 }
