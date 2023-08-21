@@ -1,11 +1,14 @@
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Manager;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using InternshipProject_2.Models;
 using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
 using Microsoft.AspNetCore.Hosting;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +24,28 @@ builder.Services.AddScoped<PasswordHash>();
 builder.Services.AddScoped<Token>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<AssigneeManager>();
+builder.Services.AddScoped<ITicketManager, TicketManager>();
+builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("aB5G7HjL3kR8xY0qP9eF2wZI6mN1cV4XoE5bD9A")),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromMinutes(60)
+    };
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

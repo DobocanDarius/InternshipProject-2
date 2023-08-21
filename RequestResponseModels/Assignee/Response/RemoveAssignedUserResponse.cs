@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.Assignee.Response
 {
-    public class GetAssignedUserResponse
+    public class RemoveAssignedUserResponse
     {
-        public string Username { get; set; }
-        public string Role { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string Message { get; set; }
     }
-
 }
