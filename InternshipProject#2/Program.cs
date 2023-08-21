@@ -20,6 +20,8 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHash>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<AssigneeManager>();
+builder.Services.AddScoped<TicketManager>();
+builder.Services.AddScoped<Token>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();

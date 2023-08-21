@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RequestResponseModels.Ticket;
 using RequestResponseModels.Ticket.Request;
@@ -37,9 +38,32 @@ namespace InternshipProject_2.Manager
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(TicketWatchRequest watchTicket)
+        public async Task DeleteTicket(int id)
         {
+            var ticket = await _context.Tickets.FindAsync(id);
+            if(ticket != null) 
+            {
+                _context.Tickets.Remove(ticket);
+            }
+            else
+            {
+                id = 999999999;
+            }
 
+            
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<TicketResponse>> GetTickets()
+        {
+            var tickets = await _context.Tickets.ToListAsync();
+
+            var map = MapperConfig.InitializeAutomapper();
+
+            var ticket = map.Map<IEnumerable<TicketResponse>>(tickets);
+
+            return ticket;
         }
     }
 }
