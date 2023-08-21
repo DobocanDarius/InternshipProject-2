@@ -7,7 +7,7 @@ using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 namespace InternshipProject_2.Manager
 {
-    public class TicketManager
+    public class TicketManager : ITicketManager
     {
         private readonly Project2Context _context;
 
@@ -41,7 +41,7 @@ namespace InternshipProject_2.Manager
         public async Task DeleteTicket(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
-            if(ticket != null) 
+            if (ticket != null)
             {
                 _context.Tickets.Remove(ticket);
             }
@@ -50,7 +50,7 @@ namespace InternshipProject_2.Manager
                 id = 999999999;
             }
 
-            
+
 
             await _context.SaveChangesAsync();
         }
