@@ -26,7 +26,6 @@ namespace AutoMapper
 
             cfg.CreateMap<AssignUserRequest, Assignee>();
             cfg.CreateMap<Assignee, AssignUserResponse>();
-            cfg.CreateMap<User, GetAssignedUserResponse>();
 
             cfg.CreateMap<CommentRequest, Comment>();
             cfg.CreateMap<Comment, CommentResponse>();

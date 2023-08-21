@@ -10,12 +10,13 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class AssigneeController : ControllerBase
     {
-        private readonly IAssigneeManager _manager;
-        public AssigneeController(IAssigneeManager manager)
+        private readonly AssigneeManager _manager;
+        public AssigneeController(AssigneeManager manager)
         {
             _manager = manager;
         }
         [HttpPost]
+        [Route("assignUser")]
         public async Task<IActionResult> AssigneeUserToTicket([FromBody] AssignUserRequest request)
         {
             try
@@ -26,19 +27,6 @@ namespace InternshipProject_2.Controllers
         catch (Exception ex)
             {
                 return BadRequest($"An error occurred: {ex.Message}");
-            }
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetAssignedUser([FromQuery] GetAssignedUserRequest request)
-        {
-            try
-            {
-                var response = await _manager.GetAssignedUser(request);
-                return Ok(response);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest($"An error occured: {ex.Message}");
             }
         }
     }
