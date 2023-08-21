@@ -8,7 +8,7 @@ namespace InternshipProject_2.Helpers;
 
 public class Token
 {
-   /* private string Generate(User user)
+    private string Generate(User user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -24,5 +24,5 @@ public class Token
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
-    }*/
+    }
 }
