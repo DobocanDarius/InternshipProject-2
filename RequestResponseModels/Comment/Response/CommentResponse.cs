@@ -17,6 +17,10 @@ namespace RequestResponseModels.Comment.Response
             this.CreatedAt = CreatedAt;
             this.UpdatedAt = UpdatedAt;
         }
+        public CommentResponse()
+        {
+
+        }
         public int Id;
         public string Body;
         public int UserId;

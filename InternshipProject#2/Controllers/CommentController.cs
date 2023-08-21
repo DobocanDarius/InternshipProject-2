@@ -45,6 +45,19 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+        [HttpPut]
+        public async Task<ActionResult> EditComment(CommentEditRequest editComment)
+        {
+            try
+            {
+                await commentManager.EditComment(editComment);
+                return Ok(editComment);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
 
     }
 }
