@@ -29,7 +29,5 @@ public class Token
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-        return new JwtSecurityTokenHandler().WriteToken(token);
     }  
 }
