@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHash>();
 builder.Services.AddDbContext<Project2Context>();
-builder.Services.AddScoped<AssigneeManager>();
+builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
