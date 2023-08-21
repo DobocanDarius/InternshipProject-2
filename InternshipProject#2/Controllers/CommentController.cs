@@ -4,6 +4,7 @@ using InternshipProject_2.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RequestResponseModels.Comment.Request;
 
 namespace InternshipProject_2.Controllers
 {
@@ -26,6 +27,20 @@ namespace InternshipProject_2.Controllers
         {
             var commentsForTicket = await commentManager.GetComments(ticketId);
             return Ok(commentsForTicket); 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateComment([FromBody] CommentRequest comment)
+        {
+            try
+            {
+                int createdCommentId = await commentManager.CreateComment(comment);
+                return CreatedAtAction("GetComment", new { id = createdCommentId }, comment); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while creating the comment.");
+            }
         }
     }
 }
