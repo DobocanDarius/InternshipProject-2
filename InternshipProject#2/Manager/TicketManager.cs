@@ -14,7 +14,7 @@ namespace InternshipProject_2.Manager
         {
             _context = context;
         }
-        public Task CreateTicket(TicketRequest newTicket)
+        public async Task CreateTicket(TicketRequest newTicket)
         {
             var map = MapperConfig.InitializeAutomapper();
 
@@ -22,9 +22,24 @@ namespace InternshipProject_2.Manager
 
             _context.Tickets.Add(ticket);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return Task.CompletedTask;
+        }
+
+        public async Task EditTicket(TicketEditRequest editTicket)
+        {
+            var map = MapperConfig.InitializeAutomapper();
+
+            var ticket = map.Map<Ticket>(editTicket);
+
+            _context.Tickets.Update(ticket);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Update(TicketWatchRequest watchTicket)
+        {
+
         }
     }
 }
