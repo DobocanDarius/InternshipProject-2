@@ -5,6 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using RequestResponseModels.Ticket;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
+using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
+
 namespace InternshipProject_2.Manager
 {
     public class TicketManager : ITicketManager
@@ -20,6 +23,13 @@ namespace InternshipProject_2.Manager
             var map = MapperConfig.InitializeAutomapper();
 
             var ticket = map.Map<Ticket>(newTicket);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.ReadJwtToken("aB5G7HjL3kR8xY0qP9eF2wZI6mN1cV4XoE5bD9A");
+
+            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "userId");
+            int reporterId = int.Parse(userIdClaim.Value);
+            ticket.ReporterId = reporterId;
 
             _context.Tickets.Add(ticket);
 

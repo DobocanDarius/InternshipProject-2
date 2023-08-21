@@ -12,24 +12,19 @@ namespace InternshipProject_2.Controllers
 {
     [Route("api/ticket")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TicketController : ControllerBase
     {
-        private readonly TicketManager _ticket;
+        private readonly ITicketManager _ticket;
 
-        public TicketController(TicketManager ticket)
+        public TicketController(ITicketManager ticket)
         {
             _ticket = ticket;
         }
 
-        [HttpPost("new")]
+        [HttpPost]
         public Task NewTicket([FromBody] TicketRequest ticket)
         {
-            var claim = HttpContext.User.Claims;
-            var userClaim = claim.FirstOrDefault(x => x.Type.Equals("userId"));
-            int reporterId = int.Parse(userClaim.Value);
-            ticket.ReporterId = reporterId;
-
             return _ticket.CreateTicket(ticket);
         }
 
