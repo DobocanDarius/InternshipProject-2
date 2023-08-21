@@ -14,6 +14,7 @@ public class CreateUserRequest
         Password = password;
         Email = email;
         Role = role;
+        CreatedAt = DateTime.Now;
     }
     public string Username { get; set; } = null!;
 
@@ -22,4 +23,5 @@ public class CreateUserRequest
     public string Email { get; set; } = null!;
 
     public string Role { get; set; } = null!;
+    public DateTime CreatedAt { get; }
 }
