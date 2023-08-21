@@ -24,7 +24,7 @@ builder.Services.AddScoped<PasswordHash>();
 builder.Services.AddScoped<Token>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<AssigneeManager>();
-
+builder.Services.AddScoped<TicketManager>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
