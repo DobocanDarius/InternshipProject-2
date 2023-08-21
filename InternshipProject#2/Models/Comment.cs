@@ -13,7 +13,7 @@ public partial class Comment
 
     public int TicketId { get; set; }
 
-    public int CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public virtual Ticket Ticket { get; set; } = null!;
 
