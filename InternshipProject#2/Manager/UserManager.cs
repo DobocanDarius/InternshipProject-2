@@ -41,8 +41,6 @@ public class UserManager : IUserManager
         .FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == _hash.HashPassword(user.Password));
 
         string token = _token.Generate(foundUser);
-X
-
         return new LoginResponse(token);
     }
 }

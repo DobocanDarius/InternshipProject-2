@@ -25,6 +25,20 @@ namespace InternshipProject_2.Manager
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteComment(int CommentId)
+        {
+            var ExistingComment = await _context.Comments.FindAsync(CommentId);
+            try
+            {
+                _context.Comments.Remove(ExistingComment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Comment");
+            }
+        }
+
         public async Task EditComment(CommentEditRequest editComment)
         {
             var ExistingComment = await _context.Comments.FindAsync(editComment.Id);
@@ -42,9 +56,7 @@ namespace InternshipProject_2.Manager
         }
         public async Task<IEnumerable<Comment>> GetComments(int TicketId)
         {
-            var comments = await _context.Comments
-                 .Where(comment => comment.TicketId == TicketId)
-                 .ToListAsync();
+            var comments = await _context.Comments.Where(comment => comment.TicketId == TicketId).ToListAsync();
             return comments;
         }
     }
