@@ -14,12 +14,26 @@ namespace InternshipProject_2.Controllers
         {
             _userManager = userManager;
         }
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult> CreateUser(CreateUserRequest newUser)
         {
             try
             {
                 await _userManager.Create(newUser);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login(LoginRequest login)
+        {
+            try
+            {
+                await _userManager.Login(login);
                 return Ok();
             }
             catch (Exception ex)

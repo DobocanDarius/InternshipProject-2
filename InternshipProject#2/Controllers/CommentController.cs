@@ -2,9 +2,12 @@
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Comment.Request;
+using RequestResponseModels.Comment.Response;
+using RequestResponseModels.User.Request;
 
 namespace InternshipProject_2.Controllers
 {
@@ -30,17 +33,18 @@ namespace InternshipProject_2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateComment([FromBody] CommentRequest comment)
+        public async Task<ActionResult> CreateComment(CommentRequest newComment)
         {
             try
             {
-                int createdCommentId = await commentManager.CreateComment(comment);
-                return CreatedAtAction("GetComment", new { id = createdCommentId }, comment); 
+                await commentManager.CreateComment(newComment);
+                return Ok();
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while creating the comment.");
+                return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
     }
 }

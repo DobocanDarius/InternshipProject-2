@@ -3,6 +3,7 @@ using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.User.Request;
+using RequestResponseModels.User.Response;
 
 namespace InternshipProject_2.Manager;
 
@@ -31,7 +32,7 @@ public class UserManager : IUserManager
         await _context.SaveChangesAsync();
     }
 
-    public async Task Login(LoginRequest user)
+    public async Task<LoginResponse> Login(LoginRequest user)
     {
         var map = MapperConfig.InitializeAutomapper();
 
@@ -39,5 +40,7 @@ public class UserManager : IUserManager
         .FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == _hash.HashPassword(user.Password));
 
         string token = _token.Generate(foundUser);
+
+        return new LoginResponse(token);
     }
 }

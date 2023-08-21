@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.Comment.Request
 {
-    public class CommentRequest
+    public class CommentCreateRequest
     {
+        public int Id { get; set; }
         public string Body { get; set; }
         public int UserId { get; set; }
         public int TicketId { get; set; }
