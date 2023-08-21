@@ -27,4 +27,9 @@ public class UserManager : IUserManager
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task Login(LoginRequest user)
+    {
+
+    }
 }
