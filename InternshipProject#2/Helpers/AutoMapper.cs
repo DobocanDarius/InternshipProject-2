@@ -32,7 +32,7 @@ namespace AutoMapper
                 cfg.CreateMap<CommentRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
 
-                cfg.CreateMap<CommentCreateRequest, Comment>();
+                cfg.CreateMap<CommentEditRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
 
             });
