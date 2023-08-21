@@ -1,4 +1,5 @@
-﻿using InternshipProject_2.Models;
+﻿using Azure;
+using InternshipProject_2.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

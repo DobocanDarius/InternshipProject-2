@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ public class UserManager : IUserManager
         .FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == _hash.HashPassword(user.Password));
 
         string token = _token.Generate(foundUser);
+X
 
         return new LoginResponse(token);
     }
