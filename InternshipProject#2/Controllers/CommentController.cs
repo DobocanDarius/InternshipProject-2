@@ -2,6 +2,7 @@
 using InternshipProject_2.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace InternshipProject_2.Controllers
 {
@@ -9,12 +10,19 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private readonly  ILogger<CommentController>  logger;
-        private static  List<Comment> comments = new List<Comment>();
-        private readonly IMapper mapper;
-        public CommentController(ILogger<CommentController> logger)
+        private readonly  ILogger<CommentController>  Logger;
+        private static  List<Comment> Comments = new List<Comment>();
+        private readonly IMapper Mapper;
+        public CommentController(ILogger<CommentController> Logger, IMapper Mapper)
         {
-            this.logger = logger;
+            this.Logger = Logger;
+            this.Mapper = Mapper;
+        }
+        [HttpGet("{ticketId}")]
+        public ActionResult<List<Comment>> GetCommentsForTicket([FromQuery] int ticketId)
+        {
+            var commentsForTicket = Comments.Where(comment => comment.TicketId == ticketId).ToList();
+            return commentsForTicket;
         }
     }
 }
