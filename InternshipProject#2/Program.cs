@@ -1,3 +1,4 @@
+using AutoMapper;
 using InternshipProject_2.Manager;
 
 var builder = WebApplication.CreateBuilder(args);
