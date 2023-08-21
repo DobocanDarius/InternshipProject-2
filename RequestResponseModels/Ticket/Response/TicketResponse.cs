@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.Ticket.Response
 {
-    internal class TicketResponse
+    public class TicketResponse
     {
         public TicketResponse(int id, string title, string body, string type, string priority, string component, int reporterId, DateTime createdAt, DateTime? updatedAt, byte? attachements)
         {
