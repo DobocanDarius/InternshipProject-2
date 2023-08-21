@@ -21,6 +21,7 @@ namespace AutoMapper
                 cfg.CreateMap<TicketRequest, Ticket>();
                 cfg.CreateMap<User, CreateUserResponse>();
                 cfg.CreateMap<CreateUserRequest, User>();
+                cfg.CreateMap<LoginRequest, User>();
             cfg.CreateMap<Ticket, TicketResponse>();
             cfg.CreateMap<TicketRequest, Ticket>();
 
@@ -29,6 +30,7 @@ namespace AutoMapper
 
             cfg.CreateMap<CommentRequest, Comment>();
             cfg.CreateMap<Comment, CommentResponse>();
+
             });
 
             var mapper = new Mapper(config);
