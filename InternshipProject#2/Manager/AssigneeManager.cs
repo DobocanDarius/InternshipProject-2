@@ -12,6 +12,7 @@ namespace InternshipProject_2.Manager
         public AssigneeManager()
         {
             _dbContext = new Project2Context();
+
             map = MapperConfig.InitializeAutomapper();
         }
         public async Task<AssignUserResponse> AssignUserToTicket(AssignUserRequest request)
