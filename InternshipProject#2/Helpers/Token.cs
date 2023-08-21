@@ -1,4 +1,5 @@
 ﻿using InternshipProject_2.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,18 +17,24 @@ public class Token
     }
     public string Generate(User user)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var claims = new[]
-        {
-                new Claim("userId", user.Id.ToString()),
+        List<Claim> claims = new List<Claim>
+            {
+            new Claim("userId", user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role),
-        };
+            };
+
+        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Key").Value));
+
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.Now.AddMinutes(60),
-            signingCredentials: credentials);
+            expires: DateTime.Now.AddDays(1),
+            signingCredentials: creds
+            );
+        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        return jwt;
     }
+
 }
