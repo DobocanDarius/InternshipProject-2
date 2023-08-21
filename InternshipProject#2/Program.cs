@@ -18,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHash>();
+builder.Services.AddScoped<Token>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<AssigneeManager>();
 
