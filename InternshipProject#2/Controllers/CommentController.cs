@@ -2,8 +2,12 @@
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RequestResponseModels.Comment.Request;
+using RequestResponseModels.Comment.Response;
+using RequestResponseModels.User.Request;
 
 namespace InternshipProject_2.Controllers
 {
@@ -27,5 +31,20 @@ namespace InternshipProject_2.Controllers
             var commentsForTicket = await commentManager.GetComments(ticketId);
             return Ok(commentsForTicket); 
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateComment(CommentRequest newComment)
+        {
+            try
+            {
+                await commentManager.CreateComment(newComment);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
     }
 }
