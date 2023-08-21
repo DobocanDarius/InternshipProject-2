@@ -16,13 +16,13 @@ namespace InternshipProject_2.Controllers
             _manager = manager;
         }
         [HttpPost]
-        [Route("api/assignuser")]
+        [Route("assignUser")]
         public async Task<IActionResult> AssigneeUserToTicket([FromBody] AssignUserRequest request)
         {
             try
             {
                 var response = await _manager.AssignUserToTicket(request);
-                return Ok(response);
+                return Ok(response.Message);
             }
         catch (Exception ex)
             {

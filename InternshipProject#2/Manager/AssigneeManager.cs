@@ -8,7 +8,7 @@ namespace InternshipProject_2.Manager
     public class AssigneeManager
     {
         private Project2Context _dbContext;
-        private Mapper map;
+        private readonly Mapper map;
         public AssigneeManager()
         {
             _dbContext = new Project2Context();
