@@ -1,6 +1,10 @@
-﻿using InternshipProject_2.Models;
+﻿using AutoMapper;
+using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Comment.Request;
+using RequestResponseModels.Comment.Response;
+using RequestResponseModels.Ticket.Request;
+using RequestResponseModels.User.Request;
 
 namespace InternshipProject_2.Manager
 {
@@ -12,19 +16,15 @@ namespace InternshipProject_2.Manager
             _context = context;
         }
 
-        public async Task<int> CreateComment(CommentRequest commentRequest)
+        public async Task CreateComment(CommentRequest newComment)
         {
-            var comment = new Comment
-            {
-                Body = commentRequest.Body,
-                UserId = commentRequest.UserId,
-                TicketId = commentRequest.TicketId,
-                CreatedAt = commentRequest.CreatedAt
-            };
+            var map = MapperConfig.InitializeAutomapper();
+
+            var comment = map.Map<Comment>(newComment);
 
             _context.Comments.Add(comment);
+
             await _context.SaveChangesAsync();
-            return comment.Id;
         }
 
         public async Task<IEnumerable<Comment>> GetComments(int TicketId)

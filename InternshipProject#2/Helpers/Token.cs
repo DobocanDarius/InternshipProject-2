@@ -30,6 +30,5 @@ public class Token
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }  
+
 }
