@@ -22,12 +22,18 @@ namespace InternshipProject_2.Manager
             {
                 var user = await _dbContext.Users.FindAsync(request.UserId);
                 if(user == null) {
-                    var response_if = new AssignUserResponse { Message = "User not found" };
-                    return response_if;
+                    var response = new AssignUserResponse { Message = "User not found" };
+                    return response;
                 }
                 if (!string.Equals(user.Role, "developer", StringComparison.OrdinalIgnoreCase)) {
-                    var response_if = new AssignUserResponse { Message = "User is not a developer" };
-                    return response_if;
+                    var response = new AssignUserResponse { Message = "User is not a developer" };
+                    return response;
+                }
+                var existingAssignment = await _dbContext.Assignees.FirstOrDefaultAsync(a => a.TicketId == request.TicketId);
+                if (existingAssignment != null)
+                {
+                    var response = new AssignUserResponse { Message = "An assignment already exists for this ticket" };
+                    return response;
                 }
 
                 var assignment = map.Map<Assignee>(request);
@@ -35,8 +41,8 @@ namespace InternshipProject_2.Manager
                 _dbContext.Assignees.Add(assignment);
                 await _dbContext.SaveChangesAsync();
 
-                var response = new AssignUserResponse { Message = "User assigned successfully" };
-                return response;
+                var succesResponse = new AssignUserResponse { Message = "User assigned successfully" };
+                return succesResponse;
             }
             catch (Exception ex)
             {

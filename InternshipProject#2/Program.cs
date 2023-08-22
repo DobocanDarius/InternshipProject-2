@@ -24,7 +24,7 @@ builder.Services.AddScoped<ICommentManager, CommentManager>();
 builder.Services.AddScoped<PasswordHash>();
 builder.Services.AddScoped<Token>();
 builder.Services.AddDbContext<Project2Context>();
-builder.Services.AddScoped<AssigneeManager>();
+builder.Services.AddScoped<IAssigneeManager,AssigneeManager>();
 builder.Services.AddScoped<ITicketManager, TicketManager>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
