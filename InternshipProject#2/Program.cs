@@ -1,3 +1,7 @@
+using InternshipProject_2.Manager;
+using InternshipProject_2.Models;
+using AutoMapper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<Project2Context>();
+builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 
 var app = builder.Build();
 
