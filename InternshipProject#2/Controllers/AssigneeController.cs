@@ -20,20 +20,13 @@ namespace InternshipProject_2.Controllers
             _manager = manager;
         }
 
+        [Authorize(Roles = "manager")]
         [HttpPost]
         [Route("assignUser")]
         public async Task<IActionResult> AssigneeUserToTicket([FromBody] AssignUserRequest request)
         {
             try
             {
-                if (!HttpContext.Items.TryGetValue("UserRole", out var userRole))
-                {
-                    return BadRequest("User not connected");
-                }
-                if (!string.Equals(userRole as string, "manager", StringComparison.OrdinalIgnoreCase))
-                {
-                    return Unauthorized();
-                }
                 var response = await _manager.AssignUserToTicket(request);
                 return Ok(response.Message);
             }
