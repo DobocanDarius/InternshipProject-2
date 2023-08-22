@@ -39,13 +39,7 @@ namespace InternshipProject_2.Controllers
                 if (foundUser != null)
                 {
                     var token = _token.Generate(foundUser);
-                    var cookieOptions = new CookieOptions
-                    {
-                        Expires = DateTime.UtcNow.AddMinutes(60),
-                        HttpOnly = true,
-                    };
-
-                    Response.Cookies.Append("access_token", token, cookieOptions);
+                    
 
                     return Ok(new { Token = token });
                 }
