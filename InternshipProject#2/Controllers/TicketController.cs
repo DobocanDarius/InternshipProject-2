@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 using System.Net;
@@ -12,7 +13,6 @@ namespace InternshipProject_2.Controllers
 {
     [Route("api/ticket")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TicketController : ControllerBase
     {
         private readonly ITicketManager _ticket;
@@ -23,25 +23,48 @@ namespace InternshipProject_2.Controllers
         }
 
         [HttpPost]
-        public Task NewTicket([FromBody] TicketRequest ticket)
+        public async Task<IActionResult> NewTicket([FromBody] TicketRequest ticket, int reporterId)
         {
-            return _ticket.CreateTicket(ticket);
+            try
+            {
+                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                {
+                    reporterId = int.Parse(userIdObj.ToString());
+                    if (reporterId != 0)
+                    {
+                        await _ticket.CreateTicket(ticket,reporterId);
+                        return Ok();
+                    }
+                    else return BadRequest("User needs to be logged in");
+                }
+                else return BadRequest("Manager needs to be logged in");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
         }
 
-        [HttpPut("id")]
-        public Task EditTicket([FromBody] TicketEditRequest ticket)
+        [HttpPut("edit/{ticketId}")]
+        public async Task<IActionResult> EditTicket([FromBody] TicketEditRequest ticket, int ticketId,int reporterId)
         {
-            var claim = HttpContext.User.Claims;
-            var userClaim = claim.FirstOrDefault(y => y.Type.Equals("userId"));
-            int reporterId = int.Parse(userClaim.Value);
-
-            if (ticket.ReporterId == reporterId) 
+            try
             {
-                return _ticket.EditTicket(ticket);
+                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                {
+                    reporterId = int.Parse(userIdObj.ToString());
+                    if (reporterId != 0)
+                    {
+                        await _ticket.EditTicket(ticket, ticketId, reporterId);
+                        return Ok();
+                    }
+                    else return BadRequest("You did not post this!");
+                }
+                else return BadRequest("You are not logged in!");
             }
-            else
+            catch (Exception ex)
             {
-                return Task.CompletedTask;
+                return BadRequest($"An error occurred: {ex.Message}");
             }
         }
 
