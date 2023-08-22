@@ -57,20 +57,39 @@ namespace InternshipProject_2.Controllers
             {
                 var foundUser = await _context.Users
                .FirstOrDefaultAsync(u => u.Email == login.Email && u.Password == _hash.HashPassword(login.Password));
-
-                var token = _token.Generate(foundUser);
-
-                var cookieOptions = new CookieOptions
+                if (foundUser != null)
                 {
-                    Expires = DateTime.UtcNow.AddMinutes(60),
-                    HttpOnly = true,
-                };
+                    var token = _token.Generate(foundUser);
+                    var cookieOptions = new CookieOptions
+                    {
+                        Expires = DateTime.UtcNow.AddMinutes(60),
+                        HttpOnly = true,
+                    };
 
-                Response.Cookies.Append("access_token", token, cookieOptions);
+                    Response.Cookies.Append("access_token", token, cookieOptions);
 
-                return Ok(new { Token = token });
+                    return Ok(new { Token = token });
+                }
+
+                else return BadRequest("User does not exist");
+
             }
             catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            try
+            {
+                Response.Cookies.Delete("access_token");
+
+                return Ok(new { Message = "Logged out successfully" });
+            }
+            catch (Exception ex) 
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
