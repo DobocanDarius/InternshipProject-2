@@ -20,7 +20,7 @@ public class Token
     {
         List<Claim> claims = new List<Claim>
             {
-            new Claim("userId", user.Id.ToString()),
+                new Claim("userId", user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role),
             };
 

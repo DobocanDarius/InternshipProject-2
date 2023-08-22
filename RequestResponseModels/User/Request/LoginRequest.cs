@@ -8,10 +8,11 @@ namespace RequestResponseModels.User.Request;
 
 public class LoginRequest
 {
-    public LoginRequest(string password, string email)
+    public LoginRequest( string email, string password)
     {
-        Password = password;
         Email = email;
+        Password = password;
+        
     }
 
     public string Password { get; set; } = null!;
