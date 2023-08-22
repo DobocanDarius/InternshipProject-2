@@ -27,22 +27,18 @@ namespace InternshipProject_2.Controllers
             _context = context;
             _hash = hash;
         }
+        //eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoibWFuYWdlciIsImV4cCI6MTY5Mjc5NTAwNn0.eAwqNBTfWnjvqFBfxUtQq3ZN9M9qov_UP_ujbyvmhvo
         [HttpPost("register")]
+        [Authorize (Roles = "manager")]
         public async Task<ActionResult> CreateUser(CreateUserRequest newUser)
         {
             try
             {
-                if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj))
-                {
-                    var userRole = userRoleObj.ToString();
-                    if (userRole == "manager")
-                    {
+                    
                         await _userManager.Create(newUser);
                         return Ok();
-                    }
-                    else return BadRequest("User needs to be a manager");
-                }
-                else return BadRequest("Manager needs to be logged in");
+          
+                
             }
             catch (Exception ex)
             {
