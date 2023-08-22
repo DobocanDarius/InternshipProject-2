@@ -26,24 +26,18 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                if (Request.Cookies.TryGetValue("access_token", out var tokenFromCookie))
+                if (!HttpContext.Items.TryGetValue("UserRole", out var userRole))
                 {
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var token = tokenHandler.ReadJwtToken(tokenFromCookie);
-
-                    var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-                    var userRole = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-                    if (!string.Equals(userRole, "manager", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return Unauthorized();
-                    }
-                    var response = await _manager.AssignUserToTicket(request);
-                    return Ok(response.Message);
+                    return BadRequest("User not connected");
                 }
-                else return BadRequest("User not connected");
-                
+                if (!string.Equals(userRole as string, "manager", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Unauthorized();
+                }
+                var response = await _manager.AssignUserToTicket(request);
+                return Ok(response.Message);
             }
-        catch (Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
@@ -69,6 +63,14 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
+                if (!HttpContext.Items.TryGetValue("UserRole", out var userRole))
+                {
+                    return BadRequest("User not connected");
+                }
+                if (!string.Equals(userRole as string, "manager", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Unauthorized();
+                }
                 var response = await _manager.RemoveAssignedUser(request);
                 return Ok(response);
             }
