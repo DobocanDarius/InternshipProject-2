@@ -71,7 +71,7 @@ namespace InternshipProject_2.Controllers
                     return Ok(new { Token = token });
                 }
 
-                else return BadRequest("User does not exist");
+                else return BadRequest("Email or password is wrong");
 
             }
             catch (Exception ex)
