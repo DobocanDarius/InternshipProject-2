@@ -1,7 +1,14 @@
-﻿using InternshipProject_2.Manager;
+﻿using InternshipProject_2.Helpers;
+using InternshipProject_2.Manager;
+using InternshipProject_2.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.User.Request;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace InternshipProject_2.Controllers
 {
@@ -10,9 +17,15 @@ namespace InternshipProject_2.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        public UserController(IUserManager userManager)
+        private readonly Token _token;
+        private readonly PasswordHash _hash;
+        private readonly Project2Context _context;
+        public UserController(IUserManager userManager, Token token, Project2Context context, PasswordHash hash)
         {
             _userManager = userManager;
+            _token = token;
+            _context = context;
+            _hash = hash;
         }
         [HttpPost("register")]
         public async Task<ActionResult> CreateUser(CreateUserRequest newUser)
@@ -33,13 +46,42 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                await _userManager.Login(login);
-                return Ok();
+                var foundUser = await _context.Users
+               .FirstOrDefaultAsync(u => u.Email == login.Email && u.Password == _hash.HashPassword(login.Password));
+
+                var token = _token.Generate(foundUser);
+
+                var cookieOptions = new CookieOptions
+                {
+                    Expires = DateTime.UtcNow.AddMinutes(60),
+                    HttpOnly = true,
+                };
+
+                Response.Cookies.Append("access_token", token, cookieOptions);
+
+                return Ok(new { Token = token });
             }
             catch (Exception ex)
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
+        }
+
+        [HttpGet("profile")]
+        public IActionResult GetUserProfile()
+        {
+            if (Request.Cookies.TryGetValue("access_token", out var tokenFromCookie))
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.ReadJwtToken(tokenFromCookie);
+
+                var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+                var userRole = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+                return Ok(new { UserId = userId, UserRole = userRole });
+            }
+            return BadRequest();
+           
         }
     }
 }
