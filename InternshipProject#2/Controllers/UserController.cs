@@ -32,8 +32,17 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                await _userManager.Create(newUser);
-                return Ok();
+                if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj))
+                {
+                    var userRole = userRoleObj.ToString();
+                    if (userRole == "manager")
+                    {
+                        await _userManager.Create(newUser);
+                        return Ok();
+                    }
+                    else return BadRequest("User needs to be a manager");
+                }
+                else return BadRequest("Manager needs to be logged in");
             }
             catch (Exception ex)
             {
@@ -65,23 +74,6 @@ namespace InternshipProject_2.Controllers
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
-        }
-
-        [HttpGet("profile")]
-        public IActionResult GetUserProfile()
-        {
-            if (Request.Cookies.TryGetValue("access_token", out var tokenFromCookie))
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.ReadJwtToken(tokenFromCookie);
-
-                var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
-                var userRole = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-
-                return Ok(new { UserId = userId, UserRole = userRole });
-            }
-            return BadRequest();
-           
         }
     }
 }
