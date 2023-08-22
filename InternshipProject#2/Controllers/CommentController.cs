@@ -15,14 +15,9 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private readonly  ILogger<CommentController>  Logger;
-        private static  List<Comment> Comments = new List<Comment>();
-        private readonly IMapper Mapper;
         private readonly ICommentManager commentManager;
-        public CommentController(ILogger<CommentController> Logger, IMapper Mapper, ICommentManager commentManager)
+        public CommentController(ICommentManager commentManager)
         {
-            this.Logger = Logger;
-            this.Mapper = Mapper;
             this.commentManager = commentManager;
         }
         [HttpGet("CommentsFromTicket")]
@@ -66,6 +61,19 @@ namespace InternshipProject_2.Controllers
             {
                 await commentManager.DeleteComment(CommentID);
                 return Ok("The comment was deleted succesfully!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+        [HttpDelete("DeleteAllCommentsFromATicket")]
+        public async Task<ActionResult> DeleteCommentsFromTicket(int TicketId)
+        {
+            try
+            {
+                await commentManager.DeleteCommentsByTicketId(TicketId);
+                return Ok("The comments are deleted!");
             }
             catch (Exception ex)
             {

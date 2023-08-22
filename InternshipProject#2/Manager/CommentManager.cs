@@ -38,6 +38,20 @@ namespace InternshipProject_2.Manager
                 throw new Exception("Invalid Comment");
             }
         }
+        public async Task DeleteCommentsByTicketId(int TicketId)
+        {
+            var commentsToDelete = await _context.Comments.Where(comment => comment.TicketId == TicketId).ToListAsync();
+            try
+            {
+                _context.Comments.RemoveRange(commentsToDelete);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error deleting comments");
+            }
+        }
+
 
         public async Task EditComment(CommentEditRequest editComment)
         {
