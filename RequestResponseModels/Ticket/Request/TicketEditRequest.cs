@@ -8,15 +8,11 @@ namespace RequestResponseModels.Ticket.Request
 {
     public class TicketEditRequest
     {
-        public int ReporterId { get; set; }
-
         public string Title { get; set; } = null!;
 
         public string Body { get; set; } = null!;
 
         public string Priority { get; set; } = null!;
-
-        public DateTime? UpdatedAt { get; set; }
 
         public byte[]? Attachements { get; set; }
     }

@@ -7,6 +7,9 @@ using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace InternshipProject_2.Manager
 {
@@ -18,18 +21,16 @@ namespace InternshipProject_2.Manager
         {
             _context = context;
         }
-        public async Task CreateTicket(TicketRequest newTicket)
+        public async Task CreateTicket(TicketRequest newTicket, int reporterId)
         {
+
             var map = MapperConfig.InitializeAutomapper();
 
             var ticket = map.Map<Ticket>(newTicket);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.ReadJwtToken("aB5G7HjL3kR8xY0qP9eF2wZI6mN1cV4XoE5bD9A");
-
-            var userIdClaim = token.Claims.FirstOrDefault(claim => claim.Type == "userId");
-            int reporterId = int.Parse(userIdClaim.Value);
+            
             ticket.ReporterId = reporterId;
+
+            ticket.CreatedAt = DateTime.Now;
 
             _context.Tickets.Add(ticket);
 
@@ -37,15 +38,32 @@ namespace InternshipProject_2.Manager
 
         }
 
-        public async Task EditTicket(TicketEditRequest editTicket)
+        public async Task EditTicket(TicketEditRequest editTicket, int id, int reporterId)
         {
-            var map = MapperConfig.InitializeAutomapper();
+            var dbTicket = await _context.Tickets.FindAsync(id);
 
-            var ticket = map.Map<Ticket>(editTicket);
+            if (dbTicket != null) 
+            {
+                var map = MapperConfig.InitializeAutomapper();
 
-            _context.Tickets.Update(ticket);
+                var ticket = map.Map(editTicket, dbTicket);
 
-            await _context.SaveChangesAsync();
+                dbTicket.Id = id;
+
+                dbTicket.UpdatedAt = DateTime.Now;
+
+                if (dbTicket.ReporterId == reporterId)
+                {
+                    _context.Tickets.Update(ticket);
+
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    await Task.CompletedTask;
+                }
+            }
+            await Task.CompletedTask;
         }
 
         public async Task DeleteTicket(int id)

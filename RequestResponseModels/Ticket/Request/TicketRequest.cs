@@ -8,7 +8,6 @@ namespace RequestResponseModels.Ticket.Request
 {
     public class TicketRequest
     {
-
         public string Title { get; set; } = null!;
 
         public string Body { get; set; } = null!;
@@ -18,5 +17,6 @@ namespace RequestResponseModels.Ticket.Request
         public string Priority { get; set; } = null!;
 
         public string Component { get; set; } = null!;
+
     }
 }
