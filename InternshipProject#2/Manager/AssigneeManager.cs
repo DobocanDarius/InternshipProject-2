@@ -20,7 +20,18 @@ namespace InternshipProject_2.Manager
         {
             try
             {
+                var user = await _dbContext.Users.FindAsync(request.UserId);
+                if(user == null) {
+                    var response_if = new AssignUserResponse { Message = "User not found" };
+                    return response_if;
+                }
+                if (!string.Equals(user.Role, "developer", StringComparison.OrdinalIgnoreCase)) {
+                    var response_if = new AssignUserResponse { Message = "User is not a developer" };
+                    return response_if;
+                }
+
                 var assignment = map.Map<Assignee>(request);
+                
                 _dbContext.Assignees.Add(assignment);
                 await _dbContext.SaveChangesAsync();
 
