@@ -75,7 +75,6 @@ namespace InternshipProject_2.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.ReadJwtToken(tokenFromCookie);
 
-                // Extract claims from the token
                 var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
                 var userRole = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
