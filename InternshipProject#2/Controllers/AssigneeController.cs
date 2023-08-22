@@ -1,8 +1,12 @@
 ﻿using InternshipProject_2.Manager;
+using InternshipProject_2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Assignee.Request;
+using System.IdentityModel.Tokens.Jwt;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 
 namespace InternshipProject_2.Controllers
 {
@@ -15,14 +19,29 @@ namespace InternshipProject_2.Controllers
         {
             _manager = manager;
         }
+        
         [HttpPost]
         [Route("assignUser")]
         public async Task<IActionResult> AssigneeUserToTicket([FromBody] AssignUserRequest request)
         {
             try
             {
-                var response = await _manager.AssignUserToTicket(request);
-                return Ok(response.Message);
+                if (Request.Cookies.TryGetValue("access_token", out var tokenFromCookie))
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var token = tokenHandler.ReadJwtToken(tokenFromCookie);
+
+                    var userId = token.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+                    var userRole = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+                    if (!string.Equals(userRole, "manager", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return Unauthorized();
+                    }
+                    var response = await _manager.AssignUserToTicket(request);
+                    return Ok(response.Message);
+                }
+                else return BadRequest("User not connected");
+                
             }
         catch (Exception ex)
             {
