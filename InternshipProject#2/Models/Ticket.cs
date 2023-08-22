@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InternshipProject_2.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace InternshipProject_2.Models;
@@ -18,7 +19,7 @@ public partial class Ticket
     public string Component { get; set; } = null!;
 
     public int ReporterId { get; set; }
-
+    public TicketLifecycle Status { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
