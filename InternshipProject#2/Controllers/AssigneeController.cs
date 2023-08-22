@@ -40,7 +40,7 @@ namespace InternshipProject_2.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"An error occured: {ex.Message}");
+                return NotFound();
             }
         }
         [HttpDelete]
@@ -55,7 +55,7 @@ namespace InternshipProject_2.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest($"An error occured: {ex.Message}");
+                return NotFound();
             }
         }
     }
