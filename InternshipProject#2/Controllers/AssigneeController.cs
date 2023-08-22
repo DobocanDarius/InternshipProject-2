@@ -10,8 +10,8 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class AssigneeController : ControllerBase
     {
-        private readonly AssigneeManager _manager;
-        public AssigneeController(AssigneeManager manager)
+        private readonly IAssigneeManager _manager;
+        public AssigneeController(IAssigneeManager manager)
         {
             _manager = manager;
         }
@@ -30,6 +30,7 @@ namespace InternshipProject_2.Controllers
             }
         }
         [HttpGet]
+        [Route("getAssignedUser")]
         public async Task<IActionResult> GetAssignedUser([FromQuery] GetAssignedUserRequest request)
         {
             try
@@ -38,6 +39,21 @@ namespace InternshipProject_2.Controllers
                 return Ok(response);
             }
             catch (Exception ex)
+            {
+                return BadRequest($"An error occured: {ex.Message}");
+            }
+        }
+        [HttpDelete]
+        [Route("removeAssignedUser")]
+
+        public async Task<IActionResult> RemoveAssignedUser([FromQuery] RemoveAssignedUserRequest request)
+        {
+            try
+            {
+                var response = await _manager.RemoveAssignedUser(request);
+                return Ok(response);
+            }
+            catch(Exception ex)
             {
                 return BadRequest($"An error occured: {ex.Message}");
             }

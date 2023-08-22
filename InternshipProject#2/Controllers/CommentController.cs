@@ -25,20 +25,47 @@ namespace InternshipProject_2.Controllers
             this.Mapper = Mapper;
             this.commentManager = commentManager;
         }
-        [HttpGet]
+        [HttpGet("CommentsFromTicket")]
         public async Task<ActionResult<List<Comment>>> GetCommentsForTicket([FromQuery] int ticketId)
         {
             var commentsForTicket = await commentManager.GetComments(ticketId);
             return Ok(commentsForTicket); 
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult> CreateComment(CommentRequest newComment)
         {
             try
             {
                 await commentManager.CreateComment(newComment);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+        [HttpPut("Update")]
+        public async Task<ActionResult> EditComment(CommentEditRequest editComment)
+        {
+            try
+            {
+                await commentManager.EditComment(editComment);
+                return Ok(editComment);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("Delete")]
+        public async Task<ActionResult> DeleteComment(int CommentID)
+        {
+            try
+            {
+                await commentManager.DeleteComment(CommentID);
+                return Ok("The comment was deleted succesfully!");
             }
             catch (Exception ex)
             {
