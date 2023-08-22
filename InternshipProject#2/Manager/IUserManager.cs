@@ -5,5 +5,5 @@ namespace InternshipProject_2.Manager;
 
 public interface IUserManager
 {
-    Task<LoginResponse> Login(LoginRequest user);
+    Task Create(CreateUserRequest newUser);
 }

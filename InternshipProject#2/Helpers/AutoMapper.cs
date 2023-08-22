@@ -12,7 +12,8 @@ namespace AutoMapper
         {
             var config = new MapperConfiguration(cfg =>
             {
-                
+                cfg.CreateMap<User, CreateUserResponse>();
+                cfg.CreateMap<CreateUserRequest, User>();
             });
 
             var mapper = new Mapper(config);

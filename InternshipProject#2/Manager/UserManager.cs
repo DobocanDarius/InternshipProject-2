@@ -22,17 +22,16 @@ public class UserManager : IUserManager
 
     }
 
-    public async Task<LoginResponse> Login(LoginRequest user)
+    public async Task Create(CreateUserRequest newUser)
     {
-        var foundUser = await _context.Users
-        .FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == _hash.HashPassword(user.Password));
+        var map = MapperConfig.InitializeAutomapper();
 
-        if (foundUser != null)
-        {
-            string token = _token.Generate(foundUser);
-            return new LoginResponse(token);
-        }
+        newUser.Password = _hash.HashPassword(newUser.Password);
 
-        return new LoginResponse("User does not exist");
+        var user = map.Map<User>(newUser);
+
+        _context.Users.Add(user);
+
+        await _context.SaveChangesAsync();
     }
 }

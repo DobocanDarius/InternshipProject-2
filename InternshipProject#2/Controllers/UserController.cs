@@ -29,29 +29,22 @@ namespace InternshipProject_2.Controllers
             _hash = hash;
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginRequest login)
+        [HttpPost("register")]
+        public async Task<ActionResult> CreateUser(CreateUserRequest newUser)
         {
             try
             {
-                var foundUser = await _context.Users
-               .FirstOrDefaultAsync(u => u.Email == login.Email && u.Password == _hash.HashPassword(login.Password));
-                if (foundUser != null)
+                if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj))
                 {
-                    var token = _token.Generate(foundUser);
-                    var cookieOptions = new CookieOptions
+                    var userRole = userRoleObj.ToString();
+                    if (userRole == "manager")
                     {
-                        Expires = DateTime.UtcNow.AddMinutes(60),
-                        HttpOnly = true,
-                    };
-
-                    Response.Cookies.Append("access_token", token, cookieOptions);
-
-                    return Ok(new { Token = token });
+                        await _userManager.Create(newUser);
+                        return Ok();
+                    }
+                    else return BadRequest("User needs to be a manager");
                 }
-
-                else return BadRequest("Email or password is wrong");
-
+                else return BadRequest("Manager needs to be logged in");
             }
             catch (Exception ex)
             {
