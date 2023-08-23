@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHash>();
-builder.Services.AddScoped<Token>();
+builder.Services.AddScoped<GenerateToken>();
 builder.Services.AddDbContext<Project2Context>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
