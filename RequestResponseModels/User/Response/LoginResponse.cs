@@ -1,5 +1,7 @@
+
 ﻿using RequestResponseModels.User.Request;
 using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -19,3 +21,4 @@ public class LoginResponse
         Token = string.Empty;
     }
 }
+
