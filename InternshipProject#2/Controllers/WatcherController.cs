@@ -5,7 +5,7 @@ namespace InternshipProject_2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Watcher : ControllerBase
+    public class WatcherController : ControllerBase
     {
     }
 }
