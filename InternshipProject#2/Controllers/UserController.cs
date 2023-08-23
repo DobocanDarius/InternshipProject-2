@@ -1,15 +1,6 @@
-﻿using InternshipProject_2.Helpers;
-using InternshipProject_2.Manager;
-using InternshipProject_2.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.User.Request;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace InternshipProject_2.Controllers
 {
@@ -18,15 +9,10 @@ namespace InternshipProject_2.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        private readonly Token _token;
-        private readonly PasswordHash _hash;
-        private readonly Project2Context _context;
-        public UserController(IUserManager userManager, Token token, Project2Context context, PasswordHash hash)
+        
+        public UserController(IUserManager userManager)
         {
             _userManager = userManager;
-            _token = token;
-            _context = context;
-            _hash = hash;
         }
 
         [HttpPost("login")]
