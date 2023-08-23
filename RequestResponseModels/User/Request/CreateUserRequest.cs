@@ -4,9 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RequestResponseModels.User.Request
+namespace RequestResponseModels.User.Request;
+
+public class CreateUserRequest
 {
-    internal class CreateUserRequest
+    public CreateUserRequest(string username, string password, string email, string role)
     {
+        Username = username;
+        Password = password;
+        Email = email;
+        Role = role;
+        CreatedAt = DateTime.Now;
     }
+    public string Username { get; set; } = null!;
+
+    public string Password { get; set; } = null!;
+
+    public string Email { get; set; } = null!;
+
+    public string Role { get; set; } = null!;
+    public DateTime CreatedAt { get; }
 }

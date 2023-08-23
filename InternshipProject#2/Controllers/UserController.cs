@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.User.Request;
+using RequestResponseModels.User.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -18,33 +19,20 @@ namespace InternshipProject_2.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        private readonly Token _token;
-        private readonly PasswordHash _hash;
-        private readonly Project2Context _context;
-        public UserController(IUserManager userManager, Token token, Project2Context context, PasswordHash hash)
+        public UserController(IUserManager userManager)
         {
             _userManager = userManager;
-            _token = token;
-            _context = context;
-            _hash = hash;
         }
 
         [HttpPost("register")]
+        [Authorize(Roles = "manager")]
         public async Task<ActionResult> CreateUser(CreateUserRequest newUser)
         {
             try
             {
-                if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj))
-                {
-                    var userRole = userRoleObj.ToString();
-                    if (userRole == "manager")
-                    {
-                        await _userManager.Create(newUser);
-                        return Ok();
-                    }
-                    else return BadRequest("User needs to be a manager");
-                }
-                else return BadRequest("Manager needs to be logged in");
+                await _userManager.Create(newUser);
+                var response = new CreateUserResponse { Message = "Registration successful" };
+                return Ok(response);
             }
             catch (Exception ex)
             {
