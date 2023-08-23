@@ -24,18 +24,18 @@ namespace InternshipProject_2.Controllers
         }
 
         [HttpPost("new")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> NewTicket([FromBody] TicketCreateRequest ticket)
         {
             try
             {
-                //if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
-                //{
+                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                {
                     int reporterId = 1;
                     await _ticket.CreateTicket(ticket, reporterId);
                     return Ok();
-                //}
-                //else return BadRequest("Manager needs to be logged in");
+                }
+                else return BadRequest("Manager needs to be logged in");
             }
             catch (Exception ex)
             {
