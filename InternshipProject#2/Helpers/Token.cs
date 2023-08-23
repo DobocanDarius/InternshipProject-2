@@ -1,7 +1,9 @@
-﻿using InternshipProject_2.Models;
+using InternshipProject_2.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+
+namespace InternshipProject_2.Helpers;
 
 namespace InternshipProject_2.Helpers;
 
@@ -36,3 +38,4 @@ public class Token
     }
 
 }
+

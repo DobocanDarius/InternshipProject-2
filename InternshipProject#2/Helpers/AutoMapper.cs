@@ -1,7 +1,11 @@
 ﻿using InternshipProject_2.Models;
-
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
+﻿using AutoMapper;
+using InternshipProject_2.Models;
+using RequestResponseModels.Assignee.Request;
+using RequestResponseModels.Assignee.Response;
+
 
 namespace AutoMapper
 {
@@ -13,6 +17,9 @@ namespace AutoMapper
             {
                 cfg.CreateMap<User, CreateUserResponse>();
                 cfg.CreateMap<CreateUserRequest, User>();
+                cfg.CreateMap<AssignUserRequest, Assignee>();
+                cfg.CreateMap<Assignee, AssignUserResponse>();
+                cfg.CreateMap<User, GetAssignedUserResponse>();
             });
 
             var mapper = new Mapper(config);
