@@ -81,10 +81,6 @@
       <Project>{f946b1ae-dcec-449b-af73-7b148b7a4aca}</Project>
       <Name>InternshipProject#2</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RequestResponseModels\RequestResponseModels.csproj">
-      <Project>{e44b5b0f-2642-42dd-a991-9689d9ef65a8}</Project>
-      <Name>RequestResponseModels</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
