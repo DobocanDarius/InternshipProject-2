@@ -22,10 +22,7 @@ public class UserManager : IUserManager
 
     public async Task<LoginResponse> Login(LoginRequest user)
     {
-        var foundUser = await _context.Users
-        .FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == _hash.HashPassword(user.Password));
-
-
+        var foundUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == _hash.HashPassword(user.Password));
 
         if (foundUser != null)
         {
