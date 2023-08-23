@@ -5,11 +5,11 @@ using System.Security.Claims;
 
 namespace InternshipProject_2.Helpers;
 
-public class Token
+public class GenerateToken
 {
     private readonly IConfiguration _config;
 
-    public Token(IConfiguration config)
+    public GenerateToken(IConfiguration config)
     {
         _config = config;
     }
