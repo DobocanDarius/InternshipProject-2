@@ -1,13 +1,5 @@
 
-﻿using RequestResponseModels.User.Request;
-using System;
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using RequestResponseModels.User.Request;
 
 namespace RequestResponseModels.User.Response;
 
