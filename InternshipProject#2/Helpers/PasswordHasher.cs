@@ -3,7 +3,7 @@ using System.Text;
 
 namespace InternshipProject_2.Helpers;
 
-public class PasswordHash
+public class PasswordHasher
 {
     public string HashPassword(string password)
     {

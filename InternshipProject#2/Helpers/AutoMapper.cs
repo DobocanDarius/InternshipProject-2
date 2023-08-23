@@ -3,7 +3,7 @@ using RequestResponseModels.User.Response;
 
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
-
+using RequestResponseModels.User.Request;
 
 namespace AutoMapper
 {
@@ -15,6 +15,7 @@ namespace AutoMapper
             {
 
                 cfg.CreateMap<User, LoginResponse>();
+                cfg.CreateMap<LoginResponse, LoginRequest>();
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
                 cfg.CreateMap<User, GetAssignedUserResponse>();

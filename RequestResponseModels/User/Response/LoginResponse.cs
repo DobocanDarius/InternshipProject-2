@@ -6,10 +6,10 @@ namespace RequestResponseModels.User.Response;
 public class LoginResponse
 {
     public string? Token { get; set; }
-    public IEnumerable<LoginRequest> Users { get; set; }
+    public LoginRequest User { get; set; }
     public LoginResponse()
     {
-        Users = new List<LoginRequest>();
+        User = new LoginRequest();
         Token = string.Empty;
     }
 }
