@@ -6,6 +6,8 @@ using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
+using RequestResponseModels.Assignee.Request;
+using RequestResponseModels.Assignee.Response;
 
 namespace AutoMapper
 {
@@ -17,7 +19,9 @@ namespace AutoMapper
             {
                 cfg.CreateMap<CommentRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
-
+                cfg.CreateMap<AssignUserRequest, Assignee>();
+                cfg.CreateMap<Assignee, AssignUserResponse>();
+                cfg.CreateMap<User, GetAssignedUserResponse>();
             });
 
             var mapper = new Mapper(config);
