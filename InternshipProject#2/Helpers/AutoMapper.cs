@@ -12,8 +12,6 @@ namespace AutoMapper
         {
             var config = new MapperConfiguration(cfg =>
             {
-               
-
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
                 cfg.CreateMap<User, GetAssignedUserResponse>();
