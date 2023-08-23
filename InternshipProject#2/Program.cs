@@ -9,7 +9,6 @@ using AutoMapper;
 
 using Microsoft.AspNetCore.Hosting;
 using System.Text;
-using InternshipProject_2.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +45,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseMiddleware<LoggedUserData>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
