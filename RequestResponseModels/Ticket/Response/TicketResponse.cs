@@ -8,7 +8,7 @@ namespace RequestResponseModels.Ticket.Response
 {
     public class TicketResponse
     {
-        public TicketResponse(int id, string title, string body, string type, string priority, string component, int reporterId, DateTime createdAt, DateTime? updatedAt, byte[]? attachements)
+        public TicketResponse(int id, string title, string body, string type, string priority, string component, int reporterId, DateTime createdAt, DateTime? updatedAt, byte attachements)
         {
             Id = id;
             Title = title;
@@ -40,7 +40,7 @@ namespace RequestResponseModels.Ticket.Response
 
         public DateTime? UpdatedAt { get; set; }
 
-        public byte[]? Attachements { get; set; }
+        public byte? Attachements { get; set; }
 
     }
 }
