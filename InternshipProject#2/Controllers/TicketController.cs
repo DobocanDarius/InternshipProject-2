@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Ticket.Request;
@@ -23,19 +22,19 @@ namespace InternshipProject_2.Controllers
             _ticket = ticket;
         }
 
-        [HttpPost("new")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("create")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> NewTicket([FromBody] TicketCreateRequest ticket)
         {
             try
             {
-                //if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
-                //{
-                    int reporterId = 1;
+                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                {
+                    int reporterId = int.Parse(userIdObj.ToString());
                     await _ticket.CreateTicket(ticket, reporterId);
                     return Ok();
-                //}
-                //else return BadRequest("Manager needs to be logged in");
+                }
+                else return BadRequest("User needs to be logged in");
             }
             catch (Exception ex)
             {
