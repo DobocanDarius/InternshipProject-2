@@ -15,7 +15,6 @@ namespace InternshipProject_2.Controllers
         {
             this.commentManager = commentManager;
         }
-
         [HttpPost("Create")]
         public async Task<ActionResult> CreateComment(CommentRequest newComment)
         {
