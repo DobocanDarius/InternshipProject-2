@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RequestResponseModels.User.Request;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -10,10 +11,11 @@ namespace RequestResponseModels.User.Response;
 
 public class LoginResponse
 {
-    public string Token { get; set; }
-
-    public LoginResponse(string token)
+    public string? Token { get; set; }
+    public IEnumerable<LoginRequest> Users { get; set; }
+    public LoginResponse()
     {
-        Token = token;
+        Users = new List<LoginRequest>();
+        Token = string.Empty;
     }
 }

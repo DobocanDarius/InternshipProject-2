@@ -27,12 +27,17 @@ public class UserManager : IUserManager
         var foundUser = await _context.Users
         .FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == _hash.HashPassword(user.Password));
 
+
+
         if (foundUser != null)
         {
-            string token = _token.Generate(foundUser);
-            return new LoginResponse(token);
+            var map = MapperConfig.InitializeAutomapper();
+            var loginResponse = map.Map<LoginResponse>(foundUser);
+            loginResponse.Token = _token.Generate(foundUser);
+
+            return loginResponse;
         }
 
-        return new LoginResponse("User does not exist");
+        return null;
     }
 }

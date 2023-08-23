@@ -34,18 +34,13 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var foundUser = await _context.Users
-               .FirstOrDefaultAsync(u => u.Email == login.Email && u.Password == _hash.HashPassword(login.Password));
-                if (foundUser != null)
+                var loggedIn = await _userManager.Login(login);
+                if (loggedIn == null)
                 {
-                    var token = _token.Generate(foundUser);
-                    
-
-                    return Ok(new { Token = token });
+                    return Unauthorized();
                 }
 
-                else return BadRequest("Email or password is wrong");
-
+                return Ok(loggedIn);
             }
             catch (Exception ex)
             {

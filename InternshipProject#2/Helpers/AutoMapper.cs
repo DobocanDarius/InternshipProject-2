@@ -12,7 +12,7 @@ namespace AutoMapper
         {
             var config = new MapperConfiguration(cfg =>
             {
-                
+                cfg.CreateMap<User, LoginResponse>();
             });
 
             var mapper = new Mapper(config);
