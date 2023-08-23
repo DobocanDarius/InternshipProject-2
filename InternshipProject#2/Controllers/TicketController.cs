@@ -31,7 +31,7 @@ namespace InternshipProject_2.Controllers
             {
                 if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
                 {
-                    int reporterId = 1;
+                    int reporterId = int.Parse(userIdObj.ToString());
                     await _ticket.CreateTicket(ticket, reporterId);
                     return Ok();
                 }
