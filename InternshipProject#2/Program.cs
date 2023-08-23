@@ -1,5 +1,6 @@
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ITicketManager, TicketManager>();
+builder.Services.AddDbContext<Project2Context>();
+builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 
 var app = builder.Build();
 
