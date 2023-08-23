@@ -18,11 +18,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHash>();
 builder.Services.AddScoped<Token>();
-builder.Services.AddDbContext<Project2Context>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -36,7 +34,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
-
+builder.Services.AddScoped<ICommentManager, CommentManager>();
+builder.Services.AddScoped<ITicketManager, TicketManager>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 
