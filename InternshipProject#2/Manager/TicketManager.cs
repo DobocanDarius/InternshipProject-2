@@ -30,5 +30,33 @@ namespace InternshipProject_2.Manager
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
         }
+
+        public async Task EditTicket(TicketEditRequest editTicket, int id, int reporterId)
+        {
+            var dbTicket = await _context.Tickets.FindAsync(id);
+
+            if (dbTicket != null)
+            {
+                var map = MapperConfig.InitializeAutomapper();
+
+                var ticket = map.Map(editTicket, dbTicket);
+
+                dbTicket.Id = id;
+
+                dbTicket.UpdatedAt = DateTime.Now;
+
+                if (dbTicket.ReporterId == reporterId)
+                {
+                    _context.Tickets.Update(ticket);
+
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    await Task.CompletedTask;
+                }
+            }
+            await Task.CompletedTask;
+        }
     }
 }
