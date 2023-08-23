@@ -26,14 +26,14 @@ public class UserManager : IUserManager
         string hashedPsw = _passwordHasher.HashPassword(user.Password);
         var foundUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
 
-        if (foundUser != null)
-        {
-            LoginResponse loginResponse = map.Map<LoginResponse>(foundUser);
-            loginResponse.Token = _token.Generate(foundUser);
+        if (foundUser != null) {
+
+            LoginResponse loginResponse = new LoginResponse { Token = _token.Generate(foundUser) };
 
             return loginResponse;
         }
-
         return null;
     }
+        
 }
+
