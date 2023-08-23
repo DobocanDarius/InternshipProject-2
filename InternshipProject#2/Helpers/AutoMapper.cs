@@ -15,7 +15,7 @@ namespace AutoMapper
             {
 
                 cfg.CreateMap<User, LoginResponse>();
-                cfg.CreateMap<LoginResponse, LoginRequest>();
+                cfg.CreateMap<LoginRequest, User>();
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
                 cfg.CreateMap<User, GetAssignedUserResponse>();
