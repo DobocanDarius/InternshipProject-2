@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.Ticket.Response
 {
-    internal class TicketResponse
+    public class TicketResponse
     {
-        public TicketResponse(int id, string title, string body, string type, string priority, string component, int reporterId, DateTime createdAt, DateTime? updatedAt, byte[]? attachements)
+        public TicketResponse(int id, string title, string body, string type, string priority, string component, int reporterId, DateTime createdAt, DateTime? updatedAt, byte attachements)
         {
-            Id = id; 
-            Title = title; 
-            Body = body; 
-            Type = type; 
+            Id = id;
+            Title = title;
+            Body = body;
+            Type = type;
             Priority = priority;
-            Component = component; 
+            Component = component;
             ReporterId = reporterId;
             CreatedAt = createdAt;
             UpdatedAt = updatedAt;
@@ -40,7 +40,8 @@ namespace RequestResponseModels.Ticket.Response
 
         public DateTime? UpdatedAt { get; set; }
 
-        public byte[]? Attachements { get; set; }
+        public byte? Attachements { get; set; }
 
     }
 }
+

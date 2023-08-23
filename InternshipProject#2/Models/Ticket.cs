@@ -27,6 +27,8 @@ public partial class Ticket
 
     public virtual ICollection<Assignee> Assignees { get; set; } = new List<Assignee>();
 
+    public virtual ICollection<Attachement> AttachementsNavigation { get; set; } = new List<Attachement>();
+
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<History> Histories { get; set; } = new List<History>();
