@@ -13,7 +13,5 @@ namespace RequestResponseModels.Ticket.Request
         public string Body { get; set; } = null!;
 
         public string Priority { get; set; } = null!;
-
-        public byte[]? Attachements { get; set; }
     }
 }

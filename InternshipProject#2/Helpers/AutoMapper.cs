@@ -13,7 +13,7 @@ namespace AutoMapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Ticket, TicketResponse>();
-                cfg.CreateMap<TicketRequest, Ticket>();
+                cfg.CreateMap<TicketCreateRequest, Ticket>();
 
             });
 

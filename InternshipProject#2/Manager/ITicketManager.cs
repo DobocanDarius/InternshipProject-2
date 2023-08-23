@@ -5,6 +5,6 @@ namespace InternshipProject_2.Manager
 {
     public interface ITicketManager
     {
-        Task CreateTicket(TicketRequest newTicket, int reporterId);
+        Task CreateTicket(TicketCreateRequest newTicket, int reporterId);
     }
 }

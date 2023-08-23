@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.Ticket.Request
 {
-    public class TicketRequest
+    public class TicketCreateRequest
     {
         public string Title { get; set; } = null!;
 

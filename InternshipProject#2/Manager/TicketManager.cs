@@ -21,21 +21,14 @@ namespace InternshipProject_2.Manager
         {
             _context = context;
         }
-        public async Task CreateTicket(TicketRequest newTicket, int reporterId)
+        public async Task CreateTicket(TicketCreateRequest newTicket, int reporterId)
         {
-
             var map = MapperConfig.InitializeAutomapper();
-
             var ticket = map.Map<Ticket>(newTicket);
-
             ticket.ReporterId = reporterId;
-
             ticket.CreatedAt = DateTime.Now;
-
             _context.Tickets.Add(ticket);
-
             await _context.SaveChangesAsync();
-
         }
     }
 }
