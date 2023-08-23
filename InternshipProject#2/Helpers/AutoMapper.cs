@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using InternshipProject_2.Models;
+﻿using InternshipProject_2.Models;
 
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;

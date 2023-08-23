@@ -1,10 +1,7 @@
-﻿using Azure;
-using InternshipProject_2.Models;
-using Microsoft.Extensions.Configuration;
+﻿using InternshipProject_2.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace InternshipProject_2.Helpers;
 

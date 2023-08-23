@@ -3,13 +3,7 @@ using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using InternshipProject_2.Models;
-using Microsoft.Extensions.Configuration;
-
-using AutoMapper;
-
-using Microsoft.AspNetCore.Hosting;
 using System.Text;
-using InternshipProject_2.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +40,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseMiddleware<LoggedUserData>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

@@ -1,16 +1,8 @@
-﻿using InternshipProject_2.Helpers;
-using InternshipProject_2.Manager;
-using InternshipProject_2.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace InternshipProject_2.Controllers
 {
