@@ -9,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICommentManager, CommentManager>();
+builder.Services.AddScoped<ITicketManager, TicketManager>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 
