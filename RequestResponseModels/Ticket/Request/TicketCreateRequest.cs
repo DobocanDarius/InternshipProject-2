@@ -17,6 +17,5 @@ namespace RequestResponseModels.Ticket.Request
         public string Priority { get; set; } = null!;
 
         public string Component { get; set; } = null!;
-
     }
 }
