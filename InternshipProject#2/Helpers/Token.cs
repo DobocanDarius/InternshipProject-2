@@ -37,5 +37,4 @@ public class Token
 
         return jwt;
     }
-
 }
