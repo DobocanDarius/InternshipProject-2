@@ -19,7 +19,7 @@ public class UserManager : IUserManager
     {
         var map = MapperConfig.InitializeAutomapper();
 
-        newUser.Password = _hash.HashPassword(newUser.Password);
+        newUser.Password = _hash.Hash(newUser.Password);
 
         var user = map.Map<User>(newUser);
 

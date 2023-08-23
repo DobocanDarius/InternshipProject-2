@@ -5,7 +5,7 @@ namespace InternshipProject_2.Helpers;
 
 public class PasswordHash
 {
-    public string HashPassword(string password)
+    public string Hash(string password)
     {
         using (SHA256 sha256 = SHA256.Create())
         {
