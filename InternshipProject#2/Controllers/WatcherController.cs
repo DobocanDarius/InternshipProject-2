@@ -1,6 +1,7 @@
 ﻿using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InternshipProject_2.Controllers
@@ -18,7 +19,19 @@ namespace InternshipProject_2.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task
+        public async Task<ActionResult> WatchTicket(WatchRequest newUser)
+        {
+            try
+            {
+                await _manager.WatchTicket(newUser);
+                var response = new WatchResponse { Message = "Watching ticket" };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
 
     }
 }
