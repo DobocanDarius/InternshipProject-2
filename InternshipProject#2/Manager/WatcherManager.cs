@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -14,16 +15,14 @@ namespace InternshipProject_2.Manager;
 public class WatcherManager : IWatcherManager
 {
     private Project2Context _dbContext;
-    private AuthorizationFilterContext _authorizationContext;
 
-    public WatcherManager(Project2Context dbContext, AuthorizationFilterContext authorizationContext)
+    public WatcherManager(Project2Context dbContext)
     {
         _dbContext = dbContext;
-        _authorizationContext = authorizationContext;
     }
-    public async Task WatchTicket(WatchRequest request)
+    public async Task WatchTicket(HttpContext httpContext, WatchRequest request)
     {
-        var authorizationHeader = _authorizationContext.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+        var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
 
         if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
         {
@@ -61,18 +60,18 @@ public class WatcherManager : IWatcherManager
                     }
                     else
                     {
-                        _authorizationContext.Result = new JsonResult("User is already watching the ticket.") { StatusCode = (int)HttpStatusCode.BadRequest };
+                        
                     }
                 }
             }
             catch (SecurityTokenValidationException)
             {
-                _authorizationContext.Result = new JsonResult("Unauthorized") { StatusCode = (int)HttpStatusCode.Unauthorized };
+               
             }
         }
         else
         {
-            _authorizationContext.Result = new JsonResult("Unauthorized") { StatusCode = (int)HttpStatusCode.Unauthorized };
+            
         }
     }
 }

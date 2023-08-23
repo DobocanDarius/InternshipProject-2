@@ -1,9 +1,10 @@
-﻿using RequestResponseModels.Watcher.Request;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using RequestResponseModels.Watcher.Request;
 
 namespace InternshipProject_2.Manager
 {
     public interface IWatcherManager
     {
-        Task WatchTicket(WatchRequest request);
+        Task WatchTicket(HttpContext httpContext, WatchRequest request);
     }
 }

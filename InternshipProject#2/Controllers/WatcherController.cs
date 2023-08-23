@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RequestResponseModels.Watcher.Request;
+using RequestResponseModels.Watcher.Response;
+using System.Net.Http;
 
 namespace InternshipProject_2.Controllers
 {
@@ -19,11 +22,11 @@ namespace InternshipProject_2.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> WatchTicket(WatchRequest newUser)
+        public async Task<ActionResult> WatchTicket([FromBody] WatchRequest request)
         {
             try
             {
-                await _manager.WatchTicket(newUser);
+                await _manager.WatchTicket(HttpContext, request);
                 var response = new WatchResponse { Message = "Watching ticket" };
                 return Ok(response);
             }
