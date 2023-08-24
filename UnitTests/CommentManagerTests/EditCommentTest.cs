@@ -1,35 +1,35 @@
 ﻿using InternshipProject_2.Controllers;
 using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RequestResponseModels.Comment.Request;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+
 namespace UnitTests.CommentManagerTests
 {
     [TestClass]
-    public class CreateCommetTest
+    public class EditCommentTest
     {
         [TestMethod]
-        public async Task CreateComment_Success()
+        public async Task EditComment_Success()
         {
             // Arrange
-            var commentRequest = new CommentRequest
+            var editCommentRequest = new CommentEditRequest
             {
-                Body = "Test body",
-                UserId = 1,
-                TicketId = 1,
-                CreatedAt = DateTime.UtcNow
+                Id = 1002,
+                Body = "Updated body",
             };
-
             var commentManagerMock = new Mock<ICommentManager>();
-            commentManagerMock.Setup(cm => cm.CreateComment(commentRequest)).Returns(Task.CompletedTask);
+            commentManagerMock.Setup(cm => cm.EditComment(editCommentRequest)).Returns(Task.CompletedTask);
 
             var controller = new CommentController(commentManagerMock.Object);
 
             // Act
-            var result = await controller.CreateComment(commentRequest);
+            var result = await controller.EditComment(editCommentRequest);
 
             // Assert
             var okResult = result as OkResult;
@@ -37,24 +37,22 @@ namespace UnitTests.CommentManagerTests
         }
 
         [TestMethod]
-        public async Task CreateComment_Failure()
+        public async Task EditComment_Failure()
         {
             // Arrange
-            var commentRequest = new CommentRequest
+            var editCommentRequest = new CommentEditRequest
             {
-                Body = "Test body",
-                UserId = 1,
-                TicketId = 123,
-                CreatedAt = DateTime.UtcNow 
+                Id = 1,
+                Body = "Updated body"
             };
 
             var commentManagerMock = new Mock<ICommentManager>();
-            commentManagerMock.Setup(cm => cm.CreateComment(commentRequest)).ThrowsAsync(new Exception("Simulated exception"));
+            commentManagerMock.Setup(cm => cm.EditComment(editCommentRequest)).ThrowsAsync(new Exception("Simulated exception"));
 
             var controller = new CommentController(commentManagerMock.Object);
 
             // Act
-            var result = await controller.CreateComment(commentRequest);
+            var result = await controller.EditComment(editCommentRequest);
 
             // Assert
             var badRequestResult = result as BadRequestObjectResult;
@@ -63,4 +61,3 @@ namespace UnitTests.CommentManagerTests
         }
     }
 }
-

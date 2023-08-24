@@ -1,4 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using InternshipProject_2.Controllers;
+using InternshipProject_2.Manager;
+using InternshipProject_2.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 
 namespace UnitTests.CommentManagerTests
@@ -10,33 +15,37 @@ namespace UnitTests.CommentManagerTests
         public async Task GetCommentsForTicket_ReturnsComments()
         {
             // Arrange
-            var ticketId = 123;
-            var commentsData = new List<Comment>
+            var ticketId = 1;
+            var comments = new List<Comment>
             {
-                new Comment { TicketId = ticketId, Text = "Comment 1" },
-                new Comment { TicketId = ticketId, Text = "Comment 2" }
-            }.AsQueryable();
+                new Comment { Id = 3, Body = "Updated Content", UserId = 1, TicketId = 1, CreatedAt = DateTime.Now },
+                new Comment { Id = 1002, Body = "string", UserId = 1, TicketId = 1, CreatedAt = DateTime.Now },
+                new Comment { Id = 1003, Body = "string", UserId = 1, TicketId = 1, CreatedAt = DateTime.Now }
+            };
 
-            var mockDbSet = new Mock<DbSet<Comment>>();
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.Provider).Returns(commentsData.Provider);
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.Expression).Returns(commentsData.Expression);
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.ElementType).Returns(commentsData.ElementType);
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.GetEnumerator()).Returns(commentsData.GetEnumerator());
+            var commentManagerMock = new Mock<ICommentManager>();
+            commentManagerMock.Setup(cm => cm.GetComments(ticketId)).ReturnsAsync(comments);
 
-            var mockDbContext = new Mock<YourDbContext>(); 
-            mockDbContext.Setup(c => c.Comments).Returns(mockDbSet.Object);
-
-            var commentManager = new CommentManager(mockDbContext.Object);
-            var controller = new YourController(commentManager);
+            var controller = new CommentController(commentManagerMock.Object);
 
             // Act
             var result = await controller.GetCommentsForTicket(ticketId);
 
             // Assert
-            Assert.IsNotNull(result);
-            var commentsResult = result.Value as List<Comment>;
-            Assert.IsNotNull(commentsResult);
-            Assert.AreEqual(2, commentsResult.Count); 
+            Assert.IsInstanceOfType(result, typeof(ActionResult<List<Comment>>));
+            if (result is ActionResult<List<Comment>> actionResult)
+            {
+                var okResult = actionResult.Result as OkObjectResult;
+                Assert.IsNotNull(okResult);
+
+                var returnedComments = okResult.Value as List<Comment>;
+                Assert.IsNotNull(returnedComments);
+                Assert.AreEqual(comments.Count, returnedComments.Count);
+            }
+            else
+            {
+                Assert.Fail("Unexpected result type");
+            }
         }
     }
 }
