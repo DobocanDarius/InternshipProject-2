@@ -1,3 +1,4 @@
+
 ﻿using AutoMapper;
 using InternshipProject_2.Models;
 using RequestResponseModels.Comment.Request;
@@ -34,4 +35,5 @@ namespace AutoMapper
             return mapper;
         }
     }
+
 }
