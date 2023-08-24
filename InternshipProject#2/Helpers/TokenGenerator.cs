@@ -1,27 +1,15 @@
-<<<<<<<< HEAD:InternshipProject#2/Helpers/GenerateToken.cs
-using InternshipProject_2.Models;
-========
 ﻿using InternshipProject_2.Models;
->>>>>>>> master:InternshipProject#2/Helpers/TokenGenerator.cs
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace InternshipProject_2.Helpers;
 
-<<<<<<<< HEAD:InternshipProject#2/Helpers/GenerateToken.cs
-public class GenerateToken
-{
-    private readonly IConfiguration _config;
-
-    public GenerateToken(IConfiguration config)
-========
 public class TokenGenerator
 {
     private readonly IConfiguration _config;
 
     public TokenGenerator(IConfiguration config)
->>>>>>>> master:InternshipProject#2/Helpers/TokenGenerator.cs
     {
         _config = config;
     }
@@ -46,10 +34,6 @@ public class TokenGenerator
 
         return jwt;
     }
-<<<<<<<< HEAD:InternshipProject#2/Helpers/GenerateToken.cs
-
 }
 
-========
-}
->>>>>>>> master:InternshipProject#2/Helpers/TokenGenerator.cs
+

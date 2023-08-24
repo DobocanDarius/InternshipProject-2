@@ -19,8 +19,8 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped<IUserManager, UserManager>();
-builder.Services.AddScoped<PasswordHash>();
-builder.Services.AddScoped<GenerateToken>();
+builder.Services.AddScoped<PasswordHasher>();
+builder.Services.AddScoped<TokenGenerator>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

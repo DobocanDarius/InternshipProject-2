@@ -19,13 +19,12 @@ namespace InternshipProject_2.Controllers
 
         [HttpPost("register")]
         [Authorize(Roles = "manager")]
-        public async Task<ActionResult> CreateUser(CreateUserRequest newUser)
+        public async Task<IActionResult> CreateUser(CreateUserRequest newUser)
         {
             try
             {
-                await _userManager.Create(newUser);
-                var response = new CreateUserResponse { Message = "Registration successful" };
-                return Ok(response);
+                var response = await _userManager.Create(newUser);
+                return Ok(response.Message);
             }
             catch (Exception ex)
             {
