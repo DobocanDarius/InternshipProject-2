@@ -21,7 +21,7 @@ public class TokenGenerator
                 new Claim(ClaimTypes.Role, user.Role),
             };
 
-        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Key").Value));
+        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config.GetSection("JwtSettings:SecretKey").Value));
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
