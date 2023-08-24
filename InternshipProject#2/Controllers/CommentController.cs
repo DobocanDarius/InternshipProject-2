@@ -1,4 +1,5 @@
 ﻿using InternshipProject_2.Manager;
+using InternshipProject_2.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Comment.Request;
@@ -17,16 +18,22 @@ namespace InternshipProject_2.Controllers
         [HttpPost("Create")]
         public async Task<ActionResult> CreateComment(CommentRequest newComment)
         {
-            try
-            {
-                await commentManager.CreateComment(newComment);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"An error occurred: {ex.Message}");
-            }
+            await commentManager.CreateComment(newComment);
+            return Ok();
+        }
+
+        [HttpGet("CommentsFromTicket")]
+        public async Task<ActionResult<List<Comment>>> GetCommentsForTicket([FromQuery] int ticketId)
+        {
+            var commentsForTicket = await commentManager.GetComments(ticketId);
+            return Ok(commentsForTicket);
+        }
+
+        [HttpPut("Update")]
+        public async Task<ActionResult> EditComment(CommentEditRequest editComment)
+        {
+            await commentManager.EditComment(editComment);
+            return Ok(editComment);
         }
     }
-
 }
