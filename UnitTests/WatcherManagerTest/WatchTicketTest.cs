@@ -1,6 +1,7 @@
 ﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
@@ -12,13 +13,22 @@ public class WatchTicketTest
 {
     private Project2Context _project2Context;
     private WatcherManager _watcherManager;
-    private readonly IConfiguration _configuration;
+    private IConfiguration _configuration;
 
     [TestInitialize]
     public void Setup()
     {
-        _project2Context = new Project2Context();
-        _watcherManager = new WatcherManager(_project2Context, _configuration);
+        var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
+        {
+            { "JwtSettings:SecretKey", "your-secret-key" }
+        }).Build();
+
+        // Mock HttpContext
+        var mockHttpContext = new DefaultHttpContext();
+        mockHttpContext.Request.Headers["Authorization"] = "Bearer your-fake-token";
+
+        _project2Context = new Project2Context(new DbContextOptions<Project2Context>());
+        _watcherManager = new WatcherManager(_project2Context, configuration, mockHttpContext);
     }
 
     [TestMethod]
