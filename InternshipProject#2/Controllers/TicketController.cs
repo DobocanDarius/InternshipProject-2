@@ -33,10 +33,10 @@ namespace InternshipProject_2.Controllers
                 if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
                 {
                     int reporterId = int.Parse(userIdObj.ToString());
-                    await _ticket.CreateTicket(ticket, reporterId);
-                    return Ok();
+                    var response = await _ticket.CreateTicketAsync(ticket, reporterId);
+                    return Ok(response.Message);
                 }
-                else return BadRequest("Manager needs to be logged in");
+                else return BadRequest("You need to be logged in");
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace InternshipProject_2.Controllers
                     int reporterId = int.Parse(userIdObj.ToString());
                     if (reporterId != 0)
                     {
-                        await _ticket.EditTicket(ticket, ticketId, reporterId);
+                        await _ticket.EditTicketAsync(ticket, ticketId, reporterId);
                         return Ok();
                     }
                     else return BadRequest("You did not post this!");
