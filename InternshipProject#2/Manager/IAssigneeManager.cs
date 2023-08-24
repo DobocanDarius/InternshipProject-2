@@ -8,6 +8,6 @@ namespace InternshipProject_2.Manager
     {
         public Task<AssignUserResponse> AssignUserToTicket(AssignUserRequest request);
         public Task<GetAssignedUserResponse> GetAssignedUser(GetAssignedUserRequest request);
-
+        public Task<RemoveAssignedUserResponse> RemoveAssignedUser(RemoveAssignedUserRequest request);
     }
 }

@@ -79,6 +79,30 @@ namespace InternshipProject_2.Manager
             }
         }
 
+        public async Task<RemoveAssignedUserResponse> RemoveAssignedUser(RemoveAssignedUserRequest request)
+        {
+            try
+            {
+                var assignment = await _dbContext.Assignees.FirstOrDefaultAsync(a => a.TicketId == request.TicketId);
+                if (assignment != null)
+                {
+                    _dbContext.Assignees.Remove(assignment);
+                    await _dbContext.SaveChangesAsync();
+                    var response = new RemoveAssignedUserResponse { Message = "Assigned user removed successfully" };
+                    return response;
+                }
+                else
+                {
+                    var response = new RemoveAssignedUserResponse { Message = "No assigned user found" };
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                var response = new RemoveAssignedUserResponse { Message = "Error removing assignment" };
+                return response;
+            }
+        }
     }
 }
 
