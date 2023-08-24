@@ -3,6 +3,7 @@ using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using InternshipProject_2.Models;
+using AutoMapper;
 using System.Text;
 using InternshipProject_2;
 using Microsoft.Extensions.Options;
@@ -16,6 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<TokenGenerator>();
@@ -37,7 +39,6 @@ builder.Services.AddScoped<ICommentManager, CommentManager>();
 builder.Services.AddScoped<ITicketManager, TicketManager>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
