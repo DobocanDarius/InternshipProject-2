@@ -8,7 +8,6 @@ using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
-
 namespace AutoMapper
 {
     public class MapperConfig
@@ -21,6 +20,8 @@ namespace AutoMapper
                 cfg.CreateMap<User, CreateUserResponse>();
                 cfg.CreateMap<CreateUserRequest, User>();
                 cfg.CreateMap<CommentRequest, Comment>();
+                cfg.CreateMap<Comment, CommentResponse>();
+                cfg.CreateMap<CommentEditRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
                 cfg.CreateMap<Ticket, TicketResponse>();
                 cfg.CreateMap<TicketCreateRequest, Ticket>();
