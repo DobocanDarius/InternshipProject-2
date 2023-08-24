@@ -9,26 +9,24 @@ namespace InternshipProject_2.Manager;
 
 public class UserManager : IUserManager
 {
-    private readonly Project2Context _context;
+    private readonly Project2Context _dbContext;
     private readonly PasswordHasher _passwordHasher;
-    private readonly TokenGenerator _token;
-    private readonly Mapper map;
-    public UserManager(Project2Context context, PasswordHasher passwordHasher, TokenGenerator token)
+    private readonly TokenGenerator _tokenGenerator;
+    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenGenerator tokenGenerator)
     {
-        _context = context;
+        _dbContext = dbContext;
         _passwordHasher = passwordHasher;
-        _token = token;
-        map = MapperConfig.InitializeAutomapper();
+        _tokenGenerator = tokenGenerator;
     }
 
     public async Task<LoginResponse> Login(LoginRequest user)
     {
         string hashedPsw = _passwordHasher.HashPassword(user.Password);
-        var foundUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
+        var foundUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
 
         if (foundUser != null) {
 
-            LoginResponse loginResponse = new LoginResponse { Token = _token.Generate(foundUser) };
+            LoginResponse loginResponse = new LoginResponse { Token = _tokenGenerator.Generate(foundUser) };
 
             return loginResponse;
         }
