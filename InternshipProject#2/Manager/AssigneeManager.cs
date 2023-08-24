@@ -54,6 +54,30 @@ namespace InternshipProject_2.Manager
                 return response;
             }
         }
+        public async Task<GetAssignedUserResponse> GetAssignedUser(GetAssignedUserRequest request)
+        {
+            try
+            {
+                var assignment = await _dbContext.Assignees
+                    .FirstOrDefaultAsync(a => a.TicketId == request.TicketId);
+
+                if (assignment != null)
+                {
+                    var user = await _dbContext.Users.FindAsync(assignment.UserId);
+
+                    if (user != null)
+                    {
+                        var userResponse = map.Map<GetAssignedUserResponse>(user);
+                        return userResponse;
+                    }
+                }
+                return new GetAssignedUserResponse { Username = "N/A", Role = "N/A", CreatedAt = DateTime.MinValue };
+            }
+            catch (Exception ex)
+            {
+                return new GetAssignedUserResponse { Username = "Error", Role = "Error", CreatedAt = DateTime.MinValue };
+            }
+        }
 
     }
 }
