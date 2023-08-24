@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RequestResponseModels.User.Request;
+﻿namespace RequestResponseModels.User.Request;
 
 public class LoginRequest
 {
-    public LoginRequest(string username, string password, string email)
+    public LoginRequest()
     {
-        Username = username;
-     Password = password;
-        Email = email;
     }
-    public string Username { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
+    public LoginRequest(string email, string password)
+    {
+        Email = email;
+        Password = password;
+    }
 
-    public string Email { get; set; } = null!;
+    public string Email { get; set; }
+    public string Password { get; set; }
 }
+
