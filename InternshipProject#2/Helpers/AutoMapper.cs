@@ -22,13 +22,14 @@ namespace AutoMapper
             {
                 cfg.CreateMap<CommentRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
+                cfg.CreateMap<CommentEditRequest, Comment>();
+                cfg.CreateMap<Comment, CommentResponse>();
                 cfg.CreateMap<Ticket, TicketResponse>();
                 cfg.CreateMap<TicketCreateRequest, Ticket>();
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
                 cfg.CreateMap<User, GetAssignedUserResponse>();
             });
-
             var mapper = new Mapper(config);
             return mapper;
         }

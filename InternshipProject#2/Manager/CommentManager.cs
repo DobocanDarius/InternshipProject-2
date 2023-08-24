@@ -24,5 +24,51 @@ namespace InternshipProject_2.Manager
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<Comment>> GetComments(int TicketId)
+        {
+            var comments = await _context.Comments.Where(comment => comment.TicketId == TicketId).ToListAsync();
+            return comments;
+        }
+
+        public async Task EditComment(CommentEditRequest editComment)
+        {
+            var ExistingComment = await _context.Comments.FindAsync(editComment.Id);
+            ExistingComment.Body = editComment.Body;
+            try
+            {
+                _context.Comments.Update(ExistingComment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Comment");
+            }
+        }
+        public async Task DeleteComment(int CommentId)
+        {
+            var ExistingComment = await _context.Comments.FindAsync(CommentId);
+            try
+            {
+                _context.Comments.Remove(ExistingComment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Comment");
+            }
+        }
+        public async Task DeleteCommentsByTicketId(int TicketId)
+        {
+            var commentsToDelete = await _context.Comments.Where(comment => comment.TicketId == TicketId).ToListAsync();
+            try
+            {
+                _context.Comments.RemoveRange(commentsToDelete);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error deleting comments");
+            }
+        }
     }
 }
