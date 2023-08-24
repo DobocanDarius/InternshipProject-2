@@ -16,6 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<TokenGenerator>();
