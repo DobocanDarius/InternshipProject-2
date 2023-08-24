@@ -27,7 +27,7 @@ namespace UnitTests.AssigneeManagerTests
         }
 
         [TestMethod]
-        public async Task AssignUserToTicket_ValidRequest_ReturnsSuccessResponse()
+        public async Task AssignUserToTicket_ValidRequest()
         {
             //Arrange
             var user = new User
@@ -65,7 +65,7 @@ namespace UnitTests.AssigneeManagerTests
             Assert.AreEqual("User assigned successfully", result.Message);
         }
         [TestMethod]
-        public async Task AssignUserToTicket_UserNotExist_ReturnsUserNotFoundResponse()
+        public async Task AssignUserToTicket_UserNotExist()
         {
             //Arrange
             var request = new AssignUserRequest
@@ -81,7 +81,7 @@ namespace UnitTests.AssigneeManagerTests
             Assert.AreEqual("User not found", result.Message);
         }
         [TestMethod]
-        public async Task AssignUserToTicket_UserNotDeveloper_ReturnsUserNotDeveloperResponse()
+        public async Task AssignUserToTicket_UserNotDeveloper()
         {
             //Arrange
             var user = new User
@@ -119,7 +119,7 @@ namespace UnitTests.AssigneeManagerTests
         }
 
         [TestMethod]
-        public async Task AssignUserToTicket_AssignmentAlreadyExists_ReturnsAssignmentExistsResponse()
+        public async Task AssignUserToTicket_AssignmentAlreadyExists()
         {
             // Arrange
             var user = new User
