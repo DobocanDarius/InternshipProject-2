@@ -34,7 +34,7 @@ public class RegisterUserTest
     }
 
     [TestMethod]
-    public async Task UserExistsValidRequest()
+    public async Task UserAlreadyExistsValidRequest()
     {
         //arrange
         var request = new CreateUserRequest("darius", "darius", "darius@d.com", "developer");
