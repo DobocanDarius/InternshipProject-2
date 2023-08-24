@@ -35,5 +35,19 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+        [HttpGet]
+        [Route("getAssignedUser")]
+        public async Task<IActionResult> GetAssignedUser([FromQuery] GetAssignedUserRequest request)
+        {
+            try
+            {
+                var response = await _manager.GetAssignedUser(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
     }
 }
