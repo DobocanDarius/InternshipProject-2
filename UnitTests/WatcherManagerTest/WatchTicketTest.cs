@@ -12,13 +12,12 @@ public class WatchTicketTest
 {
     private Project2Context _project2Context;
     private WatcherManager _watcherManager;
-    private IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
 
     [TestInitialize]
-    public void Setup(IConfiguration configuration)
+    public void Setup()
     {
         _project2Context = new Project2Context();
-        _configuration = configuration;
         _watcherManager = new WatcherManager(_project2Context, _configuration);
     }
 
