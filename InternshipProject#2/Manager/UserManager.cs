@@ -7,24 +7,24 @@ namespace InternshipProject_2.Manager;
 
 public class UserManager : IUserManager
 {
-    private readonly Project2Context _context;
-    private readonly PasswordHash _hash;
-    public UserManager(Project2Context context, PasswordHash hash)
+    private readonly Project2Context _dbContext;
+    private readonly PasswordHash _passwordHasher;
+    public UserManager(Project2Context dbContext, PasswordHash passwordHasher)
     {
-        _context = context;
-        _hash = hash;
+        _dbContext = dbContext;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task Create(CreateUserRequest newUser)
     {
         var map = MapperConfig.InitializeAutomapper();
 
-        newUser.Password = _hash.Hash(newUser.Password);
+        newUser.Password = _passwordHasher.Hash(newUser.Password);
 
         var user = map.Map<User>(newUser);
 
-        _context.Users.Add(user);
+        _dbContext.Users.Add(user);
 
-        await _context.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
     }
 }

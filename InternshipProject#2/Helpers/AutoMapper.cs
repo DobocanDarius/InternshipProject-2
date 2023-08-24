@@ -1,8 +1,6 @@
 ﻿using InternshipProject_2.Models;
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
-﻿using AutoMapper;
-using InternshipProject_2.Models;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
 

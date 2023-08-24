@@ -1,15 +1,15 @@
-
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using InternshipProject_2.Models;
 using System.Text;
-using AutoMapper;
-
+using InternshipProject_2;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration.AddJsonFile("appsettings.json");
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -20,12 +20,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHash>();
 builder.Services.AddScoped<GenerateToken>();
-builder.Services.AddDbContext<Project2Context>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var key = Encoding.ASCII.GetBytes("aB5G7HjL3kR8xY0qP9eF2wZI6mN1cV4XoE5bD9A");
+        var jwtSettings = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<JwtSettings>>().Value;
+        var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
