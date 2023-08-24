@@ -29,7 +29,7 @@ namespace InternshipProject_2.Manager
             var comments = await _context.Comments.Where(comment => comment.TicketId == TicketId).ToListAsync();
             return comments;
         }
-
+        
         public async Task EditComment(CommentEditRequest editComment)
         {
             var ExistingComment = await _context.Comments.FindAsync(editComment.Id);

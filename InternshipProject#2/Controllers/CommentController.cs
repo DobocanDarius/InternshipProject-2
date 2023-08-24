@@ -29,14 +29,7 @@ namespace InternshipProject_2.Controllers
             var commentsForTicket = await commentManager.GetComments(ticketId);
             return Ok(commentsForTicket);
         }
-
-        [HttpPut("Update")]
-        public async Task<ActionResult> EditComment(CommentEditRequest editComment)
-        {
-            await commentManager.EditComment(editComment);
-            return Ok(editComment);
-        }
-
+        
         [HttpDelete("Delete")]
         public async Task<ActionResult> DeleteComment(int CommentID)
         {
@@ -49,6 +42,13 @@ namespace InternshipProject_2.Controllers
         {
             await commentManager.DeleteCommentsByTicketId(TicketId);
             return Ok("The comments are deleted!");
+        }
+
+        [HttpPut("Update")]
+        public async Task<ActionResult> EditComment(CommentEditRequest editComment)
+        {
+            await commentManager.EditComment(editComment);
+            return Ok(editComment);
         }
     }
 }
