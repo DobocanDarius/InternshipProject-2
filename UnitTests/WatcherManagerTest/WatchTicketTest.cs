@@ -19,7 +19,7 @@ public class WatchTicketTest
     {
         _project2Context = new Project2Context();
         _configuration = configuration;
-        _watcherManager = new WatcherManager(_project2Context, configuration);
+        _watcherManager = new WatcherManager(_project2Context, _configuration);
     }
 
     [TestMethod]
@@ -52,9 +52,9 @@ public class WatchTicketTest
         var request = new WatchRequest(user.Id, ticket.Id);
 
         //Act
-        WatchResponse result = await _watcherManager.WatchTicket(HttpContext, request);
+        WatchResponse result = await _watcherManager.WatchTicket(request);
 
         //Assert
-        Assert.AreEqual("User assigned successfully", result.Message);
+        Assert.AreEqual("Watching ticket", result.Message);
     }
 }

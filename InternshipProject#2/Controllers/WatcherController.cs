@@ -22,7 +22,7 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var response = await _manager.WatchTicket(HttpContext, request);
+                var response = await _manager.WatchTicket(request);
                 return Ok(response.Message);
             }
             catch (Exception ex)

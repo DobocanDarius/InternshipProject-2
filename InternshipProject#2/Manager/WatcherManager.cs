@@ -13,13 +13,14 @@ public class WatcherManager : IWatcherManager
 {
     private Project2Context _dbContext;
     private readonly IConfiguration _configuration;
+    public HttpContext httpContext;
 
     public WatcherManager(Project2Context dbContext, IConfiguration configuration)
     {
         _dbContext = dbContext;
         _configuration = configuration;
     }
-    public async Task<WatchResponse> WatchTicket(HttpContext httpContext, WatchRequest request)
+    public async Task<WatchResponse> WatchTicket(WatchRequest request)
     {
         var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
 
