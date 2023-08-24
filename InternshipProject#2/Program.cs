@@ -15,7 +15,6 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSet
 builder.Services.AddControllers();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddSwaggerGen();
 
 
