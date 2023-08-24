@@ -1,13 +1,9 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RequestResponseModels.Watcher.Request;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Text;
 
 namespace InternshipProject_2.Manager;
@@ -15,10 +11,12 @@ namespace InternshipProject_2.Manager;
 public class WatcherManager : IWatcherManager
 {
     private Project2Context _dbContext;
+    private readonly IConfiguration _configuration;
 
-    public WatcherManager(Project2Context dbContext)
+    public WatcherManager(Project2Context dbContext, IConfiguration configuration)
     {
         _dbContext = dbContext;
+        _configuration = configuration;
     }
     public async Task WatchTicket(HttpContext httpContext, WatchRequest request)
     {
@@ -27,12 +25,12 @@ public class WatcherManager : IWatcherManager
         if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
         {
             var token = authorizationHeader.Substring("Bearer ".Length).Trim();
-            var key = Encoding.ASCII.GetBytes("aB5G7HjL3kR8xY0qP9eF2wZI6mN1cV4XoE5bD9A");
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("JwtSettings:SecretKey").Value);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = new TokenValidationParameters
             {
-                ValidateIssuerSigningKey = true,asfsdfsdfhsfsd
+                ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
                 ValidateAudience = false
