@@ -2,13 +2,13 @@
 
 public class WatchRequest
 {
-    public WatchRequest(int? userId, int? ticketId)
+    public WatchRequest(int userId, int ticketId)
     {
        UserId = userId;
        TicketId = ticketId;
     }
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
-    public int? TicketId { get; set; }
+    public int TicketId { get; set; }
 
 }

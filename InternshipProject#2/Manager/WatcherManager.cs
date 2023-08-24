@@ -3,6 +3,7 @@ using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RequestResponseModels.Watcher.Request;
+using RequestResponseModels.Watcher.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -18,7 +19,7 @@ public class WatcherManager : IWatcherManager
         _dbContext = dbContext;
         _configuration = configuration;
     }
-    public async Task WatchTicket(HttpContext httpContext, WatchRequest request)
+    public async Task<WatchResponse> WatchTicket(HttpContext httpContext, WatchRequest request)
     {
         var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
 
@@ -55,21 +56,19 @@ public class WatcherManager : IWatcherManager
                         var mappedWatcher = map.Map<Watcher>(request);
                         await _dbContext.Watchers.AddAsync(mappedWatcher);
                         await _dbContext.SaveChangesAsync();
+                        return new WatchResponse { Message = "Watching ticket" };
                     }
                     else
                     {
-                        
+                        return new WatchResponse { Message = "Already watching ticket" };
                     }
                 }
             }
-            catch (SecurityTokenValidationException)
+            catch (SecurityTokenValidationException ex)
             {
-               
+               return new WatchResponse { Message = ex.Message };
             }
         }
-        else
-        {
-            
-        }
+         return new WatchResponse { Message = "Need to log in" };
     }
 }

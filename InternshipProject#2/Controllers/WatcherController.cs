@@ -1,11 +1,7 @@
 ﻿using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Watcher.Request;
-using RequestResponseModels.Watcher.Response;
-using System.Net.Http;
 
 namespace InternshipProject_2.Controllers
 {
@@ -26,9 +22,8 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                await _manager.WatchTicket(HttpContext, request);
-                var response = new WatchResponse { Message = "Watching ticket" };
-                return Ok(response);
+                var response = await _manager.WatchTicket(HttpContext, request);
+                return Ok(response.Message);
             }
             catch (Exception ex)
             {
