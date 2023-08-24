@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
+using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 
@@ -18,6 +19,11 @@ public class UserManager : IUserManager
 
     public async Task<CreateUserResponse> Create(CreateUserRequest newUser)
     {
+        if(await _dbContext.Users.AnyAsync(u => u.Email == newUser.Email))
+        {
+            return new CreateUserResponse { Message = "User with this email already exists" };
+        }
+
         var map = MapperConfig.InitializeAutomapper();
 
         newUser.Password = _passwordHasher.HashPassword(newUser.Password);

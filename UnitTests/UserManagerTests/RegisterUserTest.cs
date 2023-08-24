@@ -23,10 +23,26 @@ public class RegisterUserTest
     [TestMethod]
     public async Task CreateUserValidRequest()
     {
+        //arrange
         var request = new CreateUserRequest("darius", "darius", "darius@d.com", "developer");
 
+        //act
+        CreateUserResponse result = await _userManager.Create(request);
+        
+        //assert
+        Assert.AreEqual("Registration successful", result.Message);
+    }
+
+    [TestMethod]
+    public async Task UserExistsValidRequest()
+    {
+        //arrange
+        var request = new CreateUserRequest("darius", "darius", "darius@d.com", "developer");
+
+        //act
         CreateUserResponse result = await _userManager.Create(request);
 
-        Assert.AreEqual("Registration successful", result.Message);
+        //assert
+        Assert.AreEqual("User with this email already exists", result.Message);
     }
 }
