@@ -24,5 +24,26 @@ namespace InternshipProject_2.Manager
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
         }
+        
+        public async Task<IEnumerable<Comment>> GetComments(int TicketId)
+        {
+            var comments = await _context.Comments.Where(comment => comment.TicketId == TicketId).ToListAsync();
+            return comments;
+        }
+        
+        public async Task EditComment(CommentEditRequest editComment)
+        {
+            var ExistingComment = await _context.Comments.FindAsync(editComment.Id);
+            ExistingComment.Body = editComment.Body;
+            try
+            {
+                _context.Comments.Update(ExistingComment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Comment");
+            }
+        }
     }
 }
