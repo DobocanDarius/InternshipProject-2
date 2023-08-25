@@ -7,5 +7,6 @@ namespace InternshipProject_2.Manager
     public interface IWatcherManager
     {
         Task<WatchResponse> WatchTicket(WatchRequest request);
+        Task<WatchResponse> WatchTicket(HttpContext httpContext, WatchRequest request);
     }
 }

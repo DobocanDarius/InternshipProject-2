@@ -18,52 +18,23 @@ public class WatchTicketTest
     [TestInitialize]
     public void Setup()
     {
-        var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
-        {
-            { "JwtSettings:SecretKey", "your-secret-key" }
-        }).Build();
-
-        // Mock HttpContext
-        var mockHttpContext = new DefaultHttpContext();
-        mockHttpContext.Request.Headers["Authorization"] = "Bearer your-fake-token";
-
-        _project2Context = new Project2Context(new DbContextOptions<Project2Context>());
-        _watcherManager = new WatcherManager(_project2Context, configuration, mockHttpContext);
+        _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
     }
 
     [TestMethod]
     public async Task WatchTicket()
     {
-        //Arrange
-        var user = new User
+        using (var dbContext = new Project2Context())
         {
-            Username = "Test",
-            Password = "password",
-            Email = "email",
-            Role = "developer",
-            CreatedAt = DateTime.Now
+            var request = new WatchRequest(2, 1);
 
-        };
-        var ticket = new Ticket
-        {
-            Title = "Test",
-            Body = "Test",
-            Type = "Test",
-            Priority = "Test",
-            Component = "Test",
-            ReporterId = 1,
-            CreatedAt = DateTime.Now
-        };
-        _project2Context.Users.Add(user);
-        _project2Context.Tickets.Add(ticket);
-        _project2Context.SaveChanges();
+            var watcherManager = new WatcherManager(dbContext, _configuration);
 
-        var request = new WatchRequest(user.Id, ticket.Id);
+            // Act
+            var result = await watcherManager.WatchTicket(request);
 
-        //Act
-        WatchResponse result = await _watcherManager.WatchTicket(request);
-
-        //Assert
-        Assert.AreEqual("Watching ticket", result.Message);
+            // Assert
+            Assert.AreEqual("Watching ticket", result.Message);
+        }
     }
 }

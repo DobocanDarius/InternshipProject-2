@@ -18,7 +18,7 @@ namespace InternshipProject_2.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> WatchTicket([FromBody] WatchRequest request)
+        public async Task<ActionResult> WatchTicket(HttpContext ,WatchRequest request)
         {
             try
             {

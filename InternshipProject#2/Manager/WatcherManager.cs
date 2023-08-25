@@ -20,7 +20,7 @@ public class WatcherManager : IWatcherManager
         _dbContext = dbContext;
         _configuration = configuration;
     }
-    public async Task<WatchResponse> WatchTicket(WatchRequest request)
+    public async Task<WatchResponse> WatchTicket(HttpContext httpContext, WatchRequest request)
     {
         var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
 
