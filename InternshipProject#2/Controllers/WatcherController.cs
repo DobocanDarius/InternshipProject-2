@@ -9,7 +9,7 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class WatcherController : ControllerBase
     {
-        private readonly IWatcherManager _manager;
+       /* private readonly IWatcherManager _manager;
 
         public WatcherController(IWatcherManager manager)
         {
@@ -29,7 +29,7 @@ namespace InternshipProject_2.Controllers
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
-        }
+        }*/
 
     }
 }

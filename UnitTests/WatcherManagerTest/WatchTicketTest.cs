@@ -11,7 +11,7 @@ namespace UnitTests.WatcherManagerTest;
 [TestClass]
 public class WatchTicketTest
 {
-    private Project2Context _project2Context;
+    /*private Project2Context _project2Context;
     private WatcherManager _watcherManager;
     private IConfiguration _configuration;
 
@@ -36,5 +36,5 @@ public class WatchTicketTest
             // Assert
             Assert.AreEqual("Watching ticket", result.Message);
         }
-    }
+    }*/
 }
