@@ -49,5 +49,31 @@ namespace InternshipProject_2.Controllers
                 return NotFound();
             }
         }
+
+        [Authorize(Roles ="manager")]
+        [HttpDelete]
+        [Route("removeAssignedUser")]
+
+        public async Task<IActionResult> RemoveAssignedUser([FromQuery] RemoveAssignedUserRequest request)
+        {
+            try
+            {
+                if (!HttpContext.Items.TryGetValue("UserRole", out var userRole))
+                {
+                    return BadRequest("User not connected");
+                }
+                if (!string.Equals(userRole as string, "manager", StringComparison.OrdinalIgnoreCase))
+                {
+                    return Unauthorized();
+                }
+                var response = await _manager.RemoveAssignedUser(request);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
     }
 }
