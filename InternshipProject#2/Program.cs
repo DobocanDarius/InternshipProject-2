@@ -3,7 +3,6 @@ using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using InternshipProject_2.Models;
-using AutoMapper;
 using System.Text;
 using InternshipProject_2;
 using Microsoft.Extensions.Options;

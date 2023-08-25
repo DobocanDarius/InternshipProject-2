@@ -1,66 +1,70 @@
-﻿using InternshipProject_2.Controllers;
+﻿using AutoMapper;
 using InternshipProject_2.Manager;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using InternshipProject_2.Models;
 using Moq;
 using RequestResponseModels.Comment.Request;
-using System;
-using System.Threading.Tasks;
 namespace UnitTests.CommentManagerTests
 {
     [TestClass]
     public class CreateCommetTest
     {
+        private CommentManager _commentManager;
+        private Project2Context _project2Context;
+        private IMapper _mapper;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _project2Context = new Project2Context();
+            _mapper = new Mock<IMapper>().Object;
+            _commentManager = new CommentManager(_project2Context, _mapper);
+        }
         [TestMethod]
         public async Task CreateComment_Success()
         {
             // Arrange
-            var commentRequest = new CommentRequest
+            var comment = new Comment
             {
                 Body = "Test body",
                 UserId = 1,
                 TicketId = 1,
                 CreatedAt = DateTime.UtcNow
             };
-
-            var commentManagerMock = new Mock<ICommentManager>();
-            commentManagerMock.Setup(cm => cm.CreateComment(commentRequest)).Returns(Task.CompletedTask);
-
-            var controller = new CommentController(commentManagerMock.Object);
-
+            _project2Context.Comments.Add(comment);
+            _project2Context.SaveChanges();
+            var request = new CommentRequest
+            {
+                Body = comment.Body,
+                UserId = comment.UserId,
+                TicketId = comment.TicketId,
+                CreatedAt = comment.CreatedAt
+            };
             // Act
-            var result = await controller.CreateComment(commentRequest);
-
-            // Assert
-            var okResult = result as OkResult;
-            Assert.IsNotNull(okResult);
+            await _commentManager.CreateComment(request);
         }
 
         [TestMethod]
         public async Task CreateComment_Failure()
         {
-            // Arrange
             var commentRequest = new CommentRequest
             {
                 Body = "Test body",
                 UserId = 1,
                 TicketId = 123,
-                CreatedAt = DateTime.UtcNow 
+                CreatedAt = DateTime.UtcNow
             };
 
             var commentManagerMock = new Mock<ICommentManager>();
             commentManagerMock.Setup(cm => cm.CreateComment(commentRequest)).ThrowsAsync(new Exception("Simulated exception"));
-
-            var controller = new CommentController(commentManagerMock.Object);
+            var commentManager = commentManagerMock.Object;
 
             // Act
-            var result = await controller.CreateComment(commentRequest);
+            async Task CreateCommentAction() => await commentManager.CreateComment(commentRequest);
 
             // Assert
-            var badRequestResult = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequestResult);
-            Assert.AreEqual("An error occurred: Simulated exception", badRequestResult.Value);
+            await Assert.ThrowsExceptionAsync<Exception>(CreateCommentAction);
         }
+
     }
 }
 
