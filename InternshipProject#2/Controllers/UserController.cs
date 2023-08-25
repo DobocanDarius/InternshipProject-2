@@ -17,6 +17,25 @@ namespace InternshipProject_2.Controllers
             _userManager = userManager;
         }
 
+        [HttpPost("login")]
+        public async Task<ActionResult> Login(LoginRequest login)
+        {
+            try
+            {
+                var loggedIn = await _userManager.Login(login);
+                if (loggedIn == null)
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(loggedIn);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
         [HttpPost("register")]
         [Authorize(Roles = "manager")]
         public async Task<IActionResult> CreateUser(CreateUserRequest newUser)
