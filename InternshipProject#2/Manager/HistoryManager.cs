@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
+using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.History.Enum;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.History.Response;
@@ -32,6 +33,7 @@ namespace InternshipProject_2.Manager
                 if(ticket == null)
                 {
                     var response = new AddHistoryRecordResponse { Body = "Ticket not found!" };
+                    return response;
                 }
 
                 if(request.EventType == HistoryEventType.Assign)
@@ -40,12 +42,14 @@ namespace InternshipProject_2.Manager
                     if(assignment == null)
                     {
                         var response = new AddHistoryRecordResponse { Body = "Assignment not found!" };
+                        return response;
                     }
                 }
                 if(request.EventType == HistoryEventType.Comment)
                 {
-                    var comment = await _dbContext.Comments.FindAsync(request.TicketId,request.UserId);
-                    if(comment == null)
+                    var comment = await _dbContext.Comments
+                    .SingleOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);
+                    if (comment == null)
                     {
                         var response = new AddHistoryRecordResponse { Body = "Comment not found" };
                         return response;
