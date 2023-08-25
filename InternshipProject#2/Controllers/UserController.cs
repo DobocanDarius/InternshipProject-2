@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.User.Request;
-using RequestResponseModels.User.Response;
 
 namespace InternshipProject_2.Controllers
 {

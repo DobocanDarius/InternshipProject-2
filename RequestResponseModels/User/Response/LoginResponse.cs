@@ -1,6 +1,4 @@
-﻿using RequestResponseModels.User.Request;
-
-namespace RequestResponseModels.User.Response;
+﻿namespace RequestResponseModels.User.Response;
 
 public class LoginResponse
 {
