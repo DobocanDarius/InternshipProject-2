@@ -8,8 +8,6 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RequestResponseModels", "RequestResponseModels\RequestResponseModels.csproj", "{E44B5B0F-2642-42DD-A991-9689D9EF65A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{BED4C13A-6E51-49C1-AC5C-BE3EB6AC3B91}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{814FA560-DA02-40C5-ACAF-C18D2C5D8F0C}"
 EndProject
 Global
