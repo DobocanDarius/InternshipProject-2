@@ -62,7 +62,6 @@ namespace InternshipProject_2.Manager
             }
             catch (Exception ex)
             {
-                // Log the exception for debugging
                 return new AddHistoryRecordResponse { Body = "Error adding history record" };
             }
         }
