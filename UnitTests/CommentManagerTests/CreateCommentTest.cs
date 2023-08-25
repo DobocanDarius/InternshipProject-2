@@ -6,7 +6,7 @@ using RequestResponseModels.Comment.Request;
 namespace UnitTests.CommentManagerTests
 {
     [TestClass]
-    public class CreateCommetTest
+    public class CreateCommentTest
     {
         private CommentManager _commentManager;
         private Project2Context _project2Context;
