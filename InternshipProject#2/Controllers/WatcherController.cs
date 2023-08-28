@@ -1,7 +1,11 @@
 ﻿using InternshipProject_2.Manager;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Watcher.Request;
+using RequestResponseModels.Watcher.Response;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace InternshipProject_2.Controllers
 {
@@ -17,13 +21,29 @@ namespace InternshipProject_2.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> WatchTicket(WatchRequest request)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> WatchTicket(WatchRequest request)
         {
             try
             {
-                var response = await _manager.WatchTicket(request); 
-                return Ok(response.Message);
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+                if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
+                {
+                    var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var jwtToken = tokenHandler.ReadJwtToken(token);
+
+                    if (jwtToken.Payload.TryGetValue("userId", out var userIdClaim))
+                    {
+                        var userId = int.Parse(userIdClaim.ToString());
+                        var result = await _manager.WatchTicket(request, userId);
+                        return Ok(result.Message);
+                    }
+
+                    return BadRequest("User ID not found in token claims");
+                }
+
+                return BadRequest(new WatchResponse { Message = "You need to log in" });
             }
             catch (Exception ex)
             {

@@ -1,39 +1,43 @@
-﻿using InternshipProject_2.Helpers;
+﻿using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using RequestResponseModels.Watcher.Request;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
+using Moq;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+using RequestResponseModels.Assignee.Request;
+using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.Watcher.Response;
-using System.Net.Http;
 
-namespace UnitTests.WatcherManagerTest;
-
-[TestClass]
-public class WatchTicketTest
+namespace UnitTests
 {
-    private Project2Context _project2Context;
-    private WatcherManager _watcherManager;
-    private IConfiguration _configuration;
-    public HttpContext _httpContext;
-    private TokenGenerator _tokenGenerator;
-
-    [TestInitialize]
-    public void Setup()
+    [TestClass]
+    public class WatcherManagerTests
     {
-        _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-        _tokenGenerator = new TokenGenerator(_configuration);
-    }
+        private WatcherManager _watchManager;
+        private Project2Context _dbContext;
 
-    [TestMethod]
-    public async Task WatchTicket()
-    {
-        using (var dbContext = new Project2Context())
+        [TestInitialize]
+        public void Setup()
         {
+            _dbContext = new Project2Context();
+            _watchManager = new WatcherManager(_dbContext);
+        }
+
+        [TestMethod]
+        public async Task WatchTicket_Successful()
+        {
+            //Arrange
             var user = new User
             {
-                Id = 123,
                 Username = "Test",
                 Password = "password",
                 Email = "email",
@@ -41,15 +45,38 @@ public class WatchTicketTest
                 CreatedAt = DateTime.Now
 
             };
-            var request = new WatchRequest(user.Id, 2);
+            var ticket = new Ticket
+            {
+                Title = "Test",
+                Body = "Test",
+                Type = "Test",
+                Priority = "Test",
+                Component = "Test",
+                ReporterId = 1,
+                CreatedAt = DateTime.Now
+            };
+            _dbContext.Users.Add(user);
+            _dbContext.Tickets.Add(ticket);
+            _dbContext.SaveChanges();
+            var request = new WatchRequest(user.Id, ticket.Id);
 
-            var watcherManager = new WatcherManager(dbContext, _configuration);
+            WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
 
-            // Act
-            var result = await watcherManager.WatchTicket(request);
-
-            // Assert
+            //Assert
             Assert.AreEqual("Watching ticket", result.Message);
+        }
+
+        [TestMethod]
+        public async Task WatchTicket_AlreadyWatching()
+        {
+            //Arrange
+          
+            var request = new WatchRequest(2002, 1);
+
+            WatchResponse result = await _watchManager.WatchTicket(request, 1);
+
+            //Assert
+            Assert.AreEqual("Already watching ticket", result.Message);
         }
     }
 }
