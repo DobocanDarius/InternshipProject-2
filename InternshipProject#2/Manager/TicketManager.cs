@@ -49,10 +49,16 @@ namespace InternshipProject_2.Manager
             return response;
         }
 
-        public async Task<IEnumerable<Ticket>> GetTicketsAsync()
+        public async Task<IEnumerable<TicketGetResponse>> GetTicketsAsync()
         {
-            var dbTicket = await _context.Tickets.ToListAsync();
-            return dbTicket;
+            var map = MapperConfig.InitializeAutomapper();
+            var dbTicket = await _context.Tickets.Include(i=>i.Reporter).ToListAsync();
+            dbTicket = await _context.Tickets.Include(i => i.Comments).ToListAsync();
+            dbTicket = await _context.Tickets.Include(i => i.Histories).ToListAsync();
+            List<TicketGetResponse> response = new List<TicketGetResponse>();
+            dbTicket.ForEach(t => response.Add(map.Map<TicketGetResponse>(t)));
+
+            return response;
         }
     }
 }

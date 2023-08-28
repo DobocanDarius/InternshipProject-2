@@ -2,6 +2,7 @@
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
+using RequestResponseModels.Ticket.Response;
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 
@@ -52,7 +53,7 @@ public class UserManager : IUserManager
 
         newUser.Password = _passwordHasher.HashPassword(newUser.Password);
 
-        var user = map.Map<User>(newUser);
+        var user = map.Map<Models.User>(newUser);
 
         _dbContext.Users.Add(user);
 

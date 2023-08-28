@@ -71,15 +71,16 @@ namespace InternshipProject_2.Controllers
         }
 
         [HttpGet("get")]
-        public async Task<IEnumerable<Ticket>> GetTickets()
+        public async Task<IActionResult> GetTickets()
         {
-            try 
+            try
             {
-                return await _ticketAcces.GetTicketsAsync();
+                var response = await _ticketAcces.GetTicketsAsync();
+                return Ok(response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return (IEnumerable<Ticket>)BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
 
         }
