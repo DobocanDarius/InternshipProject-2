@@ -67,5 +67,28 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+        [HttpPut("editTicketsStatus/{ticketId}")]
+        public async Task<IActionResult> EditTicketsStatus([FromBody] TicketStatusRequest ticket, int ticketId)
+        {
+            try
+            {
+                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                {
+                    int reporterId = int.Parse(userIdObj.ToString());
+                    if (reporterId != 0)
+                    {
+                        await _ticket.ChangeTicketsStatus(ticket,reporterId,ticketId);
+                        return Ok();
+                    }
+                    else return BadRequest("You did not post this!");
+                }
+                else return BadRequest("You are not logged in!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
     }
+
 }

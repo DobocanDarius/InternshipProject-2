@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InternshipProject_2.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace InternshipProject_2.Models;
@@ -24,6 +25,7 @@ public partial class Ticket
     public DateTime? UpdatedAt { get; set; }
 
     public byte[]? Attachements { get; set; }
+    public TicketStatus Status { get; set; }
 
     public virtual ICollection<Assignee> Assignees { get; set; } = new List<Assignee>();
 

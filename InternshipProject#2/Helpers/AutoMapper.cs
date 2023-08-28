@@ -24,12 +24,15 @@ namespace AutoMapper
                 cfg.CreateMap<Ticket, TicketCreateResponse>();
                 cfg.CreateMap<CommentEditRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
-                cfg.CreateMap<Ticket, TicketResponse>();
+              //  cfg.CreateMap<Ticket, TicketResponse>();
                 cfg.CreateMap<TicketCreateRequest, Ticket>();
                 cfg.CreateMap<TicketEditRequest, Ticket>();
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
                 cfg.CreateMap<User, GetAssignedUserResponse>();
+
+                cfg.CreateMap<TicketStatusRequest, Ticket>();
+                cfg.CreateMap<Ticket, TicketStatusResponse>();
             });
 
             var mapper = new Mapper(config);

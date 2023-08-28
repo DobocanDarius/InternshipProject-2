@@ -10,5 +10,6 @@
     [CreatedAt] DATETIME NOT NULL, 
     [UpdatedAt] DATETIME NULL, 
     [Attachements] VARBINARY(MAX) NULL, 
+    [Status] INT NULL,
     CONSTRAINT [FK_Ticket_User] FOREIGN KEY ([ReporterId]) REFERENCES [User]([Id])
 )
