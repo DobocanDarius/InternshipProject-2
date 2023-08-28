@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
+using RequestResponseModels.History.Enum;
+using RequestResponseModels.History.Request;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 namespace InternshipProject_2.Manager
@@ -8,10 +10,16 @@ namespace InternshipProject_2.Manager
     public class TicketManager : ITicketManager
     {
         private readonly Project2Context _context;
+        private readonly HistoryBodyGenerator historyBodyGenerator;
+        private HistoryWritter historyWritter;
+
+        public TicketManager(Project2Context context)
         private readonly TicketStatusHelper _statusHandler;
         public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
         {
             _context = context;
+            historyBodyGenerator = new HistoryBodyGenerator();
+            historyWritter = new HistoryWritter(context, historyBodyGenerator);
             _statusHandler = statusHandler;
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
@@ -22,6 +30,8 @@ namespace InternshipProject_2.Manager
             ticket.CreatedAt = DateTime.Now;
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
+            var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = ticket.Id, EventType = HistoryEventType.Create };
+            await historyWritter.AddHistoryRecord(historyRequest);
             var response = new TicketCreateResponse { Message = "You succsessfully posted a new ticket!" };
             return response;
         }
@@ -39,6 +49,8 @@ namespace InternshipProject_2.Manager
                 {
                     _context.Tickets.Update(ticket);
                     await _context.SaveChangesAsync();
+                    var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = dbTicket.Id, EventType = HistoryEventType.Edit };
+                    await historyWritter.AddHistoryRecord(historyRequest);
                     var succesResponse = new TicketEditResponse { Message = "You succesfully edited this ticket!" };
                     return succesResponse;
                 }

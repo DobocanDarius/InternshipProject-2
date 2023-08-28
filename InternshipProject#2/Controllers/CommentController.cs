@@ -34,5 +34,11 @@ namespace InternshipProject_2.Controllers
             await commentManager.EditComment(editComment);
             return Ok(editComment);
         }
+        [HttpDelete("Delete")]
+        public async Task<ActionResult> DeleteComment(int CommentID)
+        {
+            await commentManager.DeleteComment(CommentID);
+            return Ok("The comment was deleted succesfully!");
+        }
     }
 }
