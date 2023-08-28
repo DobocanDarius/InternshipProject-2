@@ -14,10 +14,13 @@ namespace InternshipProject_2.Manager
         private HistoryWritter historyWritter;
 
         public TicketManager(Project2Context context)
+        private readonly TicketStatusHelper _statusHandler;
+        public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
         {
             _context = context;
             historyBodyGenerator = new HistoryBodyGenerator();
             historyWritter = new HistoryWritter(context, historyBodyGenerator);
+            _statusHandler = statusHandler;
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
         {
@@ -76,6 +79,16 @@ namespace InternshipProject_2.Manager
             }
             var response = new TicketEditResponse { Message = "You did not delete this ticket! This ticket doesnt exist!" };
             return response;
+        }
+        public async Task<TicketStatusResponse> ChangeTicketsStatus(TicketStatusRequest ticketStatus, int reporterId, int ticketId)
+        {
+            var dbUser = await _context.Users.FindAsync(reporterId);
+            var dbTicket = await _context.Tickets.FindAsync(ticketId);
+            if (dbTicket != null && dbUser != null && dbTicket.ReporterId == dbUser.Id)
+            {
+                return await _statusHandler.HandleStatusChange(dbTicket, dbUser, ticketStatus);
+            }
+            return new TicketStatusResponse { Message = "FAIL" };
         }
     }
 }
