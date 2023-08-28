@@ -1,15 +1,7 @@
-﻿using Azure;
-using InternshipProject_2.Manager;
+﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace UnitTests.AssigneeManagerTests
 {

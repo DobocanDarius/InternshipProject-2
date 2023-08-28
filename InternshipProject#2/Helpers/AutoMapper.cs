@@ -18,6 +18,8 @@ namespace AutoMapper
         {
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<User, CreateUserResponse>();
+                cfg.CreateMap<CreateUserRequest, User>();
                 cfg.CreateMap<CommentRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
                 cfg.CreateMap<CommentEditRequest, Comment>();

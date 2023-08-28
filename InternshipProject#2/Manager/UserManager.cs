@@ -19,12 +19,19 @@ public class UserManager : IUserManager
         _tokenGenerator = tokenGenerator;
     }
 
+    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher)
+    {
+        _dbContext = dbContext;
+        _passwordHasher = passwordHasher;
+    }
+
     public async Task<LoginResponse> Login(LoginRequest user)
     {
         string hashedPsw = _passwordHasher.HashPassword(user.Password);
         var foundUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
 
-        if (foundUser != null) {
+        if (foundUser != null)
+        {
 
             LoginResponse loginResponse = new LoginResponse { Token = _tokenGenerator.Generate(foundUser) };
 
@@ -32,6 +39,27 @@ public class UserManager : IUserManager
         }
         return null;
     }
-        
-}
 
+
+    public async Task<CreateUserResponse> Create(CreateUserRequest newUser)
+    {
+        if(await _dbContext.Users.AnyAsync(u => u.Email == newUser.Email))
+        {
+            return new CreateUserResponse { Message = "User with this email already exists" };
+        }
+
+        var map = MapperConfig.InitializeAutomapper();
+
+        newUser.Password = _passwordHasher.HashPassword(newUser.Password);
+
+        var user = map.Map<User>(newUser);
+
+        _dbContext.Users.Add(user);
+
+        await _dbContext.SaveChangesAsync();
+
+        var response = new CreateUserResponse { Message = "Registration successful" };
+
+        return response;
+    }
+}
