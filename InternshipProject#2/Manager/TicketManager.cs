@@ -12,9 +12,13 @@ namespace InternshipProject_2.Manager
         private readonly Project2Context _context;
         private readonly HistoryBodyGenerator historyBodyGenerator;
         private HistoryWritter historyWritter;
-
+        private readonly TicketStatusHelper _statusHandler;
         public TicketManager(Project2Context context)
         private readonly TicketStatusHelper _statusHandler;
+        public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
+        {
+            _context = context;
+        }
         public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
         {
             _context = context;
