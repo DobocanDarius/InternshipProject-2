@@ -84,7 +84,6 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
-    }
         [HttpPut("editTicketsStatus/{ticketId}")]
         public async Task<IActionResult> EditTicketsStatus([FromBody] TicketStatusRequest ticket, int ticketId)
         {
@@ -96,7 +95,7 @@ namespace InternshipProject_2.Controllers
                     int reporterId = int.Parse(TakeUserIdFromClaim.Value);
                     if (reporterId != 0)
                     {
-                        await _ticket.ChangeTicketsStatus(ticket,reporterId,ticketId);
+                        await _ticket.ChangeTicketsStatus(ticket, reporterId, ticketId);
                         return Ok();
                     }
                     else return BadRequest("You did not post this!");
@@ -109,5 +108,7 @@ namespace InternshipProject_2.Controllers
             }
         }
     }
-
 }
+       
+    
+
