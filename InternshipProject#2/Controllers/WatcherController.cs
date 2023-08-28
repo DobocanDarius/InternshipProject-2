@@ -25,21 +25,12 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var authorizationHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
-                if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
+                var authorizationHeader = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
+                if (authorizationHeader?.Value != null)
                 {
-                    var token = authorizationHeader.Substring("Bearer ".Length).Trim();
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var jwtToken = tokenHandler.ReadJwtToken(token);
-
-                    if (jwtToken.Payload.TryGetValue("userId", out var userIdClaim))
-                    {
-                        var userId = int.Parse(userIdClaim.ToString());
+                        var userId = int.Parse(authorizationHeader.Value);
                         var result = await _manager.WatchTicket(request, userId);
                         return Ok(result.Message);
-                    }
-
-                    return BadRequest("User ID not found");
                 }
 
                 return BadRequest(new WatchResponse { Message = "You need to log in" });
