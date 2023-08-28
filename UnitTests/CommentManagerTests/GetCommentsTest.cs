@@ -1,42 +1,51 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-
+﻿using AutoMapper;
+using InternshipProject_2.Manager;
+using InternshipProject_2.Models;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 namespace UnitTests.CommentManagerTests
 {
     [TestClass]
     public class GetCommentsTest
     {
+        private CommentManager _commentManager;
+        private Project2Context _project2Context;
+        private IMapper _mapper;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _project2Context = new Project2Context();
+            _mapper = new Mock<IMapper>().Object;
+            _commentManager = new CommentManager(_project2Context, _mapper);
+        }
         [TestMethod]
         public async Task GetCommentsForTicket_ReturnsComments()
         {
             // Arrange
-            var ticketId = 123;
-            var commentsData = new List<Comment>
+            var ticketId = 1;
+            var comments = new List<Comment>
             {
-                new Comment { TicketId = ticketId, Text = "Comment 1" },
-                new Comment { TicketId = ticketId, Text = "Comment 2" }
-            }.AsQueryable();
-
-            var mockDbSet = new Mock<DbSet<Comment>>();
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.Provider).Returns(commentsData.Provider);
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.Expression).Returns(commentsData.Expression);
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.ElementType).Returns(commentsData.ElementType);
-            mockDbSet.As<IQueryable<Comment>>().Setup(m => m.GetEnumerator()).Returns(commentsData.GetEnumerator());
-
-            var mockDbContext = new Mock<YourDbContext>(); 
-            mockDbContext.Setup(c => c.Comments).Returns(mockDbSet.Object);
-
-            var commentManager = new CommentManager(mockDbContext.Object);
-            var controller = new YourController(commentManager);
+                new Comment { Id = 3, Body = "Updated Content", UserId = 1, TicketId = 1, CreatedAt = DateTime.Now },
+                new Comment { Id = 1002, Body = "string", UserId = 1, TicketId = 1, CreatedAt = DateTime.Now },
+                new Comment { Id = 1003, Body = "string", UserId = 1, TicketId = 1, CreatedAt = DateTime.Now },
+            };
+            var commentsQueryable = comments.AsQueryable();
+            var commentsDbSetMock = new Mock<DbSet<Comment>>();
+            commentsDbSetMock.As<IQueryable<Comment>>().Setup(m => m.Provider).Returns(commentsQueryable.Provider);
+            commentsDbSetMock.As<IQueryable<Comment>>().Setup(m => m.Expression).Returns(commentsQueryable.Expression);
+            commentsDbSetMock.As<IQueryable<Comment>>().Setup(m => m.ElementType).Returns(commentsQueryable.ElementType);
+            commentsDbSetMock.As<IQueryable<Comment>>().Setup(m => m.GetEnumerator()).Returns(commentsQueryable.GetEnumerator());
+            var dbContextMock = new Mock<Project2Context>();
+            dbContextMock.Setup(db => db.Comments).Returns(commentsDbSetMock.Object);
+            _project2Context = dbContextMock.Object;
 
             // Act
-            var result = await controller.GetCommentsForTicket(ticketId);
+            var result = await _commentManager.GetComments(ticketId);
 
             // Assert
             Assert.IsNotNull(result);
-            var commentsResult = result.Value as List<Comment>;
-            Assert.IsNotNull(commentsResult);
-            Assert.AreEqual(2, commentsResult.Count); 
+            Assert.AreEqual(comments.Count, result.Count());
         }
     }
 }

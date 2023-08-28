@@ -12,11 +12,16 @@ namespace InternshipProject_2.Manager
     public class CommentManager : ICommentManager
     {
         private readonly Project2Context _context;
+        private readonly IMapper _mapper;
+        public CommentManager(Project2Context context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
         public CommentManager(Project2Context context)
         {
             _context = context;
         }
-
         public async Task CreateComment(CommentRequest newComment)
         {
             var map = MapperConfig.InitializeAutomapper();
