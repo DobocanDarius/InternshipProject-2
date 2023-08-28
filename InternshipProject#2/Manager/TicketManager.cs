@@ -16,10 +16,6 @@ namespace InternshipProject_2.Manager
         public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
         {
             _context = context;
-        }
-        public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
-        {
-            _context = context;
             historyBodyGenerator = new HistoryBodyGenerator();
             historyWritter = new HistoryWritter(context, historyBodyGenerator);
             _statusHandler = statusHandler;
