@@ -1,24 +1,24 @@
 ﻿using AutoMapper;
-using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.History.Enum;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.History.Response;
 
-namespace InternshipProject_2.Manager
+namespace InternshipProject_2.Helpers
 {
-    public class HistoryManager : IHistoryManager
+    public class HistoryRecord
     {
         private Project2Context _dbContext;
         private readonly Mapper map;
         private readonly HistoryBodyGenerator _historyBodyGenerator;
-        public HistoryManager(Project2Context dbContext, HistoryBodyGenerator historyBodyGenerator)
+        public HistoryRecord(Project2Context dbcontext, HistoryBodyGenerator historyBodyGenerator)
         {
-            _dbContext = dbContext;
+            _dbContext = dbcontext;
             map = MapperConfig.InitializeAutomapper();
             _historyBodyGenerator = historyBodyGenerator;
         }
+
         public async Task<AddHistoryRecordResponse> AddHistoryRecord(AddHistoryRecordRequest request)
         {
             try
@@ -30,22 +30,23 @@ namespace InternshipProject_2.Manager
                     return response;
                 }
                 var ticket = await _dbContext.Tickets.FindAsync(request.TicketId);
-                if(ticket == null)
+                if (ticket == null)
                 {
                     var response = new AddHistoryRecordResponse { Body = "Ticket not found!" };
                     return response;
                 }
 
-                if(request.EventType == HistoryEventType.Assign)
+                if (request.EventType == HistoryEventType.Assign)
                 {
-                    var assignment = await _dbContext.Assignees.FindAsync(request.TicketId);
-                    if(assignment == null)
+                    var assignment = await _dbContext.Assignees
+                    .SingleOrDefaultAsync(a => a.TicketId == request.TicketId);
+                    if (assignment == null)
                     {
                         var response = new AddHistoryRecordResponse { Body = "Assignment not found!" };
                         return response;
                     }
                 }
-                if(request.EventType == HistoryEventType.Comment)
+                if (request.EventType == HistoryEventType.Comment)
                 {
                     var comment = await _dbContext.Comments
                     .SingleOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);

@@ -13,7 +13,7 @@ namespace UnitTests.HistoryManagerTests
     [TestClass]
     public class AddHistoryRecordTest
     {
-        private HistoryManager _historyManager;
+        private HistoryRecord _historyRecord;
         private Project2Context _project2Context;
         private HistoryBodyGenerator _historyBodyGenerator;
         private AssigneeManager _assigneeManager;
@@ -26,7 +26,8 @@ namespace UnitTests.HistoryManagerTests
             _historyBodyGenerator = new HistoryBodyGenerator();
             _assigneeManager = new AssigneeManager();
             _commentManager = new CommentManager(_project2Context);
-            _historyManager = new HistoryManager(_project2Context, _historyBodyGenerator);
+            _historyRecord = new HistoryRecord(_project2Context, _historyBodyGenerator);
+            
 
         }
         [TestMethod]
@@ -66,9 +67,9 @@ namespace UnitTests.HistoryManagerTests
             };
             //Act
 
-            var response = await _historyManager.AddHistoryRecord(request);
+            var response = await _historyRecord.AddHistoryRecord(request);
             var expectedResponse = _historyBodyGenerator.GenerateHistoryBody(request.EventType, request.UserId);
-            string actualResponse = $"User {user.Id} created a ticket";
+            string actualResponse = $"{user.Username} created a ticket";
             //Assert
             Assert.AreEqual(actualResponse, response.Body);
         }
@@ -82,7 +83,7 @@ namespace UnitTests.HistoryManagerTests
                 Username = "Test",
                 Password = "password",
                 Email = "email",
-                Role = "tester",
+                Role = "developer",
                 CreatedAt = DateTime.Now
             };
             _project2Context.Users.Add(user);
@@ -114,9 +115,9 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyManager.AddHistoryRecord(request);
-            var expectedResponse = $"User {user.Id} was assigned to this ticket";
-
+            var response = await _historyRecord.AddHistoryRecord(request);
+            var expectedResponse = $"{user.Username} was assigned to this ticket";
+            Console.WriteLine($"Assignment ID: {request.TicketId}, Ticket ID: {ticket.Id}");
             //Assert
             Assert.AreEqual(expectedResponse, response.Body);
         }
@@ -166,8 +167,8 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyManager.AddHistoryRecord(request);
-            var expectedResponse = $"User {user.Id} added a comment";
+            var response = await _historyRecord.AddHistoryRecord(request);
+            var expectedResponse = $"{user.Username} added a comment";
 
             //Assert
             Assert.AreEqual(expectedResponse, response.Body);
@@ -210,8 +211,8 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyManager.AddHistoryRecord(request);
-            var expectedResponse = $"User {user.Id} edited the ticket";
+            var response = await _historyRecord.AddHistoryRecord(request);
+            var expectedResponse = $"{user.Username} edited the ticket";
 
             //Assert
             Assert.AreEqual(expectedResponse,response.Body);
@@ -253,8 +254,8 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyManager.AddHistoryRecord(request);
-            var expectedResponse = $"User {user.Id} closed the ticket";
+            var response = await _historyRecord.AddHistoryRecord(request);
+            var expectedResponse = $"{user.Username} closed the ticket";
 
             //Assert
             Assert.AreEqual(expectedResponse, response.Body);
@@ -271,7 +272,7 @@ namespace UnitTests.HistoryManagerTests
             };
 
             // Act
-            var response = await _historyManager.AddHistoryRecord(request);
+            var response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("User not found!", response.Body);
@@ -302,7 +303,7 @@ namespace UnitTests.HistoryManagerTests
            
 
             // Act
-            var response = await _historyManager.AddHistoryRecord(request);
+            var response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("Ticket not found!", response.Body);
@@ -343,7 +344,7 @@ namespace UnitTests.HistoryManagerTests
             };
 
             // Act
-            var response = await _historyManager.AddHistoryRecord(request);
+            var response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("Assignment not found!", response.Body);
@@ -384,7 +385,7 @@ namespace UnitTests.HistoryManagerTests
             };
 
             // Act
-            var response = await _historyManager.AddHistoryRecord(request);
+            var response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("Comment not found", response.Body);
@@ -426,7 +427,7 @@ namespace UnitTests.HistoryManagerTests
             };
             //Act
 
-            var response = await _historyManager.AddHistoryRecord(request);
+            var response = await _historyRecord.AddHistoryRecord(request);
 
             //Assert
 
