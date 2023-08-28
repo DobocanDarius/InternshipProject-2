@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.History.Request
 {
-    internal class GetHistoryRequest
+    public class GetHistoryRequest
     {
+        public int TicketId { get; set; }
     }
 }

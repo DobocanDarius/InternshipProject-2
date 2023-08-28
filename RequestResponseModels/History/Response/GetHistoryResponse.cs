@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.History.Response
 {
-    internal class GetHistoryResponse
+    public class GetHistoryResponse
     {
+        public List<AddHistoryRecordResponse> HistoryRecords { get; set; }
     }
 }
