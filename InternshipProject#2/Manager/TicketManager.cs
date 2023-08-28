@@ -60,6 +60,26 @@ namespace InternshipProject_2.Manager
             var response = new TicketEditResponse { Message = "You did not edit this ticket! This ticket doesnt exist!" };
             return response;
         }
+
+        public async Task<TicketEditResponse> DeleteTicketAsync(int id, int reporterId)
+        {
+            var dbTicket = await _context.Tickets.FindAsync(id);
+            if (dbTicket != null)
+            {
+                dbTicket.Id = id;
+                if(dbTicket.ReporterId == reporterId)
+                {
+                    _context.Tickets.Remove(dbTicket);
+                    await _context.SaveChangesAsync();
+                    var succesResponse = new TicketEditResponse { Message = "You succesfully deleted this ticket!" };
+                    return succesResponse;
+                }
+                var failResponse = new TicketEditResponse { Message = "You did not delete this ticket! You are not the owner of this ticket!" };
+                return failResponse;
+            }
+            var response = new TicketEditResponse { Message = "You did not delete this ticket! This ticket doesnt exist!" };
+            return response;
+        }
         public async Task<TicketStatusResponse> ChangeTicketsStatus(TicketStatusRequest ticketStatus, int reporterId, int ticketId)
         {
             var dbUser = await _context.Users.FindAsync(reporterId);

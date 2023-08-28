@@ -60,6 +60,31 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
+        [HttpDelete("delete/{ticketId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteTicketAsync(int ticketId)
+        {
+            try
+            {
+                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                {
+                    int reporterId = int.Parse(userIdObj.ToString());
+                    if (reporterId != 0)
+                    {
+                        await _ticket.DeleteTicketAsync(ticketId, reporterId);
+                        return Ok();
+                    }
+                    else return BadRequest("You are not logged in!");
+                }
+                else return BadRequest("You are not logged in!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+    }
         [HttpPut("editTicketsStatus/{ticketId}")]
         public async Task<IActionResult> EditTicketsStatus([FromBody] TicketStatusRequest ticket, int ticketId)
         {
