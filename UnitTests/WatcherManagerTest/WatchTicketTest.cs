@@ -1,20 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
-using InternshipProject_2.Manager;
+﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using RequestResponseModels.Watcher.Request;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-using Moq;
-using System.Collections.Generic;
-using System.Linq;
-using System;
-using RequestResponseModels.Assignee.Request;
-using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.Watcher.Response;
 
 namespace UnitTests

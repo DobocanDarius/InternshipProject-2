@@ -1,7 +1,6 @@
 ﻿using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;

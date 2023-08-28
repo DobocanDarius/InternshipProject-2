@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace InternshipProject_2.Manager;
 
