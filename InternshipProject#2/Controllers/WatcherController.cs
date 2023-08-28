@@ -9,7 +9,7 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class WatcherController : ControllerBase
     {
-       /* private readonly IWatcherManager _manager;
+        private readonly IWatcherManager _manager;
 
         public WatcherController(IWatcherManager manager)
         {
@@ -18,18 +18,18 @@ namespace InternshipProject_2.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> WatchTicket(HttpContext ,WatchRequest request)
+        public async Task<ActionResult> WatchTicket(WatchRequest request)
         {
             try
             {
-                var response = await _manager.WatchTicket(request);
+                var response = await _manager.WatchTicket(request); 
                 return Ok(response.Message);
             }
             catch (Exception ex)
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
-        }*/
+        }
 
     }
 }
