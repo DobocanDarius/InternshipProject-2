@@ -26,7 +26,6 @@ namespace AutoMapper
                 cfg.CreateMap<Ticket, TicketCreateResponse>();
                 cfg.CreateMap<CommentEditRequest, Comment>();
                 cfg.CreateMap<Comment, CommentResponse>();
-                cfg.CreateMap<Ticket, TicketResponse>();
                 cfg.CreateMap<TicketCreateRequest, Ticket>();
                 cfg.CreateMap<TicketEditRequest, Ticket>();
                 cfg.CreateMap<AssignUserRequest, Assignee>();

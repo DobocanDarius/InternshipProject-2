@@ -13,7 +13,7 @@ namespace UnitTests.HistoryManagerTests
     [TestClass]
     public class AddHistoryRecordTest
     {
-        private HistoryRecord _historyRecord;
+        private HistoryWritter _historyRecord;
         private Project2Context _project2Context;
         private HistoryBodyGenerator _historyBodyGenerator;
         private AssigneeManager _assigneeManager;
@@ -26,7 +26,7 @@ namespace UnitTests.HistoryManagerTests
             _historyBodyGenerator = new HistoryBodyGenerator();
             _assigneeManager = new AssigneeManager();
             _commentManager = new CommentManager(_project2Context);
-            _historyRecord = new HistoryRecord(_project2Context, _historyBodyGenerator);
+            _historyRecord = new HistoryWritter(_project2Context, _historyBodyGenerator);
             
 
         }

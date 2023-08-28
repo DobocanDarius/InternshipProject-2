@@ -7,12 +7,12 @@ using RequestResponseModels.History.Response;
 
 namespace InternshipProject_2.Helpers
 {
-    public class HistoryRecord
+    public class HistoryWritter
     {
         private Project2Context _dbContext;
         private readonly Mapper map;
         private readonly HistoryBodyGenerator _historyBodyGenerator;
-        public HistoryRecord(Project2Context dbcontext, HistoryBodyGenerator historyBodyGenerator)
+        public HistoryWritter(Project2Context dbcontext, HistoryBodyGenerator historyBodyGenerator)
         {
             _dbContext = dbcontext;
             map = MapperConfig.InitializeAutomapper();

@@ -41,7 +41,7 @@ builder.Services.AddScoped<ITicketManager, TicketManager>();
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 builder.Services.AddScoped<HistoryBodyGenerator>();
-builder.Services.AddScoped<HistoryRecord>();
+builder.Services.AddScoped<HistoryWritter>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

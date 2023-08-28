@@ -8,7 +8,7 @@ namespace InternshipProject_2.Helpers
         private readonly Project2Context dbContext = new Project2Context();
         public string GenerateHistoryBody(HistoryEventType eventType, int userId)
         {
-            var username = findUsername(userId);
+            var username = FindUsername(userId);
             switch (eventType)
             {
                 case HistoryEventType.Create:
@@ -26,7 +26,7 @@ namespace InternshipProject_2.Helpers
             }
         }
         
-        public string findUsername(int userId)
+        public string FindUsername(int userId)
         {
             var user = dbContext.Users.Find(userId);
             var username = user.Username;
