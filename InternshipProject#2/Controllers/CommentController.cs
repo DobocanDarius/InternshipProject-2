@@ -1,6 +1,5 @@
 ﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Comment.Request;
 
