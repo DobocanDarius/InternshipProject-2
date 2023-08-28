@@ -1,4 +1,5 @@
 ﻿using InternshipProject_2.Manager;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.User.Request;
 
@@ -27,6 +28,21 @@ namespace InternshipProject_2.Controllers
                 }
 
                 return Ok(loggedIn);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("register")]
+        [Authorize(Roles = "manager")]
+        public async Task<IActionResult> CreateUser(CreateUserRequest newUser)
+        {
+            try
+            {
+                var response = await _userManager.Create(newUser);
+                return Ok(response.Message);
             }
             catch (Exception ex)
             {

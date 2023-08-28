@@ -15,7 +15,6 @@ namespace UnitTests.AssigneeManagerTests
     {
         private AssigneeManager _assigneeManager;
         private Project2Context _project2Context;
-        private UserManager _userManager;
 
         [TestInitialize]
         public void Setup()

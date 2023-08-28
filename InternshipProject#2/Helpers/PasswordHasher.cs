@@ -2,7 +2,6 @@
 using System.Text;
 
 namespace InternshipProject_2.Helpers;
-
 public class PasswordHasher
 {
     public string HashPassword(string password)

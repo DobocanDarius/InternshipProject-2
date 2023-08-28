@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
+using RequestResponseModels.History.Enum;
+using RequestResponseModels.History.Request;
 
 namespace InternshipProject_2.Manager
 {
@@ -11,11 +14,14 @@ namespace InternshipProject_2.Manager
     {
         private Project2Context _dbContext;
         private readonly Mapper map;
+        private readonly HistoryBodyGenerator historyBodyGenerator;
+        private HistoryWritter historyWritter;
         public AssigneeManager()
         {
             _dbContext = new Project2Context();
-
             map = MapperConfig.InitializeAutomapper();
+            historyBodyGenerator = new HistoryBodyGenerator();
+            historyWritter = new HistoryWritter(_dbContext, historyBodyGenerator);
         }
         public async Task<AssignUserResponse> AssignUserToTicket(AssignUserRequest request)
         {
@@ -43,6 +49,8 @@ namespace InternshipProject_2.Manager
 
                 _dbContext.Assignees.Add(assignment);
                 await _dbContext.SaveChangesAsync();
+                var historyRequest = new AddHistoryRecordRequest { UserId = request.UserId, TicketId = request.TicketId, EventType = HistoryEventType.Assign };
+                await historyWritter.AddHistoryRecord(historyRequest);
 
                 var succesResponse = new AssignUserResponse { Message = "User assigned successfully" };
                 return succesResponse;

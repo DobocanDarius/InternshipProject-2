@@ -1,27 +1,25 @@
 ﻿using AutoMapper;
+using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using RequestResponseModels.Ticket;
+using RequestResponseModels.History.Enum;
+using RequestResponseModels.History.Request;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
-using Microsoft.AspNetCore.Http;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http.Features;
-
 namespace InternshipProject_2.Manager
 {
     public class TicketManager : ITicketManager
     {
         private readonly Project2Context _context;
+        private readonly HistoryBodyGenerator historyBodyGenerator;
+        private HistoryWritter historyWritter;
 
         public TicketManager(Project2Context context)
         {
             _context = context;
+            historyBodyGenerator = new HistoryBodyGenerator();
+            historyWritter = new HistoryWritter(context, historyBodyGenerator);
         }
-        public async Task CreateTicket(TicketCreateRequest newTicket, int reporterId)
+        public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
         {
             var map = MapperConfig.InitializeAutomapper();
             var ticket = map.Map<Ticket>(newTicket);
@@ -29,6 +27,35 @@ namespace InternshipProject_2.Manager
             ticket.CreatedAt = DateTime.Now;
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
+            var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = ticket.Id, EventType = HistoryEventType.Create };
+            await historyWritter.AddHistoryRecord(historyRequest);
+            var response = new TicketCreateResponse { Message = "You succsessfully posted a new ticket!" };
+            return response;
+        }
+
+        public async Task<TicketEditResponse> EditTicketAsync(TicketEditRequest editTicket, int id, int reporterId)
+        {
+            var dbTicket = await _context.Tickets.FindAsync(id);
+            if (dbTicket != null)
+            {
+                var map = MapperConfig.InitializeAutomapper();
+                var ticket = map.Map(editTicket, dbTicket);
+                dbTicket.Id = id;
+                dbTicket.UpdatedAt = DateTime.Now;
+                if (dbTicket.ReporterId == reporterId)
+                {
+                    _context.Tickets.Update(ticket);
+                    await _context.SaveChangesAsync();
+                    var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = dbTicket.Id, EventType = HistoryEventType.Edit };
+                    await historyWritter.AddHistoryRecord(historyRequest);
+                    var succesResponse = new TicketEditResponse { Message = "You succesfully edited this ticket!" };
+                    return succesResponse;
+                }
+                var failResponse = new TicketEditResponse { Message = "You did not edit this ticket! You are not the owner of this ticket!" };
+                return failResponse;
+            }
+            var response = new TicketEditResponse { Message = "You did not edit this ticket! This ticket doesnt exist!" };
+            return response;
         }
     }
 }
