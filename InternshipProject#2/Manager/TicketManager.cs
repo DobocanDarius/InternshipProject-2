@@ -46,7 +46,7 @@ namespace InternshipProject_2.Manager
                 {
                     _context.Tickets.Update(ticket);
                     await _context.SaveChangesAsync();
-                    var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = dbTicket.Id, EventType = HistoryEventType.Create };
+                    var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = dbTicket.Id, EventType = HistoryEventType.Edit };
                     await historyWritter.AddHistoryRecord(historyRequest);
                     var succesResponse = new TicketEditResponse { Message = "You succesfully edited this ticket!" };
                     return succesResponse;
