@@ -49,7 +49,7 @@ namespace InternshipProject_2.Helpers
                 if (request.EventType == HistoryEventType.Comment)
                 {
                     var comment = await _dbContext.Comments
-                    .SingleOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);
+                    .FirstOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);
                     if (comment == null)
                     {
                         var response = new AddHistoryRecordResponse { Body = "Comment not found" };
