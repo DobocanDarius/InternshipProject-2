@@ -1,15 +1,8 @@
 ﻿using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Ticket.Request;
-using RequestResponseModels.Ticket.Response;
-using System.Net;
-using InternshipProject_2.Models;
-using AutoMapper.Configuration.Conventions;
 
 namespace InternshipProject_2.Controllers
 {
@@ -72,9 +65,10 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                var TakeUserIdFromClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
+                if (TakeUserIdFromClaim != null)
                 {
-                    int reporterId = int.Parse(userIdObj.ToString());
+                    int reporterId = int.Parse(TakeUserIdFromClaim.Value);
                     if (reporterId != 0)
                     {
                         await _ticket.ChangeTicketsStatus(ticket,reporterId,ticketId);

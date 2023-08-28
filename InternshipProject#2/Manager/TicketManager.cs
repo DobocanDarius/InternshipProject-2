@@ -8,10 +8,11 @@ namespace InternshipProject_2.Manager
     public class TicketManager : ITicketManager
     {
         private readonly Project2Context _context;
-
-        public TicketManager(Project2Context context)
+        private readonly TicketStatusHelper _statusHandler;
+        public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
         {
             _context = context;
+            _statusHandler = statusHandler;
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
         {
@@ -47,83 +48,15 @@ namespace InternshipProject_2.Manager
             var response = new TicketEditResponse { Message = "You did not edit this ticket! This ticket doesnt exist!" };
             return response;
         }
-        public async Task<TicketStatusResponse> ChangeTicketsStatus(TicketStatusRequest ticketStatus, int reporterId, int id)
+        public async Task<TicketStatusResponse> ChangeTicketsStatus(TicketStatusRequest ticketStatus, int reporterId, int ticketId)
         {
-            var dbTicket = await _context.Tickets.FindAsync(id);
-            var dbUser = await _context.Users.FindAsync(id);
-            if (dbTicket != null && dbUser != null && dbTicket.ReporterId == reporterId)
+            var dbUser = await _context.Users.FindAsync(reporterId);
+            var dbTicket = await _context.Tickets.FindAsync(ticketId);
+            if (dbTicket != null && dbUser != null && dbTicket.ReporterId == dbUser.Id)
             {
-                if (Enum.IsDefined(typeof(TicketStatus), ticketStatus.Status))
-                {
-                    var map = MapperConfig.InitializeAutomapper();
-                    var ticket = map.Map(ticketStatus, dbTicket);
-                    switch ((TicketStatus)ticketStatus.Status)
-                    {
-                        case TicketStatus.ToDO:
-                            if (dbUser.Role == "Developer")
-                            {
-                                dbTicket.Status = TicketStatus.ApprovedByDev;
-                            }
-                            break;
-                        case TicketStatus.ApprovedByDev:
-                            if (dbUser.Role == "Developer")
-                            {
-                                dbTicket.Status = TicketStatus.Construction;
-                            }
-                            else if (dbUser.Role == "Manager")
-                            {
-                                dbTicket.Status = TicketStatus.ToDO;
-                            }
-                            break;
-                        case TicketStatus.Construction:
-                            if (dbUser.Role == "Developer")
-                            {
-                                dbTicket.Status = TicketStatus.TestingByDev;
-                            }
-                            else if (dbUser.Role == "Manager")
-                            {
-                                dbTicket.Status = TicketStatus.ApprovedByDev;
-                            }
-                            break;
-                        case TicketStatus.TestingByDev:
-                            if (dbUser.Role == "Tester")
-                            {
-                                dbTicket.Status = TicketStatus.TestingByTester;
-                            }
-                            else if (dbUser.Role == "Manager")
-                            {
-                                dbTicket.Status = TicketStatus.Construction;
-                            }
-                            break;
-                        case TicketStatus.TestingByTester:
-                            if (dbUser.Role == "Tester")
-                            {
-                                dbTicket.Status = TicketStatus.Closed;
-                            }
-                            else if (dbUser.Role == "Manager")
-                            {
-                                dbTicket.Status = TicketStatus.Construction;
-                            }
-                            break;
-                        case TicketStatus.Closed:
-                            if (dbUser.Role == "Manager")
-                            {
-                                dbTicket.Status = TicketStatus.TestingByTester;
-                            }
-                            break;
-                        default:
-                            
-                            break;
-                    }
-                    _context.Tickets.Update(ticket);
-                    await _context.SaveChangesAsync();
-                    var succesResponse = new TicketStatusResponse { Message = $"The ticket's status is : {dbTicket.Status}" };
-                    return succesResponse;
-                }
-                  
+                return await _statusHandler.HandleStatusChange(dbTicket, dbUser, ticketStatus);
             }
-            var failResponse = new TicketStatusResponse { Message = "FAIL" };
-            return failResponse;
+            return new TicketStatusResponse { Message = "FAIL" };
         }
     }
 }

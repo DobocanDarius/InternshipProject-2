@@ -20,6 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<TokenGenerator>();
+builder.Services.AddScoped<TicketStatusHelper>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
