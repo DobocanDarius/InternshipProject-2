@@ -8,6 +8,8 @@ using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
+using RequestResponseModels.History.Request;
+using RequestResponseModels.History.Response;
 
 namespace AutoMapper
 {
@@ -29,6 +31,8 @@ namespace AutoMapper
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
                 cfg.CreateMap<User, GetAssignedUserResponse>();
+                cfg.CreateMap<AddHistoryRecordRequest, History>();
+                cfg.CreateMap<History, AddHistoryRecordResponse>();
             });
 
             var mapper = new Mapper(config);
