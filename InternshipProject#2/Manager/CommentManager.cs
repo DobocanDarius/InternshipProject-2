@@ -62,5 +62,18 @@ namespace InternshipProject_2.Manager
                 throw new Exception("Invalid Comment");
             }
         }
+        public async Task DeleteComment(int CommentId)
+        {
+            var ExistingComment = await _context.Comments.FindAsync(CommentId);
+            try
+            {
+                _context.Comments.Remove(ExistingComment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Comment");
+            }
+        }
     }
 }
