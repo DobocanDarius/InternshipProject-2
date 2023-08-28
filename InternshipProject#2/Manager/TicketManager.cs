@@ -13,8 +13,6 @@ namespace InternshipProject_2.Manager
         private readonly HistoryBodyGenerator historyBodyGenerator;
         private HistoryWritter historyWritter;
         private readonly TicketStatusHelper _statusHandler;
-        public TicketManager(Project2Context context)
-        private readonly TicketStatusHelper _statusHandler;
         public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
         {
             _context = context;
@@ -25,6 +23,10 @@ namespace InternshipProject_2.Manager
             historyBodyGenerator = new HistoryBodyGenerator();
             historyWritter = new HistoryWritter(context, historyBodyGenerator);
             _statusHandler = statusHandler;
+        }
+        public TicketManager(Project2Context context)
+        {
+            _context = context; 
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
         {
