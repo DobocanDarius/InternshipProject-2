@@ -1,4 +1,4 @@
-﻿using Azure;
+﻿using Azure.Core;
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using RequestResponseModels.Ticket.Request;
@@ -8,12 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UnitTests.NewTicketTests
+namespace UnitTests.TicketManagerTests
 {
-    public class NewTicketTest
-    {
-        [TestClass]
-        public class EditTicketTest
+    [TestClass]
+    public class DeleteTicket
     {
         private TicketManager _ticketManager;
         private Project2Context _project2Context;
@@ -26,7 +24,7 @@ namespace UnitTests.NewTicketTests
         }
 
         [TestMethod]
-        public async Task NewTicketValidRequest()
+        public async Task DeleteTicketValidRequest()
         {
             var user = new User
             {
@@ -35,20 +33,24 @@ namespace UnitTests.NewTicketTests
                 Email = "email",
                 Role = "developer",
                 CreatedAt = DateTime.Now
-            };
+             };
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
-            var ticket = new TicketCreateRequest
+            var ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
                 Type = "Test",
                 Priority = "Test",
                 Component = "Test",
+                ReporterId = user.Id,
+                CreatedAt = DateTime.Now
             };
-            var response = await _ticketManager.CreateTicketAsync(ticket, user.Id);
-            Assert.AreEqual("You succsessfully posted a new ticket!", response.Message);
+            _project2Context.Tickets.Add(ticket);
+            _project2Context.SaveChanges();
+
+            var response = await _ticketManager.DeleteTicketAsync(ticket.Id, user.Id);
+            Assert.AreEqual("You succesfully deleted this ticket!", response.Message);
+            }
         }
-    }
-}
 }
