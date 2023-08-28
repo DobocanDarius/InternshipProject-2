@@ -1,15 +1,8 @@
 ﻿using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Ticket.Request;
-using RequestResponseModels.Ticket.Response;
-using System.Net;
-using InternshipProject_2.Models;
-using AutoMapper.Configuration.Conventions;
 
 namespace InternshipProject_2.Controllers
 {
@@ -59,6 +52,30 @@ namespace InternshipProject_2.Controllers
                         return Ok();
                     }
                     else return BadRequest("You did not post this!");
+                }
+                else return BadRequest("You are not logged in!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("delete/{ticketId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteTicketAsync(int ticketId)
+        {
+            try
+            {
+                if (HttpContext.Items.TryGetValue("UserId", out var userIdObj))
+                {
+                    int reporterId = int.Parse(userIdObj.ToString());
+                    if (reporterId != 0)
+                    {
+                        await _ticket.DeleteTicketAsync(ticketId, reporterId);
+                        return Ok();
+                    }
+                    else return BadRequest("You are not logged in!");
                 }
                 else return BadRequest("You are not logged in!");
             }
