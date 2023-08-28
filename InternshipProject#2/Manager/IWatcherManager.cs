@@ -6,6 +6,7 @@ namespace InternshipProject_2.Manager
 {
     public interface IWatcherManager
     {
+        Task<WatchResponse> StopWatching(WatchRequest request, int userId);
         Task<WatchResponse> WatchTicket(WatchRequest request, int userId);
     }
 }

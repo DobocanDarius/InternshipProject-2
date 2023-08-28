@@ -39,7 +39,38 @@ namespace InternshipProject_2.Controllers
                         return Ok(result.Message);
                     }
 
-                    return BadRequest("User ID not found in token claims");
+                    return BadRequest("User ID not found");
+                }
+
+                return BadRequest(new WatchResponse { Message = "You need to log in" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost ("stop")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> StopWatching(WatchRequest request)
+        {
+            try
+            {
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+                if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
+                {
+                    var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var jwtToken = tokenHandler.ReadJwtToken(token);
+
+                    if (jwtToken.Payload.TryGetValue("userId", out var userIdClaim))
+                    {
+                        var userId = int.Parse(userIdClaim.ToString());
+                        var result = await _manager.StopWatching(request, userId);
+                        return Ok(result.Message);
+                    }
+
+                    return BadRequest("User ID not found");
                 }
 
                 return BadRequest(new WatchResponse { Message = "You need to log in" });

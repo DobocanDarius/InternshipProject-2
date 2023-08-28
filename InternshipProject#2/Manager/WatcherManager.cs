@@ -37,4 +37,21 @@ public class WatcherManager : IWatcherManager
             return new WatchResponse { Message = "Already watching ticket" };
         }
     }
+
+    public async Task<WatchResponse> StopWatching(WatchRequest request, int userId)
+    {
+        var watching = await _dbContext.Watchers
+        .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
+
+        if (watching != null)
+        {
+            _dbContext.Watchers.Remove(watching);
+            await _dbContext.SaveChangesAsync();
+            return new WatchResponse { Message = "Stopped watching" };
+        }
+        else
+        {
+            return new WatchResponse { Message = "Not watching ticket" };
+        }
+    }
 }
