@@ -67,5 +67,19 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
+        [HttpGet("get")]
+        public async Task<IEnumerable<Ticket>> GetTickets()
+        {
+            try 
+            {
+                return await _ticket.GetTicketsAsync();
+            }
+            catch(Exception ex)
+            {
+                return (IEnumerable<Ticket>)BadRequest(ex.Message);
+            }
+
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using RequestResponseModels.Ticket.Request;
+﻿using InternshipProject_2.Models;
+using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 
 namespace InternshipProject_2.Manager
@@ -7,5 +8,6 @@ namespace InternshipProject_2.Manager
     {
         Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId);
         Task<TicketEditResponse> EditTicketAsync(TicketEditRequest editTicket, int id, int reporterId);
+        Task<IEnumerable<Ticket>> GetTicketsAsync();
     }
 }

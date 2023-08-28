@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Models;
+using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 namespace InternshipProject_2.Manager
@@ -18,6 +19,7 @@ namespace InternshipProject_2.Manager
             var ticket = map.Map<Ticket>(newTicket);
             ticket.ReporterId = reporterId;
             ticket.CreatedAt = DateTime.Now;
+            ticket.Reporter = await _context.Users.FindAsync(ticket.ReporterId);
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
             var response = new TicketCreateResponse { Message = "You succsessfully posted a new ticket!" };
@@ -45,6 +47,12 @@ namespace InternshipProject_2.Manager
             }
             var response = new TicketEditResponse { Message = "You did not edit this ticket! This ticket doesnt exist!" };
             return response;
+        }
+
+        public async Task<IEnumerable<Ticket>> GetTicketsAsync()
+        {
+            var dbTicket = await _context.Tickets.ToListAsync();
+            return dbTicket;
         }
     }
 }
