@@ -63,7 +63,10 @@ namespace InternshipProject_2.Helpers
                 _dbContext.Histories.Add(historyRecord);
                 await _dbContext.SaveChangesAsync();
 
-                return new AddHistoryRecordResponse { Body = historyBody };
+                return new AddHistoryRecordResponse { 
+                    Body = historyBody,
+                    CreatedAt = DateTime.Now
+                };
             }
             catch (Exception ex)
             {

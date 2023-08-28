@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
+using RequestResponseModels.History.Request;
 using RequestResponseModels.History.Response;
 
 namespace InternshipProject_2.Manager
@@ -16,11 +17,24 @@ namespace InternshipProject_2.Manager
             map = MapperConfig.InitializeAutomapper();
         }
 
-        public async Task<GetHistoryResponse> GetHistory(int ticketId)
+        public async Task<GetHistoryResponse> GetHistory(GetHistoryRequest request)
         {
             try
             {
-                var historyRecords = await _dbContext.Histories.Where(history => history.TicketId == ticketId).ProjectTo<AddHistoryRecordResponse>(map.ConfigurationProvider).ToListAsync();
+                var historyRecords = await _dbContext.Histories.Where(history => history.TicketId == request.TicketId).ProjectTo<AddHistoryRecordResponse>(map.ConfigurationProvider).ToListAsync();
+                if(!historyRecords.Any()) {
+                    var errorResponse = new GetHistoryResponse
+                    {
+                        HistoryRecords = new List<AddHistoryRecordResponse>
+                        {
+                            new AddHistoryRecordResponse
+                            {
+                                Body = "No history records found for this ticket."
+                            }
+                        }
+                    };
+                    return errorResponse;
+                }
                 var response = new GetHistoryResponse
                 {
                     HistoryRecords = historyRecords
