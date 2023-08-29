@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Watcher.Request;
@@ -10,10 +11,12 @@ public class WatcherManager : IWatcherManager
 {
     private Project2Context _dbContext;
     public HttpContext httpContext;
+    
 
     public WatcherManager(Project2Context dbContext)
     {
         _dbContext = dbContext;
+       
     }
     public async Task<WatchResponse> WatchTicket(WatchRequest request, int userId)
     {

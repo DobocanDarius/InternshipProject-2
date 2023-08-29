@@ -50,7 +50,7 @@ builder.Services.AddScoped<HistoryBodyGenerator>();
 builder.Services.AddScoped<HistoryWritter>();
 
 builder.Services.AddScoped<IWatcherManager, WatcherManager>();
-
+builder.Services.AddSingleton<TokenRevocation>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

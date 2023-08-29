@@ -1,4 +1,5 @@
-﻿using InternshipProject_2.Manager;
+﻿using InternshipProject_2.Helpers;
+using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace InternshipProject_2.Controllers
     public class WatcherController : ControllerBase
     {
         private readonly IWatcherManager _manager;
+        private readonly TokenRevocation _revoke;
 
-        public WatcherController(IWatcherManager manager)
+        public WatcherController(IWatcherManager manager, TokenRevocation revoke)
         {
             _manager = manager;
+            _revoke = revoke;
         }
 
         [HttpPost]
@@ -25,6 +28,13 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
+                var token = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+
+                if (_revoke.IsTokenRevoked(token))
+                {
+                    return BadRequest(new WatchResponse { Message = "You need to log in" });
+                }
+
                 var authorizationHeader = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
                 if (authorizationHeader?.Value != null)
                 {
