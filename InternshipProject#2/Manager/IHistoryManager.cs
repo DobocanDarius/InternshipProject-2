@@ -8,6 +8,6 @@ namespace InternshipProject_2.Manager
     public interface IHistoryManager
     {
         public Task<GetHistoryResponse> GetHistory(GetHistoryRequest request);
-        public Task<List<AddHistoryRecordResponse>> GetHistoryInTimeRange(int ticketId,DateTime startTime, DateTime endTime);
+        public Task<List<AddHistoryRecordResponse>> GetHistoryInTimeRange(DateTime startTime, DateTime endTime);
     }
 }
