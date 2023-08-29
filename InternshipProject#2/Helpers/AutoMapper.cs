@@ -9,7 +9,8 @@ using RequestResponseModels.User.Response;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.History.Request;
-
+using RequestResponseModels.History.Response;
+using RequestResponseModels.Watcher.Request;
 
 namespace AutoMapper
 {
@@ -36,6 +37,7 @@ namespace AutoMapper
                 cfg.CreateMap<InternshipProject_2.Models.Comment, RequestResponseModels.Ticket.Response.Comment>();
                 cfg.CreateMap<InternshipProject_2.Models.History, RequestResponseModels.Ticket.Response.History>();
                 cfg.CreateMap<Ticket, TicketGetResponse>();
+                cfg.CreateMap<WatchRequest, Watcher>()
             });
 
             var mapper = new Mapper(config);

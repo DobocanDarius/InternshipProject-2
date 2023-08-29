@@ -20,7 +20,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<TokenGenerator>();
-
+builder.Services.AddScoped<TicketStatusHelper>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    // Configure session options here
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -40,8 +45,12 @@ builder.Services.AddScoped<ITicketManager, TicketManager>();
 
 builder.Services.AddDbContext<Project2Context>();
 builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
+builder.Services.AddScoped<IHistoryManager, HistoryManager>();
 builder.Services.AddScoped<HistoryBodyGenerator>();
 builder.Services.AddScoped<HistoryWritter>();
+
+builder.Services.AddScoped<IWatcherManager, WatcherManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +63,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllers();
 

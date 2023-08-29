@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace RequestResponseModels.History.Response
 {
-    public class AddHistoryRecordResponse
+    public class GetHistoryResponse
     {
-       public string Body { get; set; }
-       public DateTime CreatedAt { get; set; }
+        public List<AddHistoryRecordResponse> HistoryRecords { get; set; }
     }
 }

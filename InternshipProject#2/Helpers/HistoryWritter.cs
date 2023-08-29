@@ -49,7 +49,7 @@ namespace InternshipProject_2.Helpers
                 if (request.EventType == HistoryEventType.Comment)
                 {
                     var comment = await _dbContext.Comments
-                    .SingleOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);
+                    .FirstOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);
                     if (comment == null)
                     {
                         var response = new AddHistoryRecordResponse { Body = "Comment not found" };
@@ -63,7 +63,10 @@ namespace InternshipProject_2.Helpers
                 _dbContext.Histories.Add(historyRecord);
                 await _dbContext.SaveChangesAsync();
 
-                return new AddHistoryRecordResponse { Body = historyBody };
+                return new AddHistoryRecordResponse { 
+                    Body = historyBody,
+                    CreatedAt = DateTime.Now
+                };
             }
             catch (Exception ex)
             {
