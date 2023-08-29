@@ -6,6 +6,8 @@ using RequestResponseModels.History.Request;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
+using RequestResponseModels.Watcher.Request;
+
 namespace InternshipProject_2.Manager
 {
     public class TicketManager : ITicketManager
@@ -32,7 +34,12 @@ namespace InternshipProject_2.Manager
             ticket.ReporterId = reporterId;
             ticket.CreatedAt = DateTime.Now;
             ticket.Reporter = await _context.Users.FindAsync(ticket.ReporterId);
+            ticket.Status = 1;
             _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
+            WatchRequest req = new WatchRequest(reporterId, ticket.Id);
+            var watcher = map.Map<Models.Watcher>(req);
+            _context.Watchers.Add(watcher);
             await _context.SaveChangesAsync();
             var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = ticket.Id, EventType = HistoryEventType.Create };
             await historyWritter.AddHistoryRecord(historyRequest);
@@ -88,9 +95,7 @@ namespace InternshipProject_2.Manager
         public async Task<IEnumerable<TicketGetResponse>> GetTicketsAsync()
         {
             var map = MapperConfig.InitializeAutomapper();
-            var dbTicket = await _context.Tickets.Include(i=>i.Reporter).ToListAsync();
-            dbTicket = await _context.Tickets.Include(i => i.Comments).ToListAsync();
-            dbTicket = await _context.Tickets.Include(i => i.Histories).ToListAsync();
+            var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers).ToListAsync();
             List<TicketGetResponse> response = new List<TicketGetResponse>();
             dbTicket.ForEach(t => response.Add(map.Map<TicketGetResponse>(t)));
 

@@ -29,7 +29,7 @@ public class UserManager : IUserManager
     public async Task<LoginResponse> Login(LoginRequest user)
     {
         string hashedPsw = _passwordHasher.HashPassword(user.Password);
-        var foundUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == user.Password);
+        var foundUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
 
         if (foundUser != null)
         {

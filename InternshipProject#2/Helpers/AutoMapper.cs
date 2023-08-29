@@ -34,10 +34,11 @@ namespace AutoMapper
                 cfg.CreateMap<InternshipProject_2.Models.User, GetAssignedUserResponse>();
                 cfg.CreateMap<AddHistoryRecordRequest, InternshipProject_2.Models.History>();
                 cfg.CreateMap<InternshipProject_2.Models.User, RequestResponseModels.Ticket.Response.User>();
-                cfg.CreateMap<InternshipProject_2.Models.Comment, RequestResponseModels.Ticket.Response.Comment>();
+                cfg.CreateMap<InternshipProject_2.Models.Comment, RequestResponseModels.Ticket.Response.Comment>().ForMember(x => x.Username, o => o.MapFrom(e => e.User.Username));
                 cfg.CreateMap<InternshipProject_2.Models.History, RequestResponseModels.Ticket.Response.History>();
+                cfg.CreateMap<InternshipProject_2.Models.Watcher, RequestResponseModels.Ticket.Response.Watcher>().ForMember(x => x.Username, o => o.MapFrom(e => e.User.Username));
                 cfg.CreateMap<Ticket, TicketGetResponse>();
-                cfg.CreateMap<WatchRequest, Watcher>()
+                cfg.CreateMap<WatchRequest, InternshipProject_2.Models.Watcher>();
             });
 
             var mapper = new Mapper(config);

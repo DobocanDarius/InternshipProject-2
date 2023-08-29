@@ -89,7 +89,7 @@ namespace InternshipProject_2.Controllers
                     int reporterId = int.Parse(userIdObj.ToString());
                     if (reporterId != 0)
                     {
-                        await _ticket.DeleteTicketAsync(ticketId, reporterId);
+                        await _ticketAcces.DeleteTicketAsync(ticketId, reporterId);
                         return Ok();
                     }
                     else return BadRequest("You are not logged in!");
@@ -112,7 +112,7 @@ namespace InternshipProject_2.Controllers
                     int reporterId = int.Parse(TakeUserIdFromClaim.Value);
                     if (reporterId != 0)
                     {
-                        await _ticket.ChangeTicketsStatus(ticket, reporterId, ticketId);
+                        await _ticketAcces.ChangeTicketsStatus(ticket, reporterId, ticketId);
                         return Ok();
                     }
                     else return BadRequest("You did not post this!");
