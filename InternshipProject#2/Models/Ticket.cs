@@ -25,6 +25,8 @@ public partial class Ticket
 
     public byte[]? Attachements { get; set; }
 
+    public int? Status { get; set; }
+
     public virtual ICollection<Assignee> Assignees { get; set; } = new List<Assignee>();
 
     public virtual ICollection<Attachement> AttachementsNavigation { get; set; } = new List<Attachement>();

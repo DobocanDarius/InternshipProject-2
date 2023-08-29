@@ -17,7 +17,7 @@ public partial class Project2Context : DbContext
 
     public virtual DbSet<Assignee> Assignees { get; set; }
 
-    public virtual DbSet<Attachement> Attachement { get; set; }
+    public virtual DbSet<Attachement> Attachements { get; set; }
 
     public virtual DbSet<Comment> Comments { get; set; }
 
@@ -33,13 +33,13 @@ public partial class Project2Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Project2;Trusted_Connection=True;");
+        => optionsBuilder.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=Project2;Trusted_Connection=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Assignee>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Assignee__3214EC07C40E2466");
+            entity.HasKey(e => e.Id).HasName("PK__Assignee__3214EC070B7E69DA");
 
             entity.ToTable("Assignee");
 
@@ -56,9 +56,9 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Attachement>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Attachem__3214EC077035A703");
+            entity.HasKey(e => e.Id).HasName("PK__Attachem__3214EC07430DB8B2");
 
-            entity.ToTable("Attachements");
+            entity.ToTable("Attachement");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.AttachementName).HasMaxLength(100);
@@ -71,9 +71,11 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Comment__3214EC073B95F8DB");
+            entity.HasKey(e => e.Id).HasName("PK__Comment__3214EC07AC7CF4BA");
 
             entity.ToTable("Comment");
+
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.TicketId)
@@ -88,7 +90,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<History>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__History__3214EC07B56D8AD2");
+            entity.HasKey(e => e.Id).HasName("PK__History__3214EC07AE820C81");
 
             entity.ToTable("History");
 
@@ -107,7 +109,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Ticket__3214EC07C3B2AA84");
+            entity.HasKey(e => e.Id).HasName("PK__Ticket__3214EC076FB31D16");
 
             entity.ToTable("Ticket");
 
@@ -126,7 +128,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<TicketLifeCycle>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TicketLi__3214EC07C39ED572");
+            entity.HasKey(e => e.Id).HasName("PK__TicketLi__3214EC074320D599");
 
             entity.ToTable("TicketLifeCycle");
 
@@ -141,7 +143,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC078E5E68D5");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC0747BD7C1B");
 
             entity.ToTable("User");
 
@@ -154,7 +156,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Watcher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Watcher__3214EC07D27B21CB");
+            entity.HasKey(e => e.Id).HasName("PK__Watcher__3214EC07AFA98FD2");
 
             entity.ToTable("Watcher");
 

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="2baaaa44-956f-4a57-8acf-e97995fb4bae" ChangeDateTime="08/28/2023 13:12:25">
+    <Property Name="ElementName" Value="[dbo].[FK_Ticket_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[Ticket]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_Ticket_Status]" />
+  </Operation>
+</Operations>

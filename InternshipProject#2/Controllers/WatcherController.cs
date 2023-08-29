@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace InternshipProject_2.Controllers
 {
@@ -27,9 +28,9 @@ namespace InternshipProject_2.Controllers
                 var authorizationHeader = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
                 if (authorizationHeader?.Value != null)
                 {
-                        var userId = int.Parse(authorizationHeader.Value);
-                        var result = await _manager.WatchTicket(request, userId);
-                        return Ok(result.Message);
+                    var userId = int.Parse(authorizationHeader.Value);
+                    var result = await _manager.WatchTicket(request, userId);
+                    return Ok(result.Message);
                 }
 
                 return BadRequest(new WatchResponse { Message = "You need to log in" });
