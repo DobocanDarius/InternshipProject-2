@@ -31,10 +31,10 @@ namespace AutoMapper
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
                 cfg.CreateMap<InternshipProject_2.Models.User, GetAssignedUserResponse>();
+                cfg.CreateMap<AddHistoryRecordRequest, InternshipProject_2.Models.History>();
                 cfg.CreateMap<InternshipProject_2.Models.User, RequestResponseModels.Ticket.Response.User>();
                 cfg.CreateMap<InternshipProject_2.Models.Comment, RequestResponseModels.Ticket.Response.Comment>();
                 cfg.CreateMap<InternshipProject_2.Models.History, RequestResponseModels.Ticket.Response.History>();
-                cfg.CreateMap<AddHistoryRecordRequest, InternshipProject_2.Models.History>();
                 cfg.CreateMap<Ticket, TicketGetResponse>();
             });
 

@@ -8,31 +8,30 @@ namespace RequestResponseModels.Ticket.Response
 {
     public class TicketGetResponse
     {
+        public string Title { get; set; } = null!;
 
-        public string Title { get; } = null!;
+        public string Body { get; set; } = null!;
 
-        public string Body { get; } = null!;
+        public string Type { get; set; } = null!;
 
-        public string Type { get; } = null!;
+        public string Priority { get; set; } = null!;
 
-        public string Priority { get; } = null!;
+        public string Component { get; set; } = null!;
 
-        public string Component { get; } = null!;
+        public int ReporterId { get; set; }
 
-        public int ReporterId { get; }
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime CreatedAt { get; }
+        public DateTime? UpdatedAt { get; set; }
 
-        public DateTime? UpdatedAt { get; }
+        public byte[]? Attachements { get; set; }
 
-        public byte[]? Attachements { get;}
+        public User Reporter { get; set; } = null!;
 
-        public User Reporter { get; } = null!;
+        public ICollection<Comment>? Comments { get; set; }
 
-        public ICollection<Comment> Comments { get; } = new List<Comment>();
+        public ICollection<History>? Histories { get; set; }
 
-        public ICollection<History> Histories { get; } = new List<History>();
-
-        public Watcher? Watchers { get; } 
+        public ICollection<Watcher>? Watchers { get; set; } 
     }
 }

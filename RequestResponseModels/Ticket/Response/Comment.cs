@@ -8,10 +8,10 @@ namespace RequestResponseModels.Ticket.Response
 {
     public class Comment
     {
-        public string Body { get; }
+        public string Body { get; set; }
 
-        public int UserId { get; }
+        public int UserId { get; set; }
 
-        public DateTime CreatedAt { get; }
+        public DateTime CreatedAt { get; set; }
     }
 }
