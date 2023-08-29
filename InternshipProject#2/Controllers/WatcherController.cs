@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace InternshipProject_2.Controllers
 {

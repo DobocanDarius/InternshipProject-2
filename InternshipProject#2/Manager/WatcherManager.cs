@@ -9,7 +9,6 @@ namespace InternshipProject_2.Manager;
 public class WatcherManager : IWatcherManager
 {
     private Project2Context _dbContext;
-    public HttpContext httpContext;
 
     public WatcherManager(Project2Context dbContext)
     {
