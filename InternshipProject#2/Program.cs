@@ -49,6 +49,9 @@ builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 builder.Services.AddScoped<IHistoryManager, HistoryManager>();
 builder.Services.AddScoped<HistoryBodyGenerator>();
 builder.Services.AddScoped<HistoryWritter>();
+
+builder.Services.AddScoped<IWatcherManager, WatcherManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

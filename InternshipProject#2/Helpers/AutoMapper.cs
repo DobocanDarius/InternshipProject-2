@@ -10,6 +10,7 @@ using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.History.Response;
+using RequestResponseModels.Watcher.Request;
 
 namespace AutoMapper
 {
@@ -33,6 +34,7 @@ namespace AutoMapper
                 cfg.CreateMap<User, GetAssignedUserResponse>();
                 cfg.CreateMap<AddHistoryRecordRequest, History>();
                 cfg.CreateMap<History, AddHistoryRecordResponse>();
+                cfg.CreateMap<WatchRequest, Watcher>();
             });
 
             var mapper = new Mapper(config);
