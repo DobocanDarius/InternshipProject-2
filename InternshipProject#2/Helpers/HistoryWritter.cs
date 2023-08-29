@@ -64,6 +64,7 @@ namespace InternshipProject_2.Helpers
                 await _dbContext.SaveChangesAsync();
 
                 return new AddHistoryRecordResponse { 
+                    TicketId = request.TicketId,
                     Body = historyBody,
                     CreatedAt = DateTime.Now
                 };

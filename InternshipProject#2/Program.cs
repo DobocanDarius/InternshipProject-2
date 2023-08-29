@@ -7,6 +7,7 @@ using AutoMapper;
 using System.Text;
 using InternshipProject_2;
 using Microsoft.Extensions.Options;
+using InternshipProject_2.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
@@ -42,8 +43,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddScoped<ICommentManager, CommentManager>();
 builder.Services.AddScoped<ITicketManager, TicketManager>();
-
-builder.Services.AddDbContext<Project2Context>();
+builder.Services.AddHostedService<TicketChangeNotifier>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 builder.Services.AddScoped<IHistoryManager, HistoryManager>();
 builder.Services.AddScoped<HistoryBodyGenerator>();
