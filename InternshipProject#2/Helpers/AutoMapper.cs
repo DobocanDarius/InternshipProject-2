@@ -35,6 +35,7 @@ namespace AutoMapper
                 cfg.CreateMap<AddHistoryRecordRequest, History>();
                 cfg.CreateMap<History, AddHistoryRecordResponse>();
                 cfg.CreateMap<WatchRequest, Watcher>();
+                cfg.CreateMap<TicketStatusRequest, Ticket>();
             });
 
             var mapper = new Mapper(config);
