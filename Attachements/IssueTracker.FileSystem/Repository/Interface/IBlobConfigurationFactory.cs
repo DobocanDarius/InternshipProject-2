@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("IssueTracker.UnitTest")]
-namespace IssueTracker.FileSystem;
+namespace FileSystem.Repository.Interface;
 internal interface IBlobConfigurationFactory : IConfigurationBase
 {
     string Container { get; }

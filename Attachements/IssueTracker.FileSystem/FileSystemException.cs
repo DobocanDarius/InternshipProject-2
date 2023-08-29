@@ -1,4 +1,4 @@
-﻿namespace IssueTracker.FileSystem;
+﻿namespace FileSystem;
 public class FileSystemException : Exception
 {
     public FileSystemException(string message)

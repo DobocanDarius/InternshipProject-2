@@ -1,4 +1,4 @@
-﻿namespace IssueTracker.FileSystem;
+﻿namespace FileSystem.Repository.Interface;
 internal interface IBlobProvider
 {
     Task<IEnumerable<Models.File>> GetFilesAsync(IEnumerable<Models.File> files);

@@ -1,4 +1,6 @@
-﻿namespace IssueTracker.FileSystem;
+﻿using FileSystem.Repository.Interface;
+
+namespace FileSystem.Repository;
 public class BlobConfiguration : IBlobConfigurationFactory
 {
     public BlobConfiguration(string container, string connstring, string accountName, string accountKey)

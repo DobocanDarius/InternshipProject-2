@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FileSystem.Repository.Interface;
+using IssueTracker.FileSystem;
+using Microsoft.Extensions.Configuration;
 
-namespace IssueTracker.FileSystem;
+namespace FileSystem.Repository;
 internal class ConfigurationFactory : IConfigurationFactory
 {
     private readonly IConfiguration _config;

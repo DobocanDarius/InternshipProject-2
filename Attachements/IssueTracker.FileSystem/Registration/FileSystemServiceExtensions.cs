@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FileSystem.Repository;
+using FileSystem.Repository.Interface;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace IssueTracker.FileSystem;
+namespace FileSystem.Registration;
 
 public static class FileSystemServiceExtensions
 {

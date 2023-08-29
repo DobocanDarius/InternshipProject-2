@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RequestResponseModels", "Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{814FA560-DA02-40C5-ACAF-C18D2C5D8F0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueTracker.FileSystem", "Attachements\IssueTracker.FileSystem\IssueTracker.FileSystem.csproj", "{4F18E9F9-22E6-46BC-8148-C12D15A8DD0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystem", "Attachements\IssueTracker.FileSystem\FileSystem.csproj", "{4F18E9F9-22E6-46BC-8148-C12D15A8DD0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

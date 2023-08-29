@@ -1,8 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using FileSystem.Repository.Interface;
 using Microsoft.Extensions.Configuration;
 
 [assembly: InternalsVisibleTo("IssueTracker.UnitTest")]
-namespace IssueTracker.FileSystem;
+namespace FileSystem.Repository;
 public class FileProvider : IFileProvider
 {
     private readonly IMetaDataProvider _metaDataProvider;

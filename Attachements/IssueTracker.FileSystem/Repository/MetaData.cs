@@ -1,6 +1,7 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using FileSystem.Repository.Interface;
+using Microsoft.Azure.Cosmos.Table;
 
-namespace IssueTracker.FileSystem;
+namespace FileSystem.Repository;
 
 public class MetaDataProvider : IMetaDataProvider
 {

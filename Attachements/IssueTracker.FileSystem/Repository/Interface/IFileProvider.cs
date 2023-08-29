@@ -1,7 +1,7 @@
-﻿namespace IssueTracker.FileSystem;
+﻿namespace FileSystem.Repository.Interface;
 public interface IFileProvider
 {
     Task UploadAsync(Models.File file);
-    Task<IEnumerable<IssueTracker.FileSystem.Models.File>> GetAsync(IEnumerable<IssueTracker.FileSystem.Models.File> files);
+    Task<IEnumerable<Models.File>> GetAsync(IEnumerable<Models.File> files);
     Task<bool> DeleteAsync(Models.File file);
 }

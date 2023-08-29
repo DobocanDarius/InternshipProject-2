@@ -1,7 +1,8 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
+using FileSystem.Repository.Interface;
 
-namespace IssueTracker.FileSystem;
+namespace FileSystem.Repository;
 public class BlobProvider : IBlobProvider
 {
     private readonly IBlobConfigurationFactory _config;

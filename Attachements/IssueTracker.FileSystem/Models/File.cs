@@ -1,4 +1,4 @@
-﻿namespace IssueTracker.FileSystem.Models;
+﻿namespace FileSystem.Models;
 public class File
 {
     public File()

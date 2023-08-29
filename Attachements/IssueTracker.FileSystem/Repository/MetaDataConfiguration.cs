@@ -1,5 +1,6 @@
-﻿
-namespace IssueTracker.FileSystem;
+﻿using FileSystem.Repository.Interface;
+
+namespace FileSystem.Repository;
 public class MetaDataConfiguration : IMetaDataConfiguration
 {
     public string ConnectionString { get; }
