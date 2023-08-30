@@ -11,6 +11,7 @@ using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.History.Response;
 using RequestResponseModels.Watcher.Request;
+using History = InternshipProject_2.Models.History;
 
 namespace AutoMapper
 {
@@ -31,6 +32,8 @@ namespace AutoMapper
                 cfg.CreateMap<TicketEditRequest, Ticket>();
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
+                cfg.CreateMap<AddHistoryRecordRequest, History>();
+                cfg.CreateMap<History,AddHistoryRecordResponse>();
                 cfg.CreateMap<InternshipProject_2.Models.User, GetAssignedUserResponse>();
                 cfg.CreateMap<AddHistoryRecordRequest, InternshipProject_2.Models.History>();
                 cfg.CreateMap<InternshipProject_2.Models.User, RequestResponseModels.Ticket.Response.User>();
