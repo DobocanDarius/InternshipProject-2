@@ -13,11 +13,11 @@ public class UserManager : IUserManager
     private readonly Project2Context _dbContext;
     private readonly PasswordHasher _passwordHasher;
     private readonly TokenHelper _tokenHelper;
-    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper token)
+    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper tokenHelper)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
-        _tokenHelper = token;
+        _tokenHelper = tokenHelper;
     }
 
     public UserManager(Project2Context dbContext, PasswordHasher passwordHasher)

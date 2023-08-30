@@ -15,7 +15,7 @@ public class WatcherManager : IWatcherManager
         _dbContext = dbContext;
         map = MapperConfig.InitializeAutomapper();
     }
-    public async Task<WatchResponse> WatchTicket(WatchRequest request, int? userId)
+    public async Task<WatchResponse> WatchTicket(WatchRequest request, int userId)
     {
         var watcher = await _dbContext.Watchers
             .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
