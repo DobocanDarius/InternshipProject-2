@@ -39,15 +39,18 @@ namespace UnitTests
                 Priority = "Test",
                 Component = "Test",
                 ReporterId = 1,
+                Status = 1,
                 CreatedAt = DateTime.Now
             };
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
             var request = new WatchRequest(user.Id, ticket.Id);
-
+            request.isWatching = false;
             WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
 
+            _dbContext.Users.Remove(user);
+            _dbContext.Tickets.Remove(ticket);
             //Assert
             Assert.AreEqual("Watching ticket", result.Message);
         }
@@ -56,7 +59,7 @@ namespace UnitTests
         public async Task WatchTicket_AlreadyWatching()
         {
             //Arrange
-          
+
             var request = new WatchRequest(2002, 1);
 
             WatchResponse result = await _watchManager.WatchTicket(request, 1);

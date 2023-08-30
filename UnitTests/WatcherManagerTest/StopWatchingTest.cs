@@ -5,7 +5,7 @@ using RequestResponseModels.Watcher.Response;
 
 namespace UnitTests
 {
-    [TestClass]
+    /*[TestClass]
     public class StopWatchingTest
     {
         private WatcherManager _watchManager;
@@ -64,5 +64,5 @@ namespace UnitTests
             //Assert
             Assert.AreEqual("Not watching ticket", result.Message);
         }
-    }
+    }*/
 }

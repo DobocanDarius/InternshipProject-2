@@ -19,13 +19,13 @@ public partial class Ticket
 
     public int ReporterId { get; set; }
 
+    public int Status { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
     public byte[]? Attachements { get; set; }
-
-    public int? Status { get; set; }
 
     public virtual ICollection<Assignee> Assignees { get; set; } = new List<Assignee>();
 
@@ -36,6 +36,8 @@ public partial class Ticket
     public virtual ICollection<History> Histories { get; set; } = new List<History>();
 
     public virtual User Reporter { get; set; } = null!;
+
+    public virtual Status StatusNavigation { get; set; } = null!;
 
     public virtual ICollection<TicketLifeCycle> TicketLifeCycles { get; set; } = new List<TicketLifeCycle>();
 

@@ -9,48 +9,55 @@ namespace InternshipProject_2.Manager;
 public class WatcherManager : IWatcherManager
 {
     private Project2Context _dbContext;
-
+    private readonly Mapper map;
     public WatcherManager(Project2Context dbContext)
     {
         _dbContext = dbContext;
+        map = MapperConfig.InitializeAutomapper();
     }
-    public async Task<WatchResponse> WatchTicket(WatchRequest request, int userId)
+    public async Task<WatchResponse> WatchTicket(WatchRequest request, int? userId)
     {
-        var existingWatchRequest = await _dbContext.Watchers
-        .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
+        var isDeleted = await _dbContext.Watchers
+        .AnyAsync(w => w.UserId == userId && w.TicketId == request.TicketId && w.IsDeleted == true);
 
-        if (existingWatchRequest == null)
+        var dbWatchTicket = await _dbContext.Watchers
+            .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
+
+        if (dbWatchTicket == null)
         {
-            var map = MapperConfig.InitializeAutomapper();
+            if (!isDeleted && !request.isWatching)
+            {
+                var map = MapperConfig.InitializeAutomapper();
+                request.UserId = userId;
 
-            request.UserId = userId;
+                var mappedWatcher = map.Map<Watcher>(request);
+                _dbContext.Watchers.Add(mappedWatcher);
+                await _dbContext.SaveChangesAsync();
 
-            var mappedWatcher = map.Map<Watcher>(request);
-            await _dbContext.Watchers.AddAsync(mappedWatcher);
-            await _dbContext.SaveChangesAsync();
+                return new WatchResponse { Message = "Watching ticket" };
+            }
 
-            return new WatchResponse { Message = "Watching ticket" };
+            return new WatchResponse { Message = "Ticket does not exist" };
         }
-        else
+
+        if (!isDeleted && !request.isWatching)
         {
             return new WatchResponse { Message = "Already watching ticket" };
         }
-    }
-
-    public async Task<WatchResponse> StopWatching(WatchRequest request, int userId)
-    {
-        var watching = await _dbContext.Watchers
-        .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
-
-        if (watching != null)
+        else if (isDeleted && !request.isWatching)
         {
-            _dbContext.Watchers.Remove(watching);
+            dbWatchTicket.IsDeleted = false;
             await _dbContext.SaveChangesAsync();
-            return new WatchResponse { Message = "Stopped watching" };
+            return new WatchResponse { Message = "Watching ticket again" };
         }
-        else
+        else if (!isDeleted && request.isWatching)
         {
-            return new WatchResponse { Message = "Not watching ticket" };
+            dbWatchTicket.IsDeleted = true;
+            await _dbContext.SaveChangesAsync();
+            return new WatchResponse { Message = "Not watching anymore" };
         }
+
+        return new WatchResponse { Message = "Ticket does not exist" };
     }
 }
+
