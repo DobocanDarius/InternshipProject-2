@@ -1,5 +1,5 @@
 ﻿using FileSystem.Repository.Interface;
-using IssueTracker.FileSystem;
+using FileSystem;
 using Microsoft.Extensions.Configuration;
 
 namespace FileSystem.Repository;
