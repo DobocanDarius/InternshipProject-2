@@ -23,41 +23,32 @@ public class WatcherManager : IWatcherManager
         var dbWatchTicket = await _dbContext.Watchers
             .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
 
-        if (dbWatchTicket == null)
+        if (dbWatchTicket != null)
         {
-            if (!isDeleted && !request.isWatching)
+            if(request.isWatching) 
             {
-                var map = MapperConfig.InitializeAutomapper();
-                request.UserId = userId;
-
-                var mappedWatcher = map.Map<Watcher>(request);
-                _dbContext.Watchers.Add(mappedWatcher);
+                dbWatchTicket.IsDeleted = true;
                 await _dbContext.SaveChangesAsync();
-
-                return new WatchResponse { Message = "Watching ticket" };
+                return new WatchResponse { Message = "Not watching anymore" };
             }
-
-            return new WatchResponse { Message = "Ticket does not exist" };
+            else
+            {
+                dbWatchTicket.IsDeleted = false;
+                await _dbContext.SaveChangesAsync();
+                return new WatchResponse { Message = "Watching ticket again" };
+            }
         }
+        else
+        {
+            request.UserId = userId;
 
-        if (!isDeleted && !request.isWatching)
-        {
-            return new WatchResponse { Message = "Already watching ticket" };
-        }
-        else if (isDeleted && !request.isWatching)
-        {
-            dbWatchTicket.IsDeleted = false;
+            var mappedWatcher = map.Map<Watcher>(request);
+            _dbContext.Watchers.Add(mappedWatcher);
             await _dbContext.SaveChangesAsync();
-            return new WatchResponse { Message = "Watching ticket again" };
-        }
-        else if (!isDeleted && request.isWatching)
-        {
-            dbWatchTicket.IsDeleted = true;
-            await _dbContext.SaveChangesAsync();
-            return new WatchResponse { Message = "Not watching anymore" };
-        }
 
-        return new WatchResponse { Message = "Ticket does not exist" };
+            return new WatchResponse { Message = "Watching ticket" };
+        }
     }
+
 }
 

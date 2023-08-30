@@ -27,6 +27,8 @@ public partial class Project2Context : DbContext
 
     public virtual DbSet<Ticket> Tickets { get; set; }
 
+    public virtual DbSet<TicketLifeCycle> TicketLifeCycles { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Watcher> Watchers { get; set; }
@@ -39,7 +41,7 @@ public partial class Project2Context : DbContext
     {
         modelBuilder.Entity<Assignee>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Assignee__3214EC07C40E2466");
+            entity.HasKey(e => e.Id).HasName("PK__Assignee__3214EC070BFC15F9");
 
             entity.ToTable("Assignee");
 
@@ -54,9 +56,23 @@ public partial class Project2Context : DbContext
                 .HasConstraintName("FK_Assignee_User");
         });
 
+        modelBuilder.Entity<Attachement>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Attachem__3214EC072846AFC5");
+
+            entity.ToTable("Attachement");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
+            entity.HasOne(d => d.Ticket).WithMany(p => p.Attachements)
+                .HasForeignKey(d => d.TicketId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Attachement_Ticket");
+        });
+
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Comment__3214EC073B95F8DB");
+            entity.HasKey(e => e.Id).HasName("PK__Comment__3214EC07D890D7F0");
 
             entity.ToTable("Comment");
 
@@ -75,7 +91,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<History>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__History__3214EC07B56D8AD2");
+            entity.HasKey(e => e.Id).HasName("PK__History__3214EC07016C1632");
 
             entity.ToTable("History");
 
@@ -94,7 +110,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Status>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Status__3214EC07DBD5B68C");
+            entity.HasKey(e => e.Id).HasName("PK__Status__3214EC0728609FB2");
 
             entity.ToTable("Status");
 
@@ -104,7 +120,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC07C0D7E819");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC079EB81B92");
 
             entity.ToTable("Ticket");
 
@@ -127,9 +143,24 @@ public partial class Project2Context : DbContext
                 .HasConstraintName("FK_Ticket_Status");
         });
 
+        modelBuilder.Entity<TicketLifeCycle>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__TicketLi__3214EC0717AB9C36");
+
+            entity.ToTable("TicketLifeCycle");
+
+            entity.Property(e => e.ToDo)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+
+            entity.HasOne(d => d.Ticket).WithMany(p => p.TicketLifeCycles)
+                .HasForeignKey(d => d.TicketId)
+                .HasConstraintName("FK_TicketLifeCycle_Ticket");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC078E5E68D5");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC078D81EE7B");
 
             entity.ToTable("User");
 
@@ -142,7 +173,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Watcher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Watcher__3214EC07D27B21CB");
+            entity.HasKey(e => e.Id).HasName("PK__Watcher__3214EC073FBAA46A");
 
             entity.ToTable("Watcher");
 

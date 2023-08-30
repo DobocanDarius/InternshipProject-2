@@ -45,12 +45,12 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id);
-            request.isWatching = false;
+            var request = new WatchRequest(user.Id, ticket.Id, false);
             WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
 
             _dbContext.Users.Remove(user);
             _dbContext.Tickets.Remove(ticket);
+            _dbContext.SaveChanges();
             //Assert
             Assert.AreEqual("Watching ticket", result.Message);
         }
@@ -82,14 +82,14 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id);
-            request.isWatching = false;
+            var request = new WatchRequest(user.Id, ticket.Id, false);
             await _watchManager.WatchTicket(request, user.Id);
 
             WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
 
             _dbContext.Users.Remove(user);
             _dbContext.Tickets.Remove(ticket);
+            _dbContext.SaveChanges();
             //Assert
             Assert.AreEqual("Already watching ticket", result.Message);
         }
@@ -120,12 +120,12 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id);
-            request.isWatching = true;
+            var request = new WatchRequest(user.Id, ticket.Id, true);
             var result = await _watchManager.WatchTicket(request, user.Id);
 
             _dbContext.Users.Remove(user);
             _dbContext.Tickets.Remove(ticket);
+            _dbContext.SaveChanges();
             //Assert
             Assert.AreEqual("Not watching anymore", result.Message);
         }
@@ -156,8 +156,7 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id);
-            request.isWatching = true;
+            var request = new WatchRequest(user.Id, ticket.Id, true);
             await _watchManager.WatchTicket(request, user.Id);
 
             request.isWatching = false;
@@ -165,6 +164,7 @@ namespace UnitTests
 
             _dbContext.Users.Remove(user);
             _dbContext.Tickets.Remove(ticket);
+            _dbContext.SaveChanges();
             //Assert
             Assert.AreEqual("Watching ticket again", result.Message);
         }

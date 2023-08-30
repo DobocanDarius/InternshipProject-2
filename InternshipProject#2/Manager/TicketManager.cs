@@ -38,7 +38,7 @@ namespace InternshipProject_2.Manager
             ticket.Status = 1;
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
-            WatchRequest req = new WatchRequest(reporterId, ticket.Id);
+            WatchRequest req = new WatchRequest(reporterId, ticket.Id, false);
             var watcher = map.Map<Models.Watcher>(req);
             _context.Watchers.Add(watcher);
             await _context.SaveChangesAsync();
@@ -96,7 +96,7 @@ namespace InternshipProject_2.Manager
         public async Task<IEnumerable<TicketGetResponse>> GetTicketsAsync()
         {
             var map = MapperConfig.InitializeAutomapper();
-            var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers).ToListAsync();
+            var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers.Where(w => w.IsDeleted == false)).ToListAsync();
             List<TicketGetResponse> response = new List<TicketGetResponse>();
             dbTicket.ForEach(t => response.Add(map.Map<TicketGetResponse>(t)));
 

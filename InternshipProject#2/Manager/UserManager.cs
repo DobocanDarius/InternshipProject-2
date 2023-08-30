@@ -12,8 +12,8 @@ public class UserManager : IUserManager
 {
     private readonly Project2Context _dbContext;
     private readonly PasswordHasher _passwordHasher;
-    private readonly TokenGenerator _tokenGenerator;
-    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenGenerator tokenGenerator)
+    private readonly TokenHelper _tokenGenerator;
+    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper tokenGenerator)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
