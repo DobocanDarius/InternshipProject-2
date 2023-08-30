@@ -37,7 +37,5 @@ public partial class Ticket
 
     public virtual Status StatusNavigation { get; set; } = null!;
 
-    public virtual ICollection<TicketLifeCycle> TicketLifeCycles { get; set; } = new List<TicketLifeCycle>();
-
     public virtual ICollection<Watcher> Watchers { get; set; } = new List<Watcher>();
 }

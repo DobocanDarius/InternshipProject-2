@@ -27,8 +27,6 @@ public partial class Project2Context : DbContext
 
     public virtual DbSet<Ticket> Tickets { get; set; }
 
-    public virtual DbSet<TicketLifeCycle> TicketLifeCycles { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Watcher> Watchers { get; set; }
@@ -141,21 +139,6 @@ public partial class Project2Context : DbContext
                 .HasForeignKey(d => d.Status)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Ticket_Status");
-        });
-
-        modelBuilder.Entity<TicketLifeCycle>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__TicketLi__3214EC07C39ED572");
-
-            entity.ToTable("TicketLifeCycle");
-
-            entity.Property(e => e.ToDo)
-                .IsRequired()
-                .HasDefaultValueSql("((1))");
-
-            entity.HasOne(d => d.Ticket).WithMany(p => p.TicketLifeCycles)
-                .HasForeignKey(d => d.TicketId)
-                .HasConstraintName("FK_TicketLifeCycle_Ticket");
         });
 
         modelBuilder.Entity<User>(entity =>
