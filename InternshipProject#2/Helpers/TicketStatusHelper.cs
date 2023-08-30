@@ -10,6 +10,10 @@ namespace InternshipProject_2.Helpers
     {
         private readonly Project2Context _context;
 
+        public TicketStatusHelper()
+        {
+        }
+
         public TicketStatusHelper(Project2Context context)
         {
             _context = context;
