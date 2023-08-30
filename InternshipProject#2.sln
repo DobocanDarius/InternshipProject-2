@@ -3,6 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InternshipProject#2", "InternshipProject#2\InternshipProject#2.csproj", "{F946B1AE-DCEC-449B-AF73-7B148B7A4ACA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4F18E9F9-22E6-46BC-8148-C12D15A8DD0C} = {4F18E9F9-22E6-46BC-8148-C12D15A8DD0C}
+	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{CD107738-86E6-4587-8ED6-E7A011CB3E83}"
 EndProject

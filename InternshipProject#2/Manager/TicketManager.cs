@@ -16,20 +16,22 @@ namespace InternshipProject_2.Manager
         private readonly HistoryBodyGenerator historyBodyGenerator;
         private HistoryWritter historyWritter;
         private readonly TicketStatusHelper _statusHandler;
+        private readonly Mapper map;
         public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
         {
             _context = context;
             historyBodyGenerator = new HistoryBodyGenerator();
             historyWritter = new HistoryWritter(context, historyBodyGenerator);
             _statusHandler = statusHandler;
+            map = MapperConfig.InitializeAutomapper();
         }
         public TicketManager(Project2Context context)
         {
-            _context = context; 
+            _context = context;
+            map = MapperConfig.InitializeAutomapper();
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
         {
-            var map = MapperConfig.InitializeAutomapper();
             var ticket = map.Map<Ticket>(newTicket);
             ticket.ReporterId = reporterId;
             ticket.CreatedAt = DateTime.Now;

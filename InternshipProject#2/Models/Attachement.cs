@@ -9,7 +9,9 @@ public partial class Attachement
 
     public int TicketId { get; set; }
 
-    public string AttachementName { get; set; } = null!;
+    public string Name { get; set; } = null!;
+
+    public string Link { get; set; } = null!;
 
     public virtual Ticket Ticket { get; set; } = null!;
 }

@@ -101,7 +101,9 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
+
         [HttpPut("editTicketsStatus/{ticketId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> EditTicketsStatus([FromBody] TicketStatusRequest ticket, int ticketId)
         {
             try
