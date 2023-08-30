@@ -17,23 +17,20 @@ public class WatcherManager : IWatcherManager
     }
     public async Task<WatchResponse> WatchTicket(WatchRequest request, int? userId)
     {
-        var isDeleted = await _dbContext.Watchers
-        .AnyAsync(w => w.UserId == userId && w.TicketId == request.TicketId && w.IsDeleted == true);
-
-        var dbWatchTicket = await _dbContext.Watchers
+        var watcher = await _dbContext.Watchers
             .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
 
-        if (dbWatchTicket != null)
+        if (watcher != null)
         {
             if(request.isWatching) 
             {
-                dbWatchTicket.IsDeleted = true;
+                watcher.IsDeleted = true;
                 await _dbContext.SaveChangesAsync();
                 return new WatchResponse { Message = "Not watching anymore" };
             }
             else
             {
-                dbWatchTicket.IsDeleted = false;
+                watcher.IsDeleted = false;
                 await _dbContext.SaveChangesAsync();
                 return new WatchResponse { Message = "Watching ticket again" };
             }

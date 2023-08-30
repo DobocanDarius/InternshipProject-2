@@ -2,13 +2,13 @@
 
 public class WatchRequest
 {
-    public WatchRequest(int? userId, int ticketId, bool isWatching)
+    public WatchRequest(int userId, int ticketId, bool isWatching)
     {
         UserId = userId;
         TicketId = ticketId;
         this.isWatching = isWatching;
     }
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     public int TicketId { get; set; }
 

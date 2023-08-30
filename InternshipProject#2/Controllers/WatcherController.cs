@@ -14,12 +14,12 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class WatcherController : ControllerBase
     {
-        private readonly IWatcherManager _manager;
+        private readonly IWatcherManager _watcherManager;
         private readonly TokenHelper _token;
 
         public WatcherController(IWatcherManager manager, TokenHelper token)
         {
-            _manager = manager;
+            _watcherManager = manager;
             _token = token;
         }
 
@@ -29,10 +29,10 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var userId = _token.GetClaimValue(HttpContext);
+                int userId = (int)_token.GetClaimValue(HttpContext);
                 if (userId != null)
                 {  
-                    var result = await _manager.WatchTicket(request, userId);
+                    var result = await _watcherManager.WatchTicket(request, userId);
                     return Ok(result.Message);
                 }
 

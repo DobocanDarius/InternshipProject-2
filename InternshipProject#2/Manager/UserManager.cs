@@ -12,12 +12,12 @@ public class UserManager : IUserManager
 {
     private readonly Project2Context _dbContext;
     private readonly PasswordHasher _passwordHasher;
-    private readonly TokenHelper _tokenGenerator;
-    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper tokenGenerator)
+    private readonly TokenHelper _tokenHelper;
+    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper token)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
-        _tokenGenerator = tokenGenerator;
+        _tokenHelper = token;
     }
 
     public UserManager(Project2Context dbContext, PasswordHasher passwordHasher)
@@ -34,7 +34,7 @@ public class UserManager : IUserManager
         if (foundUser != null)
         {
 
-            LoginResponse loginResponse = new LoginResponse { Token = _tokenGenerator.Generate(foundUser) };
+            LoginResponse loginResponse = new LoginResponse { Token = _tokenHelper.Generate(foundUser) };
 
             return loginResponse;
         }
