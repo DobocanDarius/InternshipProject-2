@@ -10,12 +10,16 @@ namespace InternshipProject_2.Helpers
     {
         private readonly Project2Context _context;
 
+        public TicketStatusHelper()
+        {
+        }
+
         public TicketStatusHelper(Project2Context context)
         {
             _context = context;
         }
 
-        public async Task<TicketStatusResponse> HandleStatusChange(Ticket dbTicket, User dbUser, TicketStatusRequest ticketStatus)
+        public async Task<TicketStatusResponse> HandleStatusChange(Ticket dbTicket, Models.User dbUser, TicketStatusRequest ticketStatus)
         {
             if (Enum.IsDefined(typeof(TicketStatus), ticketStatus.Status))
             {

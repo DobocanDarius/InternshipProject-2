@@ -11,7 +11,5 @@ public partial class Attachement
 
     public string AttachementName { get; set; } = null!;
 
-    public byte[] Attachements { get; set; } = null!;
-
     public virtual Ticket Ticket { get; set; } = null!;
 }

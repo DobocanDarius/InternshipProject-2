@@ -63,7 +63,6 @@
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Tables\Ticket.sql" />
     <Build Include="dbo\Tables\Watcher.sql" />
-    <Build Include="dbo\Tables\TicketLifeCycle.sql" />
     <Build Include="dbo\Tables\History.sql" />
     <Build Include="dbo\Tables\Assignee.sql" />
     <Build Include="dbo\Tables\Comment.sql" />

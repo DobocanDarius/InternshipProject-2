@@ -30,7 +30,7 @@ namespace UnitTests.CommentManagerTests
             var commentManager = new CommentManager(dbContextMock.Object);
 
             // Act
-            await commentManager.DeleteComment(commentId);
+            await commentManager.DeleteComment(commentId,1);
 
             // Assert
             dbSetMock.Verify(m => m.Remove(It.IsAny<Comment>()), Times.Once());

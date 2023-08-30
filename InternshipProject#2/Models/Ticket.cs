@@ -25,11 +25,9 @@ public partial class Ticket
 
     public DateTime? UpdatedAt { get; set; }
 
-    public byte[]? Attachements { get; set; }
-
     public virtual ICollection<Assignee> Assignees { get; set; } = new List<Assignee>();
 
-    public virtual ICollection<Attachement> AttachementsNavigation { get; set; } = new List<Attachement>();
+    public virtual ICollection<Attachement> Attachements { get; set; } = new List<Attachement>();
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
@@ -38,8 +36,6 @@ public partial class Ticket
     public virtual User Reporter { get; set; } = null!;
 
     public virtual Status StatusNavigation { get; set; } = null!;
-
-    public virtual ICollection<TicketLifeCycle> TicketLifeCycles { get; set; } = new List<TicketLifeCycle>();
 
     public virtual ICollection<Watcher> Watchers { get; set; } = new List<Watcher>();
 }

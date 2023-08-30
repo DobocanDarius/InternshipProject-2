@@ -2,6 +2,7 @@
 using Azure.Core;
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Comment.Request;
 using RequestResponseModels.Comment.Response;
@@ -10,6 +11,7 @@ using RequestResponseModels.History.Request;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.User.Request;
 using System.ComponentModel.Design;
+using System.Security.Claims;
 
 namespace InternshipProject_2.Manager
 {
@@ -48,31 +50,48 @@ namespace InternshipProject_2.Manager
             return comments;
         }
         
-        public async Task EditComment(CommentEditRequest editComment)
+        public async Task EditComment([FromBody] CommentEditRequest editComment, int userId)
         {
+            var dbUser = await _context.Users.FindAsync(userId);
             var ExistingComment = await _context.Comments.FindAsync(editComment.Id);
-            ExistingComment.Body = editComment.Body;
-            try
+            if(ExistingComment != null)
             {
-                _context.Comments.Update(ExistingComment);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Invalid Comment");
+                var map = MapperConfig.InitializeAutomapper();
+                var comment = map.Map(editComment, ExistingComment);
+                ExistingComment.Body = editComment.Body;
+                ExistingComment.Id  = comment.Id;
+                if(dbUser.Id == ExistingComment.UserId)
+                {
+                    try
+                    {
+                        _context.Comments.Update(ExistingComment);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Invalid Comment");
+                    }
+                }
             }
         }
-        public async Task DeleteComment(int CommentId)
+        public async Task DeleteComment(int CommentId, int userId)
         {
+            var dbUser = await _context.Users.FindAsync(userId);
             var ExistingComment = await _context.Comments.FindAsync(CommentId);
-            try
+            if(ExistingComment!=null)
             {
-                _context.Comments.Remove(ExistingComment);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Invalid Comment");
+                if(dbUser.Id == ExistingComment.UserId)
+                {
+                    try
+                    {
+                        _context.Comments.Remove(ExistingComment);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Invalid Comment");
+                    }
+                }
             }
         }
     }
