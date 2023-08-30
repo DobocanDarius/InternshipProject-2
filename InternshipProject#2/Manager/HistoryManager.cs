@@ -56,8 +56,25 @@ namespace InternshipProject_2.Manager
                 return error;
             }
         }
-        
+        public async Task<List<AddHistoryRecordResponse>> GetHistoryInTimeRange(DateTime startTime, DateTime endTime)
+        {
+            try
+            {
+                var historyRecords = await _dbContext.Histories
+                    .Where(history => history.CreatedAt >= startTime && history.CreatedAt <= endTime)
+                    .ProjectTo<AddHistoryRecordResponse>(map.ConfigurationProvider)
+                    .ToListAsync();
 
-        
+                return historyRecords;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately
+                return new List<AddHistoryRecordResponse>();
+            }
+        }
+
+
+
     }
 }

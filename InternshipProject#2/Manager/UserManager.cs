@@ -2,6 +2,7 @@
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
+using RequestResponseModels.Ticket.Response;
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 
@@ -28,7 +29,7 @@ public class UserManager : IUserManager
     public async Task<LoginResponse> Login(LoginRequest user)
     {
         string hashedPsw = _passwordHasher.HashPassword(user.Password);
-        var foundUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == user.Password);
+        var foundUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
 
         if (foundUser != null)
         {
@@ -52,7 +53,7 @@ public class UserManager : IUserManager
 
         newUser.Password = _passwordHasher.HashPassword(newUser.Password);
 
-        var user = map.Map<User>(newUser);
+        var user = map.Map<Models.User>(newUser);
 
         _dbContext.Users.Add(user);
 

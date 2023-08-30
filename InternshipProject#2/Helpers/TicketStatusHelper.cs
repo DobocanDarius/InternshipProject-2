@@ -19,7 +19,7 @@ namespace InternshipProject_2.Helpers
             _context = context;
         }
 
-        public async Task<TicketStatusResponse> HandleStatusChange(Ticket dbTicket, User dbUser, TicketStatusRequest ticketStatus)
+        public async Task<TicketStatusResponse> HandleStatusChange(Ticket dbTicket, Models.User dbUser, TicketStatusRequest ticketStatus)
         {
             if (Enum.IsDefined(typeof(TicketStatus), ticketStatus.Status))
             {
