@@ -35,7 +35,7 @@ namespace AutoMapper
                 cfg.CreateMap<AddHistoryRecordRequest, History>();
                 cfg.CreateMap<History,AddHistoryRecordResponse>();
                 cfg.CreateMap<InternshipProject_2.Models.User, GetAssignedUserResponse>();
-                cfg.CreateMap<AddHistoryRecordRequest, InternshipProject_2.Models.History>();
+                cfg.CreateMap<AddHistoryRecordRequest, History>();
                 cfg.CreateMap<InternshipProject_2.Models.User, RequestResponseModels.Ticket.Response.User>();
                 cfg.CreateMap<InternshipProject_2.Models.Comment, RequestResponseModels.Ticket.Response.Comment>().ForMember(x => x.Username, o => o.MapFrom(e => e.User.Username));
                 cfg.CreateMap<InternshipProject_2.Models.History, RequestResponseModels.Ticket.Response.History>();
