@@ -28,6 +28,7 @@ namespace InternshipProject_2.Manager
         public TicketManager(Project2Context context)
         {
             _context = context;
+            map = MapperConfig.InitializeAutomapper();
             _statusHandler = new TicketStatusHelper();
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
@@ -95,6 +96,7 @@ namespace InternshipProject_2.Manager
         public async Task<IEnumerable<TicketGetResponse>> GetTicketsAsync()
         {
             var map = MapperConfig.InitializeAutomapper();
+            var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers).Include(i=>i.Attachements).ToListAsync();
             var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers.Where(w => w.IsDeleted == false)).ToListAsync();
             List<TicketGetResponse> response = new List<TicketGetResponse>();
             dbTicket.ForEach(t => response.Add(map.Map<TicketGetResponse>(t)));

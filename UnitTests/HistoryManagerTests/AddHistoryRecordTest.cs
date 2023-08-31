@@ -2,11 +2,9 @@
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using RequestResponseModels.Assignee.Request;
-using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.Comment.Request;
 using RequestResponseModels.History.Enum;
 using RequestResponseModels.History.Request;
-using RequestResponseModels.History.Response;
 
 namespace UnitTests.HistoryManagerTests
 {

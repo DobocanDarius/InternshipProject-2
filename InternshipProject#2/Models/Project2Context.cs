@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace InternshipProject_2.Models;
 
@@ -63,8 +61,6 @@ public partial class Project2Context : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Attachem__3214EC072846AFC5");
 
             entity.ToTable("Attachement");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.Attachements)
                 .HasForeignKey(d => d.TicketId)

@@ -27,7 +27,7 @@ public class BlobProvider : IBlobProvider
                 throw new FileSystemException("Invalid file id!");
             if (string.IsNullOrEmpty(file.Extension))
                 throw new FileSystemException("Invalid file extension!");
-            var fileAtachment = new Models.File(file.Id, file.Extension);
+            var fileAtachment = new Models.File(file.Id);
             BlobClient information = _containerClient.GetBlobClient(file.Id + file.Extension);
             fileAtachment.Link = GetBlobSasUri(information).ToString();
             if (string.IsNullOrEmpty(fileAtachment.Link))
