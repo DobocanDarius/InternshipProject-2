@@ -11,6 +11,7 @@ using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.Watcher.Request;
 using History = InternshipProject_2.Models.History;
+using RequestResponseModels.History.Response;
 
 namespace AutoMapper
 {
