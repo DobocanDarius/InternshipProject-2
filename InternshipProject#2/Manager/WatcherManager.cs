@@ -13,31 +13,43 @@ public class WatcherManager : IWatcherManager
     public HttpContext httpContext;
     
 
+    private readonly Mapper map;
     public WatcherManager(Project2Context dbContext)
     {
         _dbContext = dbContext;
-       
+        map = MapperConfig.InitializeAutomapper();
     }
     public async Task<WatchResponse> WatchTicket(WatchRequest request, int userId)
     {
-        var existingWatchRequest = await _dbContext.Watchers
-        .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
+        var watcher = await _dbContext.Watchers
+            .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
 
-        if (existingWatchRequest == null)
+        if (watcher != null)
         {
-            var map = MapperConfig.InitializeAutomapper();
-
+            if(request.isWatching) 
+            {
+                watcher.IsDeleted = true;
+                await _dbContext.SaveChangesAsync();
+                return new WatchResponse { Message = "Not watching anymore" };
+            }
+            else
+            {
+                watcher.IsDeleted = false;
+                await _dbContext.SaveChangesAsync();
+                return new WatchResponse { Message = "Watching ticket again" };
+            }
+        }
+        else
+        {
             request.UserId = userId;
 
             var mappedWatcher = map.Map<Watcher>(request);
-            await _dbContext.Watchers.AddAsync(mappedWatcher);
+            _dbContext.Watchers.Add(mappedWatcher);
             await _dbContext.SaveChangesAsync();
 
             return new WatchResponse { Message = "Watching ticket" };
         }
-        else
-        {
-            return new WatchResponse { Message = "Already watching ticket" };
-        }
     }
+
 }
+

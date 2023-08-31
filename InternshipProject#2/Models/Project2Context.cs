@@ -23,6 +23,10 @@ public partial class Project2Context : DbContext
 
     public virtual DbSet<History> Histories { get; set; }
 
+    public virtual DbSet<InactiveToken> InactiveTokens { get; set; }
+
+    public virtual DbSet<Status> Statuses { get; set; }
+
     public virtual DbSet<Ticket> Tickets { get; set; }
 
     public virtual DbSet<TicketLifeCycle> TicketLifeCycles { get; set; }
@@ -33,13 +37,13 @@ public partial class Project2Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(LocalDb)\\MSSQLLocalDB;Database=Project2;Trusted_Connection=True;");
+        => optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Project2;Trusted_Connection=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Assignee>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Assignee__3214EC070B7E69DA");
+            entity.HasKey(e => e.Id).HasName("PK__Assignee__3214EC070BFC15F9");
 
             entity.ToTable("Assignee");
 
@@ -56,14 +60,13 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Attachement>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Attachem__3214EC07430DB8B2");
+            entity.HasKey(e => e.Id).HasName("PK__Attachem__3214EC072846AFC5");
 
             entity.ToTable("Attachement");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.AttachementName).HasMaxLength(100);
 
-            entity.HasOne(d => d.Ticket).WithMany(p => p.AttachementsNavigation)
+            entity.HasOne(d => d.Ticket).WithMany(p => p.Attachements)
                 .HasForeignKey(d => d.TicketId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Attachement_Ticket");
@@ -71,7 +74,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Comment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Comment__3214EC07AC7CF4BA");
+            entity.HasKey(e => e.Id).HasName("PK__Comment__3214EC07D890D7F0");
 
             entity.ToTable("Comment");
 
@@ -90,7 +93,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<History>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__History__3214EC07AE820C81");
+            entity.HasKey(e => e.Id).HasName("PK__History__3214EC07016C1632");
 
             entity.ToTable("History");
 
@@ -107,15 +110,31 @@ public partial class Project2Context : DbContext
                 .HasConstraintName("FK_History_User");
         });
 
+        modelBuilder.Entity<InactiveToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Inactive__3214EC078BF5B2C5");
+        });
+
+        modelBuilder.Entity<Status>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Status__3214EC0728609FB2");
+
+            entity.ToTable("Status");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Ticket__3214EC076FB31D16");
+            entity.HasKey(e => e.Id).HasName("PK__tmp_ms_x__3214EC079EB81B92");
 
             entity.ToTable("Ticket");
 
             entity.Property(e => e.Component).HasMaxLength(50);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Priority).HasMaxLength(50);
+            entity.Property(e => e.Status).HasDefaultValueSql("((1))");
             entity.Property(e => e.Title).HasMaxLength(50);
             entity.Property(e => e.Type).HasMaxLength(50);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
@@ -124,11 +143,16 @@ public partial class Project2Context : DbContext
                 .HasForeignKey(d => d.ReporterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Ticket_User");
+
+            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Tickets)
+                .HasForeignKey(d => d.Status)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Ticket_Status");
         });
 
         modelBuilder.Entity<TicketLifeCycle>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TicketLi__3214EC074320D599");
+            entity.HasKey(e => e.Id).HasName("PK__TicketLi__3214EC0717AB9C36");
 
             entity.ToTable("TicketLifeCycle");
 
@@ -143,7 +167,7 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC0747BD7C1B");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC078D81EE7B");
 
             entity.ToTable("User");
 
@@ -156,9 +180,11 @@ public partial class Project2Context : DbContext
 
         modelBuilder.Entity<Watcher>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Watcher__3214EC07AFA98FD2");
+            entity.HasKey(e => e.Id).HasName("PK__Watcher__3214EC073FBAA46A");
 
             entity.ToTable("Watcher");
+
+            entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
             entity.HasOne(d => d.Ticket).WithMany(p => p.Watchers)
                 .HasForeignKey(d => d.TicketId)

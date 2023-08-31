@@ -11,12 +11,12 @@ namespace InternshipProject_2.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        private readonly TokenRevocation _revoke;
+        private readonly TokenHelper _tokenHelper;
         
-        public UserController(IUserManager userManager, TokenRevocation revoke)
+        public UserController(IUserManager userManager, TokenHelper tokenHelper)
         {
             _userManager = userManager;
-            _revoke = revoke;
+            _tokenHelper = tokenHelper;
         }
 
         [HttpPost("login")]
@@ -59,9 +59,13 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                _revoke.RevokeToken(token);
-                return Ok("Logged out");
+                var token = _tokenHelper.GetToken(HttpContext);
+                if(token == null)
+                {
+                    return BadRequest("You are not logged in");
+                }
+                var response = await _userManager.Logout(new LogoutRequest { Token = token });
+                return Ok(response.Message);
             }
             catch (Exception ex)
             {

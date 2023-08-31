@@ -1,5 +1,7 @@
 ﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RequestResponseModels.Comment.Request;
 
@@ -29,15 +31,17 @@ namespace InternshipProject_2.Controllers
         }
 
         [HttpPut("Update")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> EditComment(CommentEditRequest editComment)
         {
-            await commentManager.EditComment(editComment);
-            return Ok(editComment);
+                await commentManager.EditComment(editComment, int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId")).Value));
+                return Ok(editComment); 
         }
         [HttpDelete("Delete")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> DeleteComment(int CommentID)
         {
-            await commentManager.DeleteComment(CommentID);
+            await commentManager.DeleteComment(CommentID, int.Parse(HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId")).Value));
             return Ok("The comment was deleted succesfully!");
         }
     }

@@ -39,7 +39,7 @@ namespace UnitTests.CommentManagerTests
             _project2Context.Comments.Update(comment);
             _project2Context.SaveChanges();
             // Act
-            await _commentManager.EditComment(editCommentRequest);
+            await _commentManager.EditComment(editCommentRequest,1);
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace UnitTests.CommentManagerTests
             // Act and Assert
             await Assert.ThrowsExceptionAsync<Exception>(async () =>
             {
-                await commentManager.EditComment(editCommentRequest);
+                await commentManager.EditComment(editCommentRequest,1);
             });
         }
     }

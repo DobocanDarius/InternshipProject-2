@@ -5,11 +5,11 @@ using System.Security.Claims;
 
 namespace InternshipProject_2.Helpers;
 
-public class TokenGenerator
+public class TokenHelper
 {
     private readonly IConfiguration _config;
 
-    public TokenGenerator(IConfiguration config)
+    public TokenHelper(IConfiguration config)
     {
         _config = config;
     }
@@ -33,6 +33,32 @@ public class TokenGenerator
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
+    }
+
+    public int? GetClaimValue(HttpContext httpContext)
+    {
+        var userIdClaimString = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
+
+        if (userIdClaimString?.Value != null && int.TryParse(userIdClaimString.Value, out int userIdClaimInt))
+        {
+            return userIdClaimInt;
+        }
+        return null;
+    }
+
+    public string? GetToken(HttpContext httpContext)
+    {
+        var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+        if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+        {
+            var userToken = authorizationHeader.Substring("Bearer ".Length).Trim();
+            return userToken;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 

@@ -3,6 +3,7 @@ using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,13 +14,13 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class WatcherController : ControllerBase
     {
-        private readonly IWatcherManager _manager;
-        private readonly TokenRevocation _revoke;
+        private readonly IWatcherManager _watcherManager;
+        private readonly TokenHelper _token;
 
-        public WatcherController(IWatcherManager manager, TokenRevocation revoke)
+        public WatcherController(IWatcherManager manager, TokenHelper token)
         {
-            _manager = manager;
-            _revoke = revoke;
+            _watcherManager = manager;
+            _token = token;
         }
 
         [HttpPost]
@@ -28,18 +29,10 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var token = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-
-                if (_revoke.IsTokenRevoked(token))
-                {
-                    return BadRequest(new WatchResponse { Message = "You need to log in" });
-                }
-
-                var authorizationHeader = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
-                if (authorizationHeader?.Value != null)
-                {
-                    var userId = int.Parse(authorizationHeader.Value);
-                    var result = await _manager.WatchTicket(request, userId);
+                var userId = _token.GetClaimValue(HttpContext);
+                if (userId != null)
+                {  
+                    var result = await _watcherManager.WatchTicket(request, (int)userId);
                     return Ok(result.Message);
                 }
 
@@ -50,6 +43,6 @@ namespace InternshipProject_2.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
-
+        
     }
 }

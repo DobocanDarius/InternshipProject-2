@@ -63,12 +63,12 @@
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Tables\Ticket.sql" />
     <Build Include="dbo\Tables\Watcher.sql" />
-    <Build Include="dbo\Tables\TicketLifeCycle.sql" />
     <Build Include="dbo\Tables\History.sql" />
     <Build Include="dbo\Tables\Assignee.sql" />
     <Build Include="dbo\Tables\Comment.sql" />
     <Build Include="dbo\Tables\Attachement.sql" />
     <Build Include="dbo\Tables\Status.sql" />
+    <Build Include="dbo\Tables\InactiveTokens.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Database.refactorlog" />
