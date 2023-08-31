@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RequestResponseModels.Assignee.Request
+﻿namespace RequestResponseModels.Assignee.Request
 {
     public class RemoveAssignedUserRequest
     {

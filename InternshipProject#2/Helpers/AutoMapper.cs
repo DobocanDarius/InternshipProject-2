@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿
 using InternshipProject_2.Models;
 using RequestResponseModels.Comment.Request;
 using RequestResponseModels.Comment.Response;
@@ -9,7 +9,6 @@ using RequestResponseModels.User.Response;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.History.Request;
-using RequestResponseModels.History.Response;
 using RequestResponseModels.Watcher.Request;
 
 namespace AutoMapper
@@ -39,6 +38,7 @@ namespace AutoMapper
                 cfg.CreateMap<InternshipProject_2.Models.Watcher, RequestResponseModels.Ticket.Response.Watcher>().ForMember(x => x.Username, o => o.MapFrom(e => e.User.Username));
                 cfg.CreateMap<Ticket, TicketGetResponse>();
                 cfg.CreateMap<WatchRequest, InternshipProject_2.Models.Watcher>();
+                cfg.CreateMap<InternshipProject_2.Models.Attachement, RequestResponseModels.Ticket.Response.Attachement>().ForMember(x => x.Link, o => o.MapFrom(e => e.Link));
             });
 
             var mapper = new Mapper(config);

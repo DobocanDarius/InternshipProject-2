@@ -1,16 +1,8 @@
 ﻿using InternshipProject_2.Helpers;
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using RequestResponseModels.History.Enum;
 using RequestResponseModels.History.Request;
-using RequestResponseModels.Ticket.Request;
-using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTests.HistoryManagerTests
 {

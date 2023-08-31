@@ -1,5 +1,4 @@
-﻿
-namespace RequestResponseModels.Ticket.Response
+﻿namespace RequestResponseModels.Ticket.Response
 {
     public class Comment
     {

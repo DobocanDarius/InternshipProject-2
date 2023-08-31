@@ -97,7 +97,7 @@ namespace InternshipProject_2.Manager
         public async Task<IEnumerable<TicketGetResponse>> GetTicketsAsync()
         {
             var map = MapperConfig.InitializeAutomapper();
-            var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers).ToListAsync();
+            var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers).Include(i=>i.Attachements).ToListAsync();
             List<TicketGetResponse> response = new List<TicketGetResponse>();
             dbTicket.ForEach(t => response.Add(map.Map<TicketGetResponse>(t)));
 

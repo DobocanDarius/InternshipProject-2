@@ -1,5 +1,4 @@
-﻿
-namespace RequestResponseModels.Ticket.Request
+﻿namespace RequestResponseModels.Ticket.Request
 {
     public class TicketEditRequest
     {

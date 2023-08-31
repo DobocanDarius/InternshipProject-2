@@ -1,12 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using InternshipProject_2.Manager;
+﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace UnitTests.AssigneeManagerTests
 {

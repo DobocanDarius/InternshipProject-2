@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using InternshipProject_2.Models;
-using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 

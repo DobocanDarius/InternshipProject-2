@@ -1,10 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using InternshipProject_2.Helpers;
+﻿using InternshipProject_2.Helpers;
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
