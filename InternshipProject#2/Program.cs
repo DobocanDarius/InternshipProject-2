@@ -8,6 +8,7 @@ using System.Text;
 using InternshipProject_2;
 using Microsoft.Extensions.Options;
 using InternshipProject_2.BackgroundServices;
+using InternshipProject_2.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
@@ -49,9 +50,9 @@ builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 builder.Services.AddScoped<IHistoryManager, HistoryManager>();
 builder.Services.AddScoped<HistoryBodyGenerator>();
 builder.Services.AddScoped<HistoryWritter>();
-
+builder.Services.AddScoped<TokenValidationParameters>();
 builder.Services.AddScoped<IWatcherManager, WatcherManager>();
-
+builder.Services.AddSingleton<TokenRevocation>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,7 +66,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
+app.UseMyMiddleware();
 
 app.MapControllers();
+
 
 app.Run();

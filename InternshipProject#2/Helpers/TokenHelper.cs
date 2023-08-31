@@ -45,6 +45,21 @@ public class TokenHelper
         }
         return null;
     }
+
+    public string? GetToken(HttpContext httpContext)
+    {
+        var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+        if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
+        {
+            var userToken = authorizationHeader.Substring("Bearer ".Length).Trim();
+            return userToken;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
 
 

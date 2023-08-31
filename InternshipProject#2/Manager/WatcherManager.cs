@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Watcher.Request;
@@ -9,6 +10,9 @@ namespace InternshipProject_2.Manager;
 public class WatcherManager : IWatcherManager
 {
     private Project2Context _dbContext;
+    public HttpContext httpContext;
+    
+
     private readonly Mapper map;
     public WatcherManager(Project2Context dbContext)
     {

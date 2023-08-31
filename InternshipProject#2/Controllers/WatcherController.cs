@@ -29,14 +29,13 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                int userId = (int)_token.GetClaimValue(HttpContext);
-                if (userId != null)
-                {  
-                    var result = await _watcherManager.WatchTicket(request, userId);
-                    return Ok(result.Message);
+                var userId = _token.GetClaimValue(HttpContext);
+                if (userId == null)
+                {
+                    return BadRequest(new WatchResponse { Message = "You need to log in" });
                 }
-
-                return BadRequest(new WatchResponse { Message = "You need to log in" });
+                var result = await _watcherManager.WatchTicket(request, userId.Value);
+                return Ok(result.Message);
             }
             catch (Exception ex)
             {

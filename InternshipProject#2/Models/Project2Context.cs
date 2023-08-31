@@ -23,6 +23,8 @@ public partial class Project2Context : DbContext
 
     public virtual DbSet<History> Histories { get; set; }
 
+    public virtual DbSet<InactiveToken> InactiveTokens { get; set; }
+
     public virtual DbSet<Status> Statuses { get; set; }
 
     public virtual DbSet<Ticket> Tickets { get; set; }
@@ -106,6 +108,11 @@ public partial class Project2Context : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_History_User");
+        });
+
+        modelBuilder.Entity<InactiveToken>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Inactive__3214EC078BF5B2C5");
         });
 
         modelBuilder.Entity<Status>(entity =>

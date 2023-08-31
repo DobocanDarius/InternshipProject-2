@@ -43,6 +43,7 @@ namespace AutoMapper
                 cfg.CreateMap<Ticket, TicketGetResponse>();
                 cfg.CreateMap<WatchRequest, InternshipProject_2.Models.Watcher>();
                 cfg.CreateMap<TicketStatusRequest, Ticket>();
+                cfg.CreateMap<LogoutRequest, InactiveToken>();
             });
 
             var mapper = new Mapper(config);
