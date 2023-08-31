@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace RequestResponseModels.Ticket.Response
 {
     public class TicketGetResponse
@@ -24,14 +19,13 @@ namespace RequestResponseModels.Ticket.Response
 
         public DateTime? UpdatedAt { get; set; }
 
-        public byte[]? Attachements { get; set; }
-
         public User Reporter { get; set; } = null!;
 
         public ICollection<Comment>? Comments { get; set; }
 
         public ICollection<History>? Histories { get; set; }
 
-        public ICollection<Watcher>? Watchers { get; set; } 
+        public ICollection<Watcher>? Watchers { get; set; }
+        public ICollection<Attachement>? Attachements { get; set; }
     }
 }

@@ -3,12 +3,12 @@ using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using InternshipProject_2.Models;
-using AutoMapper;
 using System.Text;
 using InternshipProject_2;
 using Microsoft.Extensions.Options;
 using InternshipProject_2.BackgroundServices;
 using InternshipProject_2.Middleware;
+using FileSystem.Registration;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
@@ -24,6 +24,7 @@ builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<TokenHelper>();
 builder.Services.AddScoped<TicketStatusHelper>();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddFileSystemServices();
 builder.Services.AddSession(options =>
 {
     // Configure session options here
@@ -48,6 +49,7 @@ builder.Services.AddHostedService<TicketChangeNotifier>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAssigneeManager, AssigneeManager>();
 builder.Services.AddScoped<IHistoryManager, HistoryManager>();
+builder.Services.AddScoped<IAttachementManager, AttachementManager>();
 builder.Services.AddScoped<HistoryBodyGenerator>();
 builder.Services.AddScoped<HistoryWritter>();
 builder.Services.AddScoped<TokenValidationParameters>();

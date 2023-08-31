@@ -2,7 +2,6 @@
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 using Microsoft.EntityFrameworkCore;
-using RequestResponseModels.Ticket.Response;
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 

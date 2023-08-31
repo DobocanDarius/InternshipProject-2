@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace InternshipProject_2.Models;
+﻿namespace InternshipProject_2.Models;
 
 public partial class Assignee
 {

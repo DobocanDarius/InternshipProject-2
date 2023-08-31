@@ -28,6 +28,7 @@ namespace InternshipProject_2.Manager
         public TicketManager(Project2Context context)
         {
             _context = context;
+            map = MapperConfig.InitializeAutomapper();
             _statusHandler = new TicketStatusHelper();
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)

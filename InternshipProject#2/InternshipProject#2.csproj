@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Attachements\IssueTracker.FileSystem\FileSystem.csproj" />
     <ProjectReference Include="..\RequestResponseModels\RequestResponseModels.csproj" />
   </ItemGroup>
 

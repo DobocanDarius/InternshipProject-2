@@ -1,5 +1,4 @@
-﻿
-using RequestResponseModels.Assignee.Request;
+﻿using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
 
 namespace InternshipProject_2.Manager
