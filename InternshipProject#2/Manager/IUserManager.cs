@@ -8,5 +8,5 @@ public interface IUserManager
 {
     Task<LoginResponse> Login(LoginRequest user);
     Task<CreateUserResponse> Create(CreateUserRequest newUser);
-   
+    Task<LogoutResponse> Logout(LogoutRequest request);
 }

@@ -68,6 +68,7 @@
     <Build Include="dbo\Tables\Comment.sql" />
     <Build Include="dbo\Tables\Attachement.sql" />
     <Build Include="dbo\Tables\Status.sql" />
+    <Build Include="dbo\Tables\InactiveTokens.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Database.refactorlog" />

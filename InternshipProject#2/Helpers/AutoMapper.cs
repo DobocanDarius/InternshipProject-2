@@ -10,6 +10,7 @@ using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.Watcher.Request;
+using History = InternshipProject_2.Models.History;
 
 namespace AutoMapper
 {
@@ -30,14 +31,18 @@ namespace AutoMapper
                 cfg.CreateMap<TicketEditRequest, Ticket>();
                 cfg.CreateMap<AssignUserRequest, Assignee>();
                 cfg.CreateMap<Assignee, AssignUserResponse>();
+                cfg.CreateMap<AddHistoryRecordRequest, History>();
+                cfg.CreateMap<History,AddHistoryRecordResponse>();
                 cfg.CreateMap<InternshipProject_2.Models.User, GetAssignedUserResponse>();
-                cfg.CreateMap<AddHistoryRecordRequest, InternshipProject_2.Models.History>();
+                cfg.CreateMap<AddHistoryRecordRequest, History>();
                 cfg.CreateMap<InternshipProject_2.Models.User, RequestResponseModels.Ticket.Response.User>();
                 cfg.CreateMap<InternshipProject_2.Models.Comment, RequestResponseModels.Ticket.Response.Comment>().ForMember(x => x.Username, o => o.MapFrom(e => e.User.Username));
                 cfg.CreateMap<InternshipProject_2.Models.History, RequestResponseModels.Ticket.Response.History>();
-                cfg.CreateMap<InternshipProject_2.Models.Watcher, RequestResponseModels.Ticket.Response.Watcher>().ForMember(x => x.Username, o => o.MapFrom(e => e.User.Username));
+                cfg.CreateMap<InternshipProject_2.Models.Watcher, RequestResponseModels.Ticket.Response.Watcher>().ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username));
                 cfg.CreateMap<Ticket, TicketGetResponse>();
                 cfg.CreateMap<WatchRequest, InternshipProject_2.Models.Watcher>();
+                cfg.CreateMap<TicketStatusRequest, Ticket>();
+                cfg.CreateMap<LogoutRequest, InactiveToken>();
                 cfg.CreateMap<InternshipProject_2.Models.Attachement, RequestResponseModels.Ticket.Response.Attachement>().ForMember(x => x.Link, o => o.MapFrom(e => e.Link));
             });
 

@@ -1,7 +1,9 @@
-﻿using InternshipProject_2.Manager;
+﻿using InternshipProject_2.Helpers;
+using InternshipProject_2.Manager;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,11 +14,13 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class WatcherController : ControllerBase
     {
-        private readonly IWatcherManager _manager;
+        private readonly IWatcherManager _watcherManager;
+        private readonly TokenHelper _token;
 
-        public WatcherController(IWatcherManager manager)
+        public WatcherController(IWatcherManager manager, TokenHelper token)
         {
-            _manager = manager;
+            _watcherManager = manager;
+            _token = token;
         }
 
         [HttpPost]
@@ -25,21 +29,19 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var authorizationHeader = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
-                if (authorizationHeader?.Value != null)
+                var userId = _token.GetClaimValue(HttpContext);
+                if (userId == null)
                 {
-                    var userId = int.Parse(authorizationHeader.Value);
-                    var result = await _manager.WatchTicket(request, userId);
-                    return Ok(result.Message);
+                    return BadRequest(new WatchResponse { Message = "You need to log in" });
                 }
-
-                return BadRequest(new WatchResponse { Message = "You need to log in" });
+                var result = await _watcherManager.WatchTicket(request, userId.Value);
+                return Ok(result.Message);
             }
             catch (Exception ex)
             {
                 return BadRequest($"An error occurred: {ex.Message}");
             }
         }
-
+        
     }
 }

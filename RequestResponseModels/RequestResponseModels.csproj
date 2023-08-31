@@ -14,8 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="User\Request\" />
-    <Folder Include="User\Response\" />
     <Folder Include="Watcher\Response\" />
   </ItemGroup>
 

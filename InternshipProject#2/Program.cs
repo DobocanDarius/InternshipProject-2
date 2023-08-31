@@ -7,6 +7,7 @@ using System.Text;
 using InternshipProject_2;
 using Microsoft.Extensions.Options;
 using InternshipProject_2.BackgroundServices;
+using InternshipProject_2.Middleware;
 using FileSystem.Registration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<PasswordHasher>();
-builder.Services.AddScoped<TokenGenerator>();
+builder.Services.AddScoped<TokenHelper>();
 builder.Services.AddScoped<TicketStatusHelper>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddFileSystemServices();
@@ -51,9 +52,9 @@ builder.Services.AddScoped<IHistoryManager, HistoryManager>();
 builder.Services.AddScoped<IAttachementManager, AttachementManager>();
 builder.Services.AddScoped<HistoryBodyGenerator>();
 builder.Services.AddScoped<HistoryWritter>();
-
+builder.Services.AddScoped<TokenValidationParameters>();
 builder.Services.AddScoped<IWatcherManager, WatcherManager>();
-
+builder.Services.AddSingleton<TokenRevocation>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,7 +68,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
+app.UseMyMiddleware();
 
 app.MapControllers();
+
 
 app.Run();

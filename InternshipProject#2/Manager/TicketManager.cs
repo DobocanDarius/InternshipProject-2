@@ -29,6 +29,7 @@ namespace InternshipProject_2.Manager
         {
             _context = context;
             map = MapperConfig.InitializeAutomapper();
+            _statusHandler = new TicketStatusHelper();
         }
         public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
         {
@@ -37,15 +38,13 @@ namespace InternshipProject_2.Manager
             ticket.CreatedAt = DateTime.Now;
             ticket.Reporter = await _context.Users.FindAsync(ticket.ReporterId);
             ticket.Status = 1;
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
-            WatchRequest req = new WatchRequest(reporterId, ticket.Id);
-            var watcher = map.Map<Models.Watcher>(req);
-            _context.Watchers.Add(watcher);
-            await _context.SaveChangesAsync();
+            var watcher = new Models.Watcher { UserId = reporterId, TicketId = ticket.Id };
+            ticket.Watchers.Add(watcher);
             var historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = ticket.Id, EventType = HistoryEventType.Create };
             await historyWritter.AddHistoryRecord(historyRequest);
             var response = new TicketCreateResponse { Message = "You succsessfully posted a new ticket!" };
+            _context.Tickets.Add(ticket);
+            await _context.SaveChangesAsync();
             return response;
         }
 
@@ -98,6 +97,7 @@ namespace InternshipProject_2.Manager
         {
             var map = MapperConfig.InitializeAutomapper();
             var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers).Include(i=>i.Attachements).ToListAsync();
+            var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers.Where(w => w.IsDeleted == false)).ToListAsync();
             List<TicketGetResponse> response = new List<TicketGetResponse>();
             dbTicket.ForEach(t => response.Add(map.Map<TicketGetResponse>(t)));
 

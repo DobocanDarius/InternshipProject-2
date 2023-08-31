@@ -11,12 +11,14 @@ public class UserManager : IUserManager
 {
     private readonly Project2Context _dbContext;
     private readonly PasswordHasher _passwordHasher;
-    private readonly TokenGenerator _tokenGenerator;
-    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenGenerator tokenGenerator)
+    private readonly TokenHelper _tokenHelper;
+    private readonly Mapper map;
+    public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper tokenHelper)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
-        _tokenGenerator = tokenGenerator;
+        _tokenHelper = tokenHelper;
+        map = MapperConfig.InitializeAutomapper();
     }
 
     public UserManager(Project2Context dbContext, PasswordHasher passwordHasher)
@@ -33,7 +35,7 @@ public class UserManager : IUserManager
         if (foundUser != null)
         {
 
-            LoginResponse loginResponse = new LoginResponse { Token = _tokenGenerator.Generate(foundUser) };
+            LoginResponse loginResponse = new LoginResponse { Token = _tokenHelper.Generate(foundUser) };
 
             return loginResponse;
         }
@@ -48,8 +50,6 @@ public class UserManager : IUserManager
             return new CreateUserResponse { Message = "User with this email already exists" };
         }
 
-        var map = MapperConfig.InitializeAutomapper();
-
         newUser.Password = _passwordHasher.HashPassword(newUser.Password);
 
         var user = map.Map<Models.User>(newUser);
@@ -59,6 +59,19 @@ public class UserManager : IUserManager
         await _dbContext.SaveChangesAsync();
 
         var response = new CreateUserResponse { Message = "Registration successful" };
+
+        return response;
+    }
+
+    public async Task<LogoutResponse> Logout(LogoutRequest request)
+    {
+        var token = map.Map<Models.InactiveToken>(request);
+
+        _dbContext.Add(token);
+
+        await _dbContext.SaveChangesAsync();
+
+        var response = new LogoutResponse { Message = "Logout successful" };
 
         return response;
     }

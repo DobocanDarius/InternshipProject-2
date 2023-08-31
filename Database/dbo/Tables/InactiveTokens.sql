@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[InactiveTokens]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Token] NVARCHAR(MAX) NOT NULL
+)

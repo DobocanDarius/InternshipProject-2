@@ -8,6 +8,8 @@ public partial class Watcher
 
     public int? TicketId { get; set; }
 
+    public bool? IsDeleted { get; set; }
+
     public virtual Ticket? Ticket { get; set; }
 
     public virtual User? User { get; set; }

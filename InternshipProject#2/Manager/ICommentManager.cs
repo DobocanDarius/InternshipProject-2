@@ -7,7 +7,7 @@ namespace InternshipProject_2.Manager
     {   
         public Task<IEnumerable<Comment>> GetComments(int TicketId);
         public Task CreateComment(CommentRequest newComment);
-        public Task EditComment(CommentEditRequest editComment);
-        public Task DeleteComment(int CommentId);
+        public Task EditComment(CommentEditRequest editComment,int userId);
+        public Task DeleteComment(int CommentId, int userId);
     }
 }
