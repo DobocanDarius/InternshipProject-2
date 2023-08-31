@@ -5,10 +5,9 @@ public class File
     {
 
     }
-    public File(string id, string extension)
+    public File(string id)
     {
         Id = id;
-        Extension = extension;
     }
     public File(string id, string extension, string name, string type, double sizeKb)
     {
