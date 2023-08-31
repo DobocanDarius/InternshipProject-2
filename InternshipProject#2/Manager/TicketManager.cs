@@ -52,7 +52,6 @@ namespace InternshipProject_2.Manager
             var dbTicket = await _context.Tickets.FindAsync(id);
             if (dbTicket != null)
             {
-                var map = MapperConfig.InitializeAutomapper();
                 var ticket = map.Map(editTicket, dbTicket);
                 dbTicket.Id = id;
                 dbTicket.UpdatedAt = DateTime.Now;
@@ -94,7 +93,7 @@ namespace InternshipProject_2.Manager
 
         public async Task<IEnumerable<TicketGetResponse>> GetTicketsAsync()
         {
-            var map = MapperConfig.InitializeAutomapper();
+
             var dbTicket = await _context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers.Where(w => w.IsDeleted == false)).ToListAsync();
             List<TicketGetResponse> response = new List<TicketGetResponse>();
             dbTicket.ForEach(t => response.Add(map.Map<TicketGetResponse>(t)));

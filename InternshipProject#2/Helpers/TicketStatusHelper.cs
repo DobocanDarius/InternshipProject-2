@@ -9,23 +9,24 @@ namespace InternshipProject_2.Helpers
     public class TicketStatusHelper
     {
         private readonly Project2Context _context;
+        private readonly IMapper _mapper;
 
         public TicketStatusHelper()
         {
         }
 
-        public TicketStatusHelper(Project2Context context)
+        public TicketStatusHelper(Project2Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<TicketStatusResponse> HandleStatusChange(Ticket dbTicket, Models.User dbUser, TicketStatusRequest ticketStatus)
         {
             if (Enum.IsDefined(typeof(TicketStatus), ticketStatus.Status))
-            {
-                var map = MapperConfig.InitializeAutomapper();
+            { 
                 var CurrentStatus = dbTicket.Status;
-                var ticket = map.Map(ticketStatus, dbTicket);
+                var ticket = _mapper.Map(ticketStatus, dbTicket);
                 switch ((TicketStatus)CurrentStatus)
                 {
                     case TicketStatus.ToDO:

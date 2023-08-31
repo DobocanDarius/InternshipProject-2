@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using RequestResponseModels.Ticket.Request;
+using InternshipProject_2.Helpers;
 
 namespace InternshipProject_2.Controllers
 {
@@ -11,22 +12,24 @@ namespace InternshipProject_2.Controllers
     public class TicketController : ControllerBase
     {
         private readonly ITicketManager _ticketAcces;
+        private readonly TokenHelper _tokenHelper;
 
-        public TicketController(ITicketManager ticket)
+        public TicketController(ITicketManager ticket, TokenHelper tokenHelper)
         {
             _ticketAcces = ticket;
+            _tokenHelper = tokenHelper;
         }
 
         [HttpPost("create")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "tester,manager")]
         public async Task<IActionResult> NewTicket([FromBody] TicketCreateRequest ticket)
         {
-            var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
+            var userId = _tokenHelper.GetClaimValue(HttpContext);
             try
             {
-                if (userId?.Value != null)
+                if (userId != null)
                 {
-                    int reporterId = int.Parse(userId.Value);
+                    int reporterId = userId.Value;
                     await _ticketAcces.CreateTicketAsync(ticket, reporterId);
                     return Ok();
                 }
@@ -42,12 +45,12 @@ namespace InternshipProject_2.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> EditTicket([FromBody] TicketEditRequest ticket, int ticketId)
         {
-            var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
+            var userId = _tokenHelper.GetClaimValue(HttpContext);
             try
             {
-                if (userId?.Value != null)
+                if (userId != null)
                 {
-                    int reporterId = int.Parse(userId.Value);
+                    int reporterId = userId.Value;
                     if (reporterId != 0)
                     {
                         await _ticketAcces.EditTicketAsync(ticket, ticketId, reporterId);
