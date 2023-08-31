@@ -29,10 +29,10 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var userId = _token.GetClaimValue(HttpContext);
+                var userId = (int)_token.GetClaimValue(HttpContext);
                 if (userId != null)
                 {  
-                    var result = await _watcherManager.WatchTicket(request, (int)userId);
+                    var result = await _watcherManager.WatchTicket(request, userId);
                     return Ok(result.Message);
                 }
 
