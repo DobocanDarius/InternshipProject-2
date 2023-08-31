@@ -62,8 +62,6 @@ public partial class Project2Context : DbContext
 
             entity.ToTable("Attachement");
 
-            //entity.Property(e => e.Id).ValueGeneratedNever();
-
             entity.HasOne(d => d.Ticket).WithMany(p => p.Attachements)
                 .HasForeignKey(d => d.TicketId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

@@ -15,11 +15,5 @@ namespace UnitTests.AddAttachementTest
             _project2Context = new Project2Context();
             _ticketManager = new TicketManager(_project2Context);
         }
-
-        [TestMethod]
-        public async Task EditTicketValidRequest()
-        {
-        }
-
     }
 }
