@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 
 using InternshipProject_2.Manager;
+using InternshipProject_2.Helpers;
 
 using RequestResponseModels.Ticket.Request;
-using InternshipProject_2.Helpers;
+
 
 namespace InternshipProject_2.Controllers;
 

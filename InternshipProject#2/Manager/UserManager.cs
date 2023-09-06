@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using AutoMapper;
+
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
+
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 
@@ -14,8 +16,6 @@ public class UserManager : IUserManager
     readonly PasswordHasher _PasswordHasher;
     readonly TokenHelper _TokenHelper;
     readonly Mapper _Map;
-    private Project2Context dbContext;
-    private PasswordHasher passwordHasher;
 
     public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper tokenHelper)
     {
@@ -27,8 +27,8 @@ public class UserManager : IUserManager
 
     public UserManager(Project2Context dbContext, PasswordHasher passwordHasher)
     {
-        this.dbContext = dbContext;
-        this.passwordHasher = passwordHasher;
+        _DbContext = dbContext;
+        _PasswordHasher = passwordHasher;
     }
 
     public async Task<LoginResponse> Login(LoginRequest user)

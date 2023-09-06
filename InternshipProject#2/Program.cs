@@ -1,15 +1,17 @@
 using FileSystem.Registration;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+
+
 using InternshipProject_2;
-using InternshipProject_2.Models;
 using InternshipProject_2.BackgroundServices;
-using InternshipProject_2.Middleware;
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Manager;
+using InternshipProject_2.Middleware;
+using InternshipProject_2.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using AutoMapper;
+
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
 
@@ -25,11 +26,6 @@ namespace InternshipProject_2.Manager
             _Map = MapperConfig.InitializeAutomapper();
             _HistoryBodyGenerator = new HistoryBodyGenerator();
             _HistoryWritter = new HistoryWritter(_DbContext, _HistoryBodyGenerator);
-        }
-
-        public CommentManager(Project2Context context, IMapper mapper) : this(context)
-        {
-            this.mapper = mapper;
         }
 
         public async Task CreateComment(CommentRequest newComment)

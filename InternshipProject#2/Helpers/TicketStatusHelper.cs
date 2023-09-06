@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+
 using InternshipProject_2.Models;
+
 using RequestResponseModels.Ticket.Request;
 using RequestResponseModels.Ticket.Response;
 

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using AutoMapper;
+
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
+
 using RequestResponseModels.History.Enum;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.Ticket.Request;
@@ -12,24 +14,23 @@ namespace InternshipProject_2.Manager;
 
 public class TicketManager : ITicketManager
 {
-    readonly Project2Context _Context;
+    readonly Project2Context _DbContext;
     readonly HistoryBodyGenerator _HistoryBodyGenerator;
     private HistoryWritter _HistoryWritter;
-    private Project2Context project2Context;
     readonly TicketStatusHelper _StatusHandler;
     readonly Mapper _Map;
-    public TicketManager(Project2Context context, TicketStatusHelper statusHandler)
+    public TicketManager(Project2Context dbcontext, TicketStatusHelper statusHandler)
     {
-        _Context = context;
+        _DbContext = dbcontext;
         _HistoryBodyGenerator = new HistoryBodyGenerator();
-        _HistoryWritter = new HistoryWritter(context, _HistoryBodyGenerator);
+        _HistoryWritter = new HistoryWritter(dbcontext, _HistoryBodyGenerator);
         _StatusHandler = statusHandler;
         _Map = MapperConfig.InitializeAutomapper();
     }
 
-    public TicketManager(Project2Context project2Context)
+    public TicketManager(Project2Context dbcontext)
     {
-        this.project2Context = project2Context;
+        _DbContext = dbcontext;
     }
 
     public async Task<TicketCreateResponse> CreateTicketAsync(TicketCreateRequest newTicket, int reporterId)
@@ -37,7 +38,7 @@ public class TicketManager : ITicketManager
         Ticket ticket = _Map.Map<Ticket>(newTicket);
         ticket.ReporterId = reporterId;
         ticket.CreatedAt = DateTime.Now;
-        Models.User? user = await _Context.Users.FindAsync(ticket.ReporterId);
+        Models.User? user = await _DbContext.Users.FindAsync(ticket.ReporterId);
         if(user != null)
         {
             ticket.Reporter = user;
@@ -47,8 +48,8 @@ public class TicketManager : ITicketManager
             AddHistoryRecordRequest historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = ticket.Id, EventType = HistoryEventType.Create };
             await _HistoryWritter.AddHistoryRecord(historyRequest);
             TicketCreateResponse response = new TicketCreateResponse { Message = "You succsessfully posted a new ticket!" };
-            _Context.Tickets.Add(ticket);
-            await _Context.SaveChangesAsync();
+            _DbContext.Tickets.Add(ticket);
+            await _DbContext.SaveChangesAsync();
             return response;
         }
         return new TicketCreateResponse { Message = "Invalid user" };
@@ -56,7 +57,7 @@ public class TicketManager : ITicketManager
 
     public async Task<TicketEditResponse> EditTicketAsync(TicketEditRequest editTicket, int id, int reporterId)
     {
-        Ticket? dbTicket = await _Context.Tickets.FindAsync(id);
+        Ticket? dbTicket = await _DbContext.Tickets.FindAsync(id);
         if (dbTicket != null)
         {
             Ticket ticket = _Map.Map(editTicket, dbTicket);
@@ -64,8 +65,8 @@ public class TicketManager : ITicketManager
             dbTicket.UpdatedAt = DateTime.Now;
             if (dbTicket.ReporterId == reporterId)
             {
-                _Context.Tickets.Update(ticket);
-                await _Context.SaveChangesAsync();
+                _DbContext.Tickets.Update(ticket);
+                await _DbContext.SaveChangesAsync();
                 AddHistoryRecordRequest historyRequest = new AddHistoryRecordRequest { UserId = reporterId, TicketId = dbTicket.Id, EventType = HistoryEventType.Edit };
                 await _HistoryWritter.AddHistoryRecord(historyRequest);
                 TicketEditResponse succesResponse = new TicketEditResponse { Message = "You succesfully edited this ticket!" };
@@ -80,14 +81,14 @@ public class TicketManager : ITicketManager
 
     public async Task<TicketEditResponse> DeleteTicketAsync(int id, int reporterId)
     {
-        Ticket? dbTicket = await _Context.Tickets.FindAsync(id);
+        Ticket? dbTicket = await _DbContext.Tickets.FindAsync(id);
         if (dbTicket != null)
         {
             dbTicket.Id = id;
             if(dbTicket.ReporterId == reporterId)
             {
-                _Context.Tickets.Remove(dbTicket);
-                await _Context.SaveChangesAsync();
+                _DbContext.Tickets.Remove(dbTicket);
+                await _DbContext.SaveChangesAsync();
                 TicketEditResponse succesResponse = new TicketEditResponse { Message = "You succesfully deleted this ticket!" };
                 return succesResponse;
             }
@@ -101,7 +102,7 @@ public class TicketManager : ITicketManager
     public async Task<IEnumerable<TicketGetResponse>> GetTicketsAsync()
     {
 
-        List<Ticket> dbTicket = await _Context.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers.Where(w => w.IsDeleted == false)).ToListAsync();
+        List<Ticket> dbTicket = await _DbContext.Tickets.Include(i => i.Reporter).Include(i => i.Comments).Include(i => i.Histories).Include(i => i.Watchers.Where(w => w.IsDeleted == false)).ToListAsync();
         List<TicketGetResponse> response = new List<TicketGetResponse>();
         dbTicket.ForEach(t => response.Add(_Map.Map<TicketGetResponse>(t)));
 
@@ -109,8 +110,8 @@ public class TicketManager : ITicketManager
     }
     public async Task<TicketStatusResponse> ChangeTicketsStatus(TicketStatusRequest ticketStatus, int reporterId, int ticketId)
     {
-        Models.User? dbUser = await _Context.Users.FindAsync(reporterId);
-        Ticket? dbTicket = await _Context.Tickets.FindAsync(ticketId);
+        Models.User? dbUser = await _DbContext.Users.FindAsync(reporterId);
+        Ticket? dbTicket = await _DbContext.Tickets.FindAsync(ticketId);
         if (dbTicket != null && dbUser != null && dbTicket.ReporterId == dbUser.Id)
         {
             return await _StatusHandler.HandleStatusChange(dbTicket, dbUser, ticketStatus);
