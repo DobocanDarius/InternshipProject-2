@@ -32,18 +32,27 @@ public class AssigneeManager : IAssigneeManager
             User? user = await _DbContext.Users.FindAsync(request.UserId);
             if (user == null)
             {
-                var response = new AssignUserResponse { Message = "User not found" };
+                var response = new AssignUserResponse 
+                { 
+                    Message = "User not found" 
+                };
                 return response;
             }
             if (!string.Equals(user.Role, "developer", StringComparison.OrdinalIgnoreCase))
             {
-                var response = new AssignUserResponse { Message = "User is not a developer" };
+                var response = new AssignUserResponse 
+                { 
+                    Message = "User is not a developer" 
+                };
                 return response;
             }
             Assignee? existingAssignment = await _DbContext.Assignees.FirstOrDefaultAsync(a => a.TicketId == request.TicketId);
             if (existingAssignment != null)
             {
-                var response = new AssignUserResponse { Message = "An assignment already exists for this ticket" };
+                var response = new AssignUserResponse 
+                { 
+                    Message = "An assignment already exists for this ticket" 
+                };
                 return response;
             }
 
@@ -51,15 +60,26 @@ public class AssigneeManager : IAssigneeManager
 
             _DbContext.Assignees.Add(assignment);
             await _DbContext.SaveChangesAsync();
-            AddHistoryRecordRequest historyRequest = new AddHistoryRecordRequest { UserId = request.UserId, TicketId = request.TicketId, EventType = HistoryEventType.Assign };
+            AddHistoryRecordRequest historyRequest = new AddHistoryRecordRequest 
+            { 
+                UserId = request.UserId,
+                TicketId = request.TicketId,
+                EventType = HistoryEventType.Assign 
+            };
             await _HistoryWritter.AddHistoryRecord(historyRequest);
 
-            AssignUserResponse succesResponse = new AssignUserResponse { Message = "User assigned successfully" };
+            AssignUserResponse succesResponse = new AssignUserResponse 
+            { 
+                Message = "User assigned successfully" 
+            };
             return succesResponse;
         }
         catch
         {
-            AssignUserResponse response = new AssignUserResponse { Message = "Error assigning user" };
+            AssignUserResponse response = new AssignUserResponse 
+            { 
+                Message = "Error assigning user" 
+            };
             return response;
         }
     }
@@ -80,11 +100,21 @@ public class AssigneeManager : IAssigneeManager
                     return userResponse;
                 }
             }
-            return new GetAssignedUserResponse { Username = "N/A", Role = "N/A", CreatedAt = DateTime.MinValue };
+            return new GetAssignedUserResponse 
+            { 
+                Username = "N/A", 
+                Role = "N/A", 
+                CreatedAt = DateTime.MinValue 
+            };
         }
         catch
         {
-            return new GetAssignedUserResponse { Username = "Error", Role = "Error", CreatedAt = DateTime.MinValue };
+            return new GetAssignedUserResponse 
+            { 
+                Username = "Error", 
+                Role = "Error",
+                CreatedAt = DateTime.MinValue 
+            };
         }
     }
 
@@ -97,18 +127,27 @@ public class AssigneeManager : IAssigneeManager
             {
                 _DbContext.Assignees.Remove(assignment);
                 await _DbContext.SaveChangesAsync();
-                RemoveAssignedUserResponse response = new RemoveAssignedUserResponse { Message = "Assigned user removed successfully" };
+                RemoveAssignedUserResponse response = new RemoveAssignedUserResponse 
+                { 
+                    Message = "Assigned user removed successfully" 
+                };
                 return response;
             }
             else
             {
-                RemoveAssignedUserResponse response = new RemoveAssignedUserResponse { Message = "No assigned user found" };
+                RemoveAssignedUserResponse response = new RemoveAssignedUserResponse 
+                { 
+                    Message = "No assigned user found" 
+                };
                 return response;
             }
         }
         catch
         {
-            RemoveAssignedUserResponse response = new RemoveAssignedUserResponse { Message = "Error removing assignment" };
+            RemoveAssignedUserResponse response = new RemoveAssignedUserResponse 
+            { 
+                Message = "Error removing assignment" 
+            };
             return response;
         }
     }

@@ -32,7 +32,10 @@ namespace InternshipProject_2.Controllers
                 int? userId = _TokenHelper.GetClaimValue(HttpContext);
                 if (userId == null)
                 {
-                    return BadRequest(new WatchResponse { Message = "You need to log in" });
+                    return BadRequest(new WatchResponse 
+                    { 
+                        Message = "You need to log in" 
+                    });
                 }
                 WatchResponse result = await _WatcherManager.WatchTicket(request, userId.Value);
                 return Ok(result.Message);

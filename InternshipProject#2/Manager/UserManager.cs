@@ -39,7 +39,10 @@ public class UserManager : IUserManager
         if (foundUser != null)
         {
 
-            LoginResponse loginResponse = new LoginResponse { Token = _TokenHelper.GenerateToken(foundUser) };
+            LoginResponse loginResponse = new LoginResponse 
+            { 
+                Token = _TokenHelper.GenerateToken(foundUser) 
+            };
 
             return loginResponse;
         }
@@ -49,7 +52,10 @@ public class UserManager : IUserManager
     {
         if(await _DbContext.Users.AnyAsync(u => u.Email == newUser.Email))
         {
-            return new CreateUserResponse { Message = "User with this email already exists" };
+            return new CreateUserResponse 
+            { 
+                Message = "User with this email already exists" 
+            };
         }
 
         newUser.Password = _PasswordHasher.HashPassword(newUser.Password);
@@ -60,7 +66,10 @@ public class UserManager : IUserManager
 
         await _DbContext.SaveChangesAsync();
 
-        var response = new CreateUserResponse { Message = "Registration successful" };
+        var response = new CreateUserResponse 
+        { 
+            Message = "Registration successful" 
+        };
 
         return response;
     }
@@ -72,7 +81,10 @@ public class UserManager : IUserManager
 
         await _DbContext.SaveChangesAsync();
 
-        var response = new LogoutResponse { Message = "Logout successful" };
+        var response = new LogoutResponse 
+        { 
+            Message = "Logout successful" 
+        };
 
         return response;
     }

@@ -33,7 +33,12 @@ namespace InternshipProject_2.Manager
             Comment comment = _Map.Map<Comment>(newComment);
             _DbContext.Comments.Add(comment);
             await _DbContext.SaveChangesAsync();
-            AddHistoryRecordRequest historyRequest = new AddHistoryRecordRequest { UserId = newComment.UserId, TicketId = newComment.TicketId, EventType = HistoryEventType.Comment };
+            AddHistoryRecordRequest historyRequest = new AddHistoryRecordRequest 
+            { 
+                UserId = newComment.UserId, 
+                TicketId = newComment.TicketId, 
+                EventType = HistoryEventType.Comment 
+            };
             await _HistoryWritter.AddHistoryRecord(historyRequest);
         }
         

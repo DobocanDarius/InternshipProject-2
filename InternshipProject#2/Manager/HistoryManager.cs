@@ -25,7 +25,8 @@ namespace InternshipProject_2.Manager
             try
             {
                 List<AddHistoryRecordResponse> historyRecords = await _DbContext.Histories.Where(history => history.TicketId == request.TicketId).ProjectTo<AddHistoryRecordResponse>(_Map.ConfigurationProvider).ToListAsync();
-                if(!historyRecords.Any()) {
+                if(!historyRecords.Any()) 
+                {
                     GetHistoryResponse errorResponse = new GetHistoryResponse
                     {
                         HistoryRecords = new List<AddHistoryRecordResponse>
@@ -46,7 +47,7 @@ namespace InternshipProject_2.Manager
             }
             catch
             {
-                GetHistoryResponse  error = new GetHistoryResponse
+                GetHistoryResponse error = new GetHistoryResponse
                 {
                     HistoryRecords = new List<AddHistoryRecordResponse>
                    {

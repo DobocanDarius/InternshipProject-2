@@ -31,13 +31,19 @@ public class WatcherManager : IWatcherManager
             {
                 watcher.IsDeleted = true;
                 await _DbContext.SaveChangesAsync();
-                return new WatchResponse { Message = "Not watching anymore" };
+                return new WatchResponse 
+                { 
+                    Message = "Not watching anymore" 
+                };
             }
             else
             {
                 watcher.IsDeleted = false;
                 await _DbContext.SaveChangesAsync();
-                return new WatchResponse { Message = "Watching ticket again" };
+                return new WatchResponse 
+                { 
+                    Message = "Watching ticket again" 
+                };
             }
         }
         else
@@ -48,7 +54,10 @@ public class WatcherManager : IWatcherManager
             _DbContext.Watchers.Add(mappedWatcher);
             await _DbContext.SaveChangesAsync();
 
-            return new WatchResponse { Message = "Watching ticket" };
+            return new WatchResponse 
+            { 
+                Message = "Watching ticket" 
+            };
         }
     }
 
