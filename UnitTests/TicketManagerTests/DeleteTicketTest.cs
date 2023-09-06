@@ -6,8 +6,8 @@ namespace UnitTests.TicketManagerTests
     [TestClass]
     public class DeleteTicket
     {
-        private TicketManager _ticketManager;
-        private Project2Context _project2Context;
+        TicketManager _ticketManager;
+        Project2Context _project2Context;
 
         [TestInitialize]
         public void Setup()
@@ -19,7 +19,7 @@ namespace UnitTests.TicketManagerTests
         [TestMethod]
         public async Task DeleteTicketValidRequest()
         {
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -29,7 +29,7 @@ namespace UnitTests.TicketManagerTests
              };
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -42,7 +42,7 @@ namespace UnitTests.TicketManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
 
-            var response = await _ticketManager.DeleteTicketAsync(ticket.Id, user.Id);
+            RequestResponseModels.Ticket.Response.TicketEditResponse response = await _ticketManager.DeleteTicketAsync(ticket.Id, user.Id);
             Assert.AreEqual("You succesfully deleted this ticket!", response.Message);
             }
         }

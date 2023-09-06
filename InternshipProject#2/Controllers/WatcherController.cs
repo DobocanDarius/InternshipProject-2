@@ -1,12 +1,12 @@
-﻿using InternshipProject_2.Helpers;
-using InternshipProject_2.Manager;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
+using InternshipProject_2.Helpers;
+using InternshipProject_2.Manager;
+
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace InternshipProject_2.Controllers
 {
@@ -14,13 +14,13 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class WatcherController : ControllerBase
     {
-        private readonly IWatcherManager _watcherManager;
-        private readonly TokenHelper _token;
+        readonly IWatcherManager _WatcherManager;
+        readonly TokenHelper _TokenHelper;
 
-        public WatcherController(IWatcherManager manager, TokenHelper token)
+        public WatcherController(IWatcherManager manager, TokenHelper tokenHelper)
         {
-            _watcherManager = manager;
-            _token = token;
+            _WatcherManager = manager;
+            _TokenHelper = tokenHelper;
         }
 
         [HttpPost]
@@ -29,12 +29,15 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var userId = _token.GetClaimValue(HttpContext);
+                int? userId = _TokenHelper.GetClaimValue(HttpContext);
                 if (userId == null)
                 {
-                    return BadRequest(new WatchResponse { Message = "You need to log in" });
+                    return BadRequest(new WatchResponse 
+                    { 
+                        Message = "You need to log in" 
+                    });
                 }
-                var result = await _watcherManager.WatchTicket(request, userId.Value);
+                WatchResponse result = await _WatcherManager.WatchTicket(request, userId.Value);
                 return Ok(result.Message);
             }
             catch (Exception ex)

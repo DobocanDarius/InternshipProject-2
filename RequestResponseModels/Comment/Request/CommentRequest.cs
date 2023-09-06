@@ -1,10 +1,21 @@
-﻿namespace RequestResponseModels.Comment.Request
+﻿namespace RequestResponseModels.Comment.Request;
+
+public class CommentRequest
 {
-    public class CommentRequest
+    public string Body 
+    { get; set; }
+
+    public int UserId 
+    { get; set; }
+
+    public int TicketId 
+    { get; set; }
+
+    public DateTime CreatedAt 
+    { get; set; }
+
+    public CommentRequest()
     {
-        public string Body { get; set; }
-        public int UserId { get; set; }
-        public int TicketId { get; set; }
-        public DateTime CreatedAt { get; set; }
+        Body = string.Empty;
     }
 }

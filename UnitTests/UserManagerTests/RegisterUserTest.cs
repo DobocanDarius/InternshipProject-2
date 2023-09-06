@@ -9,9 +9,9 @@ namespace UnitTests.UserManagerTests;
 [TestClass]
 public class RegisterUserTest
 {
-    private UserManager _userManager;
-    private  Project2Context _dbContext;
-    private  PasswordHasher _passwordHasher;
+    UserManager _userManager;
+    Project2Context _dbContext;
+    PasswordHasher _passwordHasher;
 
     [TestInitialize]
     public void Setup()
@@ -24,7 +24,7 @@ public class RegisterUserTest
     public async Task CreateUserValidRequest()
     {
         //arrange
-        var request = new CreateUserRequest("darius", "darius", "darius@d.com", "developer");
+        CreateUserRequest request = new CreateUserRequest("darius", "darius", "darius@d.com", "developer");
 
         //act
         CreateUserResponse result = await _userManager.Create(request);
@@ -37,7 +37,7 @@ public class RegisterUserTest
     public async Task UserAlreadyExistsValidRequest()
     {
         //arrange
-        var request = new CreateUserRequest("darius", "darius", "darius@d.com", "developer");
+        CreateUserRequest request = new CreateUserRequest("darius", "darius", "darius@d.com", "developer");
 
         //act
         CreateUserResponse result = await _userManager.Create(request);

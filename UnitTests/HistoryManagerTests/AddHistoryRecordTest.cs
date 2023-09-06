@@ -11,11 +11,11 @@ namespace UnitTests.HistoryManagerTests
     [TestClass]
     public class AddHistoryRecordTest
     {
-        private HistoryWritter _historyRecord;
-        private Project2Context _project2Context;
-        private HistoryBodyGenerator _historyBodyGenerator;
-        private AssigneeManager _assigneeManager;
-        private CommentManager _commentManager;
+        HistoryWritter _historyRecord;
+        Project2Context _project2Context;
+        HistoryBodyGenerator _historyBodyGenerator;
+        AssigneeManager _assigneeManager;
+        CommentManager _commentManager;
 
         [TestInitialize]
         public void SetUp()
@@ -32,7 +32,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordCreateValidResponse()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -42,7 +42,7 @@ namespace UnitTests.HistoryManagerTests
             };
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -56,8 +56,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
 
-
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 TicketId = ticket.Id,
                 UserId = user.Id,
@@ -65,8 +64,8 @@ namespace UnitTests.HistoryManagerTests
             };
             //Act
 
-            var response = await _historyRecord.AddHistoryRecord(request);
-            var expectedResponse = _historyBodyGenerator.GenerateHistoryBody(request.EventType, request.UserId);
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
+            string expectedResponse = _historyBodyGenerator.GenerateHistoryBody(request.EventType, request.UserId);
             string actualResponse = $"{user.Username} created a ticket";
             //Assert
             Assert.AreEqual(actualResponse, response.Body);
@@ -76,7 +75,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordAssignValidResponse()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -87,7 +86,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
 
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -99,13 +98,13 @@ namespace UnitTests.HistoryManagerTests
             };
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
-            var assignRequest = new AssignUserRequest
+            AssignUserRequest assignRequest = new AssignUserRequest
             {
                 TicketId = ticket.Id,
                 UserId = user.Id,
             };
             await _assigneeManager.AssignUserToTicket(assignRequest);
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id,
@@ -113,8 +112,8 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyRecord.AddHistoryRecord(request);
-            var expectedResponse = $"{user.Username} was assigned to this ticket";
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
+            string expectedResponse = $"{user.Username} was assigned to this ticket";
             Console.WriteLine($"Assignment ID: {request.TicketId}, Ticket ID: {ticket.Id}");
             //Assert
             Assert.AreEqual(expectedResponse, response.Body);
@@ -124,7 +123,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordCommentValidResponse()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -135,7 +134,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
 
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -148,7 +147,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
 
-            var commentRequest = new CommentRequest
+            CommentRequest commentRequest = new CommentRequest
             {
                 Body = "Test",
                 TicketId = ticket.Id,
@@ -157,7 +156,7 @@ namespace UnitTests.HistoryManagerTests
             };
             await _commentManager.CreateComment(commentRequest);
 
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id,
@@ -165,8 +164,8 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyRecord.AddHistoryRecord(request);
-            var expectedResponse = $"{user.Username} added a comment";
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
+            string expectedResponse = $"{user.Username} added a comment";
 
             //Assert
             Assert.AreEqual(expectedResponse, response.Body);
@@ -177,7 +176,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordEditValidResponse()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -188,7 +187,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
 
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -201,7 +200,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
 
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id,
@@ -209,8 +208,8 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyRecord.AddHistoryRecord(request);
-            var expectedResponse = $"{user.Username} edited the ticket";
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
+            string expectedResponse = $"{user.Username} edited the ticket";
 
             //Assert
             Assert.AreEqual(expectedResponse,response.Body);
@@ -220,7 +219,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordCloseValidResponse()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -231,7 +230,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
 
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -244,7 +243,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
 
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id,
@@ -252,8 +251,8 @@ namespace UnitTests.HistoryManagerTests
             };
 
             //Act
-            var response = await _historyRecord.AddHistoryRecord(request);
-            var expectedResponse = $"{user.Username} closed the ticket";
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
+            string expectedResponse = $"{user.Username} closed the ticket";
 
             //Assert
             Assert.AreEqual(expectedResponse, response.Body);
@@ -270,7 +269,7 @@ namespace UnitTests.HistoryManagerTests
             };
 
             // Act
-            var response = await _historyRecord.AddHistoryRecord(request);
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("User not found!", response.Body);
@@ -280,7 +279,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordTicketNotFound()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -292,7 +291,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.SaveChanges();
 
             
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id, 
                 TicketId = 999, 
@@ -301,7 +300,7 @@ namespace UnitTests.HistoryManagerTests
            
 
             // Act
-            var response = await _historyRecord.AddHistoryRecord(request);
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("Ticket not found!", response.Body);
@@ -310,7 +309,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordAssignmentNotFound()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -321,7 +320,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
 
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -334,7 +333,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
            
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id,
@@ -342,7 +341,7 @@ namespace UnitTests.HistoryManagerTests
             };
 
             // Act
-            var response = await _historyRecord.AddHistoryRecord(request);
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("Assignment not found!", response.Body);
@@ -351,7 +350,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordCommentNotFound()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -362,7 +361,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
 
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -375,7 +374,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
            
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id,
@@ -383,7 +382,7 @@ namespace UnitTests.HistoryManagerTests
             };
 
             // Act
-            var response = await _historyRecord.AddHistoryRecord(request);
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
 
             // Assert
             Assert.AreEqual("Comment not found", response.Body);
@@ -393,7 +392,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task AddHistoryRecordUnsupportedEventType()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -404,7 +403,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
 
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -417,7 +416,7 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
            
-            var request = new AddHistoryRecordRequest
+            AddHistoryRecordRequest request = new AddHistoryRecordRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id,
@@ -425,7 +424,7 @@ namespace UnitTests.HistoryManagerTests
             };
             //Act
 
-            var response = await _historyRecord.AddHistoryRecord(request);
+            RequestResponseModels.History.Response.AddHistoryRecordResponse response = await _historyRecord.AddHistoryRecord(request);
 
             //Assert
 

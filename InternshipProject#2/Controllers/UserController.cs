@@ -1,7 +1,9 @@
-﻿using InternshipProject_2.Helpers;
-using InternshipProject_2.Manager;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using InternshipProject_2.Helpers;
+using InternshipProject_2.Manager;
+
 using RequestResponseModels.User.Request;
 
 namespace InternshipProject_2.Controllers
@@ -10,13 +12,13 @@ namespace InternshipProject_2.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserManager _userManager;
-        private readonly TokenHelper _tokenHelper;
+        readonly IUserManager _UserManager;
+        readonly TokenHelper _TokenHelper;
         
         public UserController(IUserManager userManager, TokenHelper tokenHelper)
         {
-            _userManager = userManager;
-            _tokenHelper = tokenHelper;
+            _UserManager = userManager;
+            _TokenHelper = tokenHelper;
         }
 
         [HttpPost("login")]
@@ -24,7 +26,7 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var loggedIn = await _userManager.Login(login);
+                RequestResponseModels.User.Response.LoginResponse loggedIn = await _UserManager.Login(login);
                 if (loggedIn == null)
                 {
                     return Unauthorized();
@@ -44,7 +46,7 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var response = await _userManager.Create(newUser);
+                RequestResponseModels.User.Response.CreateUserResponse response = await _UserManager.Create(newUser);
                 return Ok(response.Message);
             }
             catch (Exception ex)
@@ -59,12 +61,12 @@ namespace InternshipProject_2.Controllers
         {
             try
             {
-                var token = _tokenHelper.GetToken(HttpContext);
+                string? token = _TokenHelper.GetToken(HttpContext);
                 if(token == null)
                 {
                     return BadRequest("You are not logged in");
                 }
-                var response = await _userManager.Logout(new LogoutRequest { Token = token });
+                RequestResponseModels.User.Response.LogoutResponse response = await _UserManager.Logout(new LogoutRequest { Token = token });
                 return Ok(response.Message);
             }
             catch (Exception ex)

@@ -1,7 +1,11 @@
-﻿namespace RequestResponseModels.Assignee.Response
+﻿namespace RequestResponseModels.Assignee.Response;
+
+public class AssignUserResponse
 {
-    public class AssignUserResponse
+    public string Message {  get; set; }
+
+    public AssignUserResponse()
     {
-        public string Message;
+        Message = string.Empty;
     }
 }

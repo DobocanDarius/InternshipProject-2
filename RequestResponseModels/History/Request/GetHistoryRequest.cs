@@ -1,7 +1,7 @@
-﻿namespace RequestResponseModels.History.Request
+﻿namespace RequestResponseModels.History.Request;
+
+public class GetHistoryRequest
 {
-    public class GetHistoryRequest
-    {
-        public int TicketId { get; set; }
-    }
+    public int TicketId 
+    { get; set; }
 }

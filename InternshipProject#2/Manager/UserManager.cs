@@ -1,7 +1,10 @@
-﻿using AutoMapper;
+﻿using Microsoft.EntityFrameworkCore;
+
+using AutoMapper;
+
 using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
-using Microsoft.EntityFrameworkCore;
+
 using RequestResponseModels.User.Request;
 using RequestResponseModels.User.Response;
 
@@ -9,69 +12,79 @@ namespace InternshipProject_2.Manager;
 
 public class UserManager : IUserManager
 {
-    private readonly Project2Context _dbContext;
-    private readonly PasswordHasher _passwordHasher;
-    private readonly TokenHelper _tokenHelper;
-    private readonly Mapper map;
+    readonly Project2Context _DbContext;
+    readonly PasswordHasher _PasswordHasher;
+    readonly TokenHelper _TokenHelper;
+    readonly Mapper _Map;
+
     public UserManager(Project2Context dbContext, PasswordHasher passwordHasher, TokenHelper tokenHelper)
     {
-        _dbContext = dbContext;
-        _passwordHasher = passwordHasher;
-        _tokenHelper = tokenHelper;
-        map = MapperConfig.InitializeAutomapper();
+        _DbContext = dbContext;
+        _PasswordHasher = passwordHasher;
+        _TokenHelper = tokenHelper;
+        _Map = MapperConfig.InitializeAutomapper();
     }
 
     public UserManager(Project2Context dbContext, PasswordHasher passwordHasher)
     {
-        _dbContext = dbContext;
-        _passwordHasher = passwordHasher;
+        _DbContext = dbContext;
+        _PasswordHasher = passwordHasher;
     }
 
     public async Task<LoginResponse> Login(LoginRequest user)
     {
-        string hashedPsw = _passwordHasher.HashPassword(user.Password);
-        var foundUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
+        string hashedPsw = _PasswordHasher.HashPassword(user.Password);
+        var foundUser = await _DbContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == hashedPsw);
 
         if (foundUser != null)
         {
 
-            LoginResponse loginResponse = new LoginResponse { Token = _tokenHelper.Generate(foundUser) };
+            LoginResponse loginResponse = new LoginResponse 
+            { 
+                Token = _TokenHelper.GenerateToken(foundUser) 
+            };
 
             return loginResponse;
         }
-        return null;
+        return new LoginResponse(); 
     }
-
-
     public async Task<CreateUserResponse> Create(CreateUserRequest newUser)
     {
-        if(await _dbContext.Users.AnyAsync(u => u.Email == newUser.Email))
+        if(await _DbContext.Users.AnyAsync(u => u.Email == newUser.Email))
         {
-            return new CreateUserResponse { Message = "User with this email already exists" };
+            return new CreateUserResponse 
+            { 
+                Message = "User with this email already exists" 
+            };
         }
 
-        newUser.Password = _passwordHasher.HashPassword(newUser.Password);
+        newUser.Password = _PasswordHasher.HashPassword(newUser.Password);
 
-        var user = map.Map<Models.User>(newUser);
+        var user = _Map.Map<Models.User>(newUser);
 
-        _dbContext.Users.Add(user);
+        _DbContext.Users.Add(user);
 
-        await _dbContext.SaveChangesAsync();
+        await _DbContext.SaveChangesAsync();
 
-        var response = new CreateUserResponse { Message = "Registration successful" };
+        var response = new CreateUserResponse 
+        { 
+            Message = "Registration successful" 
+        };
 
         return response;
     }
-
     public async Task<LogoutResponse> Logout(LogoutRequest request)
     {
-        var token = map.Map<Models.InactiveToken>(request);
+        var token = _Map.Map<Models.InactiveToken>(request);
 
-        _dbContext.Add(token);
+        _DbContext.Add(token);
 
-        await _dbContext.SaveChangesAsync();
+        await _DbContext.SaveChangesAsync();
 
-        var response = new LogoutResponse { Message = "Logout successful" };
+        var response = new LogoutResponse 
+        { 
+            Message = "Logout successful" 
+        };
 
         return response;
     }

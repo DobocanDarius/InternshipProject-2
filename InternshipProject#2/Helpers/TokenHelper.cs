@@ -1,43 +1,45 @@
-﻿using InternshipProject_2.Models;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+
+using InternshipProject_2.Models;
 
 namespace InternshipProject_2.Helpers;
 
 public class TokenHelper
 {
-    private readonly IConfiguration _config;
-
+    readonly IConfiguration _Config;
+    const short tokenExpirationDay = 1;
     public TokenHelper(IConfiguration config)
     {
-        _config = config;
+        _Config = config;
     }
-    public string Generate(User user)
+    public string GenerateToken(User user)
     {
         List<Claim> claims = new List<Claim>
-            {
-                new Claim("userId", user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role),
-            };
+        {
+           new Claim("userId", user.Id.ToString()),
+           new Claim(ClaimTypes.Role, user.Role),
+        };
 
-        var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config.GetSection("JwtSettings:SecretKey").Value));
+        SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_Config.GetSection("JwtSettings:SecretKey").Value));
 
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+        SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
-        var token = new JwtSecurityToken(
+        JwtSecurityToken token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.Now.AddDays(1),
+            expires: DateTime.Now.AddDays(tokenExpirationDay),
             signingCredentials: creds
             );
-        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        string jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwt;
     }
 
     public int? GetClaimValue(HttpContext httpContext)
     {
-        var userIdClaimString = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
+        Claim? userIdClaimString = httpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("userId"));
 
         if (userIdClaimString?.Value != null && int.TryParse(userIdClaimString.Value, out int userIdClaimInt))
         {
@@ -48,11 +50,11 @@ public class TokenHelper
 
     public string? GetToken(HttpContext httpContext)
     {
-        var authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
+        string? authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
 
         if (!string.IsNullOrEmpty(authorizationHeader) && authorizationHeader.StartsWith("Bearer "))
         {
-            var userToken = authorizationHeader.Substring("Bearer ".Length).Trim();
+            string userToken = authorizationHeader.Substring("Bearer ".Length).Trim();
             return userToken;
         }
         else

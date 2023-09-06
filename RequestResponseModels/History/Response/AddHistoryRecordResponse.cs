@@ -1,9 +1,18 @@
-﻿namespace RequestResponseModels.History.Response
+﻿namespace RequestResponseModels.History.Response;
+
+public class AddHistoryRecordResponse
 {
-    public class AddHistoryRecordResponse
+   public int TicketId 
+   { get; set; }
+
+   public string Body 
+   { get; set; }
+
+   public DateTime CreatedAt 
+   { get; set; }
+
+    public AddHistoryRecordResponse()
     {
-       public int TicketId { get; set; }
-       public string Body { get; set; }
-       public DateTime CreatedAt { get; set; }
+        Body = string.Empty;
     }
 }

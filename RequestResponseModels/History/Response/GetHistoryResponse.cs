@@ -1,7 +1,12 @@
-﻿namespace RequestResponseModels.History.Response
+﻿namespace RequestResponseModels.History.Response;
+
+public class GetHistoryResponse
 {
-    public class GetHistoryResponse
+    public List<AddHistoryRecordResponse> HistoryRecords 
+    { get; set; }
+
+    public GetHistoryResponse()
     {
-        public List<AddHistoryRecordResponse> HistoryRecords { get; set; }
+        HistoryRecords = new List<AddHistoryRecordResponse>();
     }
 }

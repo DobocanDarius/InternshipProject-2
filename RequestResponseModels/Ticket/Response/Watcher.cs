@@ -1,8 +1,12 @@
-﻿
-namespace RequestResponseModels.Ticket.Response
+﻿namespace RequestResponseModels.Ticket.Response;
+
+public class Watcher
 {
-    public class Watcher
+    public string Username 
+    { get; set; }
+
+    public Watcher()
     {
-        public string Username { get; set; }
+        Username = string.Empty;
     }
 }

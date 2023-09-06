@@ -1,15 +1,28 @@
-﻿namespace RequestResponseModels.Ticket.Request
+﻿namespace RequestResponseModels.Ticket.Request;
+
+public class TicketCreateRequest
 {
-    public class TicketCreateRequest
+    public string Title 
+    { get; set; }
+
+    public string Body 
+    { get; set; }
+
+    public string Type 
+    { get; set; }
+
+    public string Priority 
+    { get; set; }
+
+    public string Component 
+    { get; set; }
+
+    public TicketCreateRequest()
     {
-        public string Title { get; set; } = null!;
-
-        public string Body { get; set; } = null!;
-
-        public string Type { get; set; } = null!;
-
-        public string Priority { get; set; } = null!;
-
-        public string Component { get; set; } = null!;
+        Title = string.Empty;
+        Body = string.Empty;
+        Type = string.Empty;
+        Priority = string.Empty;
+        Component = string.Empty;
     }
 }

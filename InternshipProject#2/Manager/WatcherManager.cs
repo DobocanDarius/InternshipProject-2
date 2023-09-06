@@ -1,7 +1,9 @@
-﻿using AutoMapper;
-using InternshipProject_2.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+
+using AutoMapper;
+
 using InternshipProject_2.Models;
-using Microsoft.EntityFrameworkCore;
+
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
 
@@ -9,45 +11,53 @@ namespace InternshipProject_2.Manager;
 
 public class WatcherManager : IWatcherManager
 {
-    private Project2Context _dbContext;
-    public HttpContext httpContext;
-    
+    Project2Context _DbContext;
+    public HttpContext? httpContext;
+    readonly Mapper _Map;
 
-    private readonly Mapper map;
     public WatcherManager(Project2Context dbContext)
     {
-        _dbContext = dbContext;
-        map = MapperConfig.InitializeAutomapper();
+        _DbContext = dbContext;
+        _Map = MapperConfig.InitializeAutomapper();
     }
     public async Task<WatchResponse> WatchTicket(WatchRequest request, int userId)
     {
-        var watcher = await _dbContext.Watchers
+        var watcher = await _DbContext.Watchers
             .FirstOrDefaultAsync(w => w.UserId == userId && w.TicketId == request.TicketId);
 
         if (watcher != null)
         {
-            if(request.isWatching) 
+            if(request.IsWatching) 
             {
                 watcher.IsDeleted = true;
-                await _dbContext.SaveChangesAsync();
-                return new WatchResponse { Message = "Not watching anymore" };
+                await _DbContext.SaveChangesAsync();
+                return new WatchResponse 
+                { 
+                    Message = "Not watching anymore" 
+                };
             }
             else
             {
                 watcher.IsDeleted = false;
-                await _dbContext.SaveChangesAsync();
-                return new WatchResponse { Message = "Watching ticket again" };
+                await _DbContext.SaveChangesAsync();
+                return new WatchResponse 
+                { 
+                    Message = "Watching ticket again" 
+                };
             }
         }
         else
         {
             request.UserId = userId;
 
-            var mappedWatcher = map.Map<Watcher>(request);
-            _dbContext.Watchers.Add(mappedWatcher);
-            await _dbContext.SaveChangesAsync();
+            var mappedWatcher = _Map.Map<Watcher>(request);
+            _DbContext.Watchers.Add(mappedWatcher);
+            await _DbContext.SaveChangesAsync();
 
-            return new WatchResponse { Message = "Watching ticket" };
+            return new WatchResponse 
+            { 
+                Message = "Watching ticket" 
+            };
         }
     }
 

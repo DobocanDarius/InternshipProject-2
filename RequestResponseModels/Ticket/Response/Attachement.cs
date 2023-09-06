@@ -1,7 +1,11 @@
-﻿namespace RequestResponseModels.Ticket.Response
+﻿namespace RequestResponseModels.Ticket.Response;
+public class Attachement
 {
-    public class Attachement
+    public string Link 
+    { get; set; }
+
+    public Attachement()
     {
-        public string Link { get; set; }
+        Link = string.Empty;
     }
 }

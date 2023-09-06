@@ -2,6 +2,21 @@
 
 public class CreateUserRequest
 {
+    public string Username 
+    { get; set; }
+
+    public string Password 
+    { get; set; }
+
+    public string Email 
+    { get; set; }
+
+    public string Role 
+    { get; set; }
+
+    public DateTime CreatedAt 
+    { get; }
+
     public CreateUserRequest(string username, string password, string email, string role)
     {
         Username = username;
@@ -10,12 +25,4 @@ public class CreateUserRequest
         Role = role;
         CreatedAt = DateTime.Now;
     }
-    public string Username { get; set; } 
-
-    public string Password { get; set; } 
-
-    public string Email { get; set; } 
-
-    public string Role { get; set; } 
-    public DateTime CreatedAt { get; }
 }

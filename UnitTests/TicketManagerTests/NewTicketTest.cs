@@ -22,7 +22,7 @@ namespace UnitTests.TicketManagerTests
             [TestMethod]
             public async Task NewTicketValidRequest()
             {
-                var user = new User
+                User user = new User
                 {
                     Username = "Test",
                     Password = "password",
@@ -32,7 +32,7 @@ namespace UnitTests.TicketManagerTests
                 };
                 _project2Context.Users.Add(user);
                 _project2Context.SaveChanges();
-                var ticket = new TicketCreateRequest
+                TicketCreateRequest ticket = new TicketCreateRequest
                 {
                     Title = "Test",
                     Body = "Test",
@@ -40,7 +40,7 @@ namespace UnitTests.TicketManagerTests
                     Priority = "Test",
                     Component = "Test",
                 };
-                var response = await _ticketManager.CreateTicketAsync(ticket, user.Id);
+                RequestResponseModels.Ticket.Response.TicketCreateResponse response = await _ticketManager.CreateTicketAsync(ticket, user.Id);
                 Assert.AreEqual("You succsessfully posted a new ticket!", response.Message);
             }
         }

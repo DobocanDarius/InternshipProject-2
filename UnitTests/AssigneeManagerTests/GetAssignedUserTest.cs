@@ -1,5 +1,6 @@
 ﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
+
 using RequestResponseModels.Assignee.Request;
 using RequestResponseModels.Assignee.Response;
 
@@ -8,8 +9,8 @@ namespace UnitTests.AssigneeManagerTests
     [TestClass]
     public class GetAssignedUserTest
     {
-        private AssigneeManager _assigneeManager;
-        private Project2Context _project2Context;
+        AssigneeManager _assigneeManager;
+        Project2Context _project2Context;
 
         [TestInitialize]
         public void Setup()
@@ -22,7 +23,7 @@ namespace UnitTests.AssigneeManagerTests
         public async Task GetAssignedUserAssignmentExists()
         {
             // Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -32,7 +33,7 @@ namespace UnitTests.AssigneeManagerTests
             };
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -44,7 +45,7 @@ namespace UnitTests.AssigneeManagerTests
             };
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
-            var assignment = new Assignee
+            Assignee assignment = new Assignee
             {
                 UserId = user.Id,
                 TicketId = ticket.Id
@@ -55,7 +56,7 @@ namespace UnitTests.AssigneeManagerTests
             _project2Context.Assignees.Add(assignment);
             _project2Context.SaveChanges();
 
-            var request = new GetAssignedUserRequest
+            GetAssignedUserRequest request = new GetAssignedUserRequest
             {
                 TicketId = ticket.Id
             };
@@ -76,7 +77,7 @@ namespace UnitTests.AssigneeManagerTests
         public async Task GetAssignedUserNoAssignmentExists()
         {
             // Arrange
-            var request = new GetAssignedUserRequest
+            GetAssignedUserRequest request = new GetAssignedUserRequest
             {
                 TicketId = 123
             };

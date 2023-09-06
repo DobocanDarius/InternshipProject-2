@@ -1,8 +1,12 @@
-﻿
-namespace RequestResponseModels.Ticket.Response
+﻿namespace RequestResponseModels.Ticket.Response;
+
+public class History
 {
-    public class History
+    public string Body 
+    { get; set; }
+
+    public History()
     {
-        public string Body { get; set; }
+        Body = string.Empty;
     }
 }

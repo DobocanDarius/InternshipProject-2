@@ -1,8 +1,6 @@
-﻿namespace InternshipProject_2.Helpers
+﻿namespace InternshipProject_2.Helpers;
+
+public interface IEmailService
 {
-    public interface IEmailService
-    {
-        Task SendEmailAsync(List<string> toEmails, string subject, string body);
-        
-    }
+    Task SendEmailAsync(List<string> toEmails, string subject, string body);
 }
