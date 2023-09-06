@@ -1,7 +1,7 @@
-﻿namespace RequestResponseModels.Ticket.Request
+﻿namespace RequestResponseModels.Ticket.Request;
+
+public class TicketStatusRequest
 {
-    public class TicketStatusRequest
-    {
-        public int Status { get; set; }
-    }
+    public int Status 
+    { get; set; }
 }

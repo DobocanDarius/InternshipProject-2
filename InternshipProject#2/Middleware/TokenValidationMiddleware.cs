@@ -1,17 +1,18 @@
-﻿using InternshipProject_2.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
+
+using InternshipProject_2.Helpers;
 using InternshipProject_2.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace InternshipProject_2.Middleware;
 
 public class TokenValidationMiddleware
 {
-    private readonly RequestDelegate _next;
-    private readonly Project2Context _dbContext; 
+    readonly RequestDelegate _Next;
+    readonly Project2Context _DbContext; 
     public TokenValidationMiddleware(RequestDelegate next)
     {
-        _next = next;
-        _dbContext = new Project2Context();
+        _Next = next;
+        _DbContext = new Project2Context();
         
     }
 
@@ -21,7 +22,7 @@ public class TokenValidationMiddleware
 
         if (!string.IsNullOrEmpty(token))
         {
-            var tokenExists = await _dbContext.InactiveTokens.AnyAsync(t => t.Token == token);
+            var tokenExists = await _DbContext.InactiveTokens.AnyAsync(t => t.Token == token);
 
             if (tokenExists)
             {
@@ -30,7 +31,7 @@ public class TokenValidationMiddleware
             }
         }
 
-        await _next(context);
+        await _Next(context);
     }
 
 }

@@ -1,16 +1,17 @@
-using InternshipProject_2.Helpers;
-using InternshipProject_2.Manager;
+using FileSystem.Registration;
+using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using InternshipProject_2.Models;
 using System.Text;
+
 using InternshipProject_2;
-using Microsoft.Extensions.Options;
+using InternshipProject_2.Models;
 using InternshipProject_2.BackgroundServices;
 using InternshipProject_2.Middleware;
-using FileSystem.Registration;
+using InternshipProject_2.Helpers;
+using InternshipProject_2.Manager;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 // Add services to the container.

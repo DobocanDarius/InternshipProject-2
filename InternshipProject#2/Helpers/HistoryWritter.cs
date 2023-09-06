@@ -1,78 +1,79 @@
 ﻿using AutoMapper;
-using InternshipProject_2.Models;
+
 using Microsoft.EntityFrameworkCore;
+
+using InternshipProject_2.Models;
 using RequestResponseModels.History.Enum;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.History.Response;
 
-namespace InternshipProject_2.Helpers
+namespace InternshipProject_2.Helpers;
+
+public class HistoryWritter
 {
-    public class HistoryWritter
+    Project2Context _DbContext;
+    readonly Mapper _Map;
+    readonly HistoryBodyGenerator _HistoryBodyGenerator;
+    public HistoryWritter(Project2Context dbcontext, HistoryBodyGenerator historyBodyGenerator)
     {
-        private Project2Context _dbContext;
-        private readonly Mapper map;
-        private readonly HistoryBodyGenerator _historyBodyGenerator;
-        public HistoryWritter(Project2Context dbcontext, HistoryBodyGenerator historyBodyGenerator)
+        _DbContext = dbcontext;
+        _Map = MapperConfig.InitializeAutomapper();
+        _HistoryBodyGenerator = historyBodyGenerator;
+    }
+
+    public async Task<AddHistoryRecordResponse> AddHistoryRecord(AddHistoryRecordRequest request)
+    {
+        try
         {
-            _dbContext = dbcontext;
-            map = MapperConfig.InitializeAutomapper();
-            _historyBodyGenerator = historyBodyGenerator;
+            User? user = await _DbContext.Users.FindAsync(request.UserId);
+            if (user == null)
+            {
+                AddHistoryRecordResponse response = new AddHistoryRecordResponse { Body = "User not found!" };
+                return response;
+            }
+            Ticket? ticket = await _DbContext.Tickets.FindAsync(request.TicketId);
+            if (ticket == null)
+            {
+                AddHistoryRecordResponse response = new AddHistoryRecordResponse { Body = "Ticket not found!" };
+                return response;
+            }
+
+            if (request.EventType == HistoryEventType.Assign)
+            {
+                Assignee? assignment = await _DbContext.Assignees
+                .SingleOrDefaultAsync(a => a.TicketId == request.TicketId);
+                if (assignment == null)
+                {
+                    AddHistoryRecordResponse response = new AddHistoryRecordResponse { Body = "Assignment not found!" };
+                    return response;
+                }
+            }
+            if (request.EventType == HistoryEventType.Comment)
+            {
+                Comment? comment = await _DbContext.Comments
+                .FirstOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);
+                if (comment == null)
+                {
+                    var response = new AddHistoryRecordResponse { Body = "Comment not found" };
+                    return response;
+                }
+            }
+            string historyBody = _HistoryBodyGenerator.GenerateHistoryBody(request.EventType, request.UserId);
+            History historyRecord = _Map.Map<History>(request);
+            historyRecord.Body = historyBody;
+            historyRecord.CreatedAt = DateTime.Now;
+            _DbContext.Histories.Add(historyRecord);
+            await _DbContext.SaveChangesAsync();
+
+            return new AddHistoryRecordResponse { 
+                TicketId = request.TicketId,
+                Body = historyBody,
+                CreatedAt = DateTime.Now
+            };
         }
-
-        public async Task<AddHistoryRecordResponse> AddHistoryRecord(AddHistoryRecordRequest request)
+        catch
         {
-            try
-            {
-                var user = await _dbContext.Users.FindAsync(request.UserId);
-                if (user == null)
-                {
-                    var response = new AddHistoryRecordResponse { Body = "User not found!" };
-                    return response;
-                }
-                var ticket = await _dbContext.Tickets.FindAsync(request.TicketId);
-                if (ticket == null)
-                {
-                    var response = new AddHistoryRecordResponse { Body = "Ticket not found!" };
-                    return response;
-                }
-
-                if (request.EventType == HistoryEventType.Assign)
-                {
-                    var assignment = await _dbContext.Assignees
-                    .SingleOrDefaultAsync(a => a.TicketId == request.TicketId);
-                    if (assignment == null)
-                    {
-                        var response = new AddHistoryRecordResponse { Body = "Assignment not found!" };
-                        return response;
-                    }
-                }
-                if (request.EventType == HistoryEventType.Comment)
-                {
-                    var comment = await _dbContext.Comments
-                    .FirstOrDefaultAsync(c => c.TicketId == request.TicketId && c.UserId == request.UserId);
-                    if (comment == null)
-                    {
-                        var response = new AddHistoryRecordResponse { Body = "Comment not found" };
-                        return response;
-                    }
-                }
-                var historyBody = _historyBodyGenerator.GenerateHistoryBody(request.EventType, request.UserId);
-                var historyRecord = map.Map<History>(request);
-                historyRecord.Body = historyBody;
-                historyRecord.CreatedAt = DateTime.Now;
-                _dbContext.Histories.Add(historyRecord);
-                await _dbContext.SaveChangesAsync();
-
-                return new AddHistoryRecordResponse { 
-                    TicketId = request.TicketId,
-                    Body = historyBody,
-                    CreatedAt = DateTime.Now
-                };
-            }
-            catch (Exception ex)
-            {
-                return new AddHistoryRecordResponse { Body = "Error adding history record" };
-            }
+            return new AddHistoryRecordResponse { Body = "Error adding history record" };
         }
     }
 }

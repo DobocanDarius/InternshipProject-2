@@ -1,33 +1,34 @@
-﻿using InternshipProject_2.Manager;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+
+using InternshipProject_2.Manager;
+
 using RequestResponseModels.History.Request;
 
-namespace InternshipProject_2.Controllers
+namespace InternshipProject_2.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class HistoryController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class HistoryController : ControllerBase
+    private readonly IHistoryManager _HistoryManager;
+
+    public HistoryController(IHistoryManager historyManager)
     {
-        private readonly IHistoryManager _historyManager;
+        _HistoryManager = historyManager;
+    }
 
-        public HistoryController(IHistoryManager historyManager)
+    [HttpGet]
+    [Route("getHistory")]
+    public async Task<IActionResult> GetHistory([FromQuery] GetHistoryRequest request)
+    {
+        try
         {
-            _historyManager = historyManager;
+            RequestResponseModels.History.Response.GetHistoryResponse response = await _HistoryManager.GetHistory(request);
+            return Ok(response);
         }
-
-        [HttpGet]
-        [Route("getHistory")]
-        public async Task<IActionResult> GetHistory([FromQuery] GetHistoryRequest request)
+        catch(Exception ex)
         {
-            try
-            {
-                var response = await _historyManager.GetHistory(request);
-                return Ok(response);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest(ex.Message);
         }
     }
 }

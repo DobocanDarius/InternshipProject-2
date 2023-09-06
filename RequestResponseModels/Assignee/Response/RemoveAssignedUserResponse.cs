@@ -1,7 +1,12 @@
-﻿namespace RequestResponseModels.Assignee.Response
+﻿namespace RequestResponseModels.Assignee.Response;
+
+public class RemoveAssignedUserResponse
 {
-    public class RemoveAssignedUserResponse
+    public string Message 
+    { get; set; }
+
+    public RemoveAssignedUserResponse()
     {
-        public string Message { get; set; }
+        Message = string.Empty;
     }
 }

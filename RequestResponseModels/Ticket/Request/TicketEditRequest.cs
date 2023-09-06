@@ -1,11 +1,20 @@
-﻿namespace RequestResponseModels.Ticket.Request
+﻿namespace RequestResponseModels.Ticket.Request;
+
+public class TicketEditRequest
 {
-    public class TicketEditRequest
+    public string Title 
+    { get; set; }
+
+    public string Body
+    { get; set; }
+
+    public string Priority 
+    { get; set; }
+
+    public TicketEditRequest()
     {
-        public string Title { get; set; } = null!;
-
-        public string Body { get; set; } = null!;
-
-        public string Priority { get; set; } = null!;
+        Title = string.Empty;
+        Body = string.Empty;
+        Priority = string.Empty;
     }
 }

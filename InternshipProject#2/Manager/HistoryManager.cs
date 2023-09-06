@@ -1,7 +1,8 @@
-﻿using AutoMapper;
+﻿using Microsoft.EntityFrameworkCore;
+
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using InternshipProject_2.Models;
-using Microsoft.EntityFrameworkCore;
 using RequestResponseModels.History.Request;
 using RequestResponseModels.History.Response;
 
@@ -9,21 +10,21 @@ namespace InternshipProject_2.Manager
 {
     public class HistoryManager : IHistoryManager
     {
-        private Project2Context _dbContext;
-        private readonly Mapper map;
+        Project2Context _DbContext;
+        readonly Mapper _Map;
         public HistoryManager(Project2Context dbContext)
         {
-            _dbContext = dbContext;
-            map = MapperConfig.InitializeAutomapper();
+            _DbContext = dbContext;
+            _Map = MapperConfig.InitializeAutomapper();
         }
 
         public async Task<GetHistoryResponse> GetHistory(GetHistoryRequest request)
         {
             try
             {
-                var historyRecords = await _dbContext.Histories.Where(history => history.TicketId == request.TicketId).ProjectTo<AddHistoryRecordResponse>(map.ConfigurationProvider).ToListAsync();
+                List<AddHistoryRecordResponse> historyRecords = await _DbContext.Histories.Where(history => history.TicketId == request.TicketId).ProjectTo<AddHistoryRecordResponse>(_Map.ConfigurationProvider).ToListAsync();
                 if(!historyRecords.Any()) {
-                    var errorResponse = new GetHistoryResponse
+                    GetHistoryResponse errorResponse = new GetHistoryResponse
                     {
                         HistoryRecords = new List<AddHistoryRecordResponse>
                         {
@@ -35,15 +36,15 @@ namespace InternshipProject_2.Manager
                     };
                     return errorResponse;
                 }
-                var response = new GetHistoryResponse
+                GetHistoryResponse response = new GetHistoryResponse
                 {
                     HistoryRecords = historyRecords
                 };
                 return response;
             }
-            catch (Exception ex)
+            catch
             {
-                var error = new GetHistoryResponse
+                GetHistoryResponse  error = new GetHistoryResponse
                 {
                     HistoryRecords = new List<AddHistoryRecordResponse>
                    {
@@ -60,16 +61,15 @@ namespace InternshipProject_2.Manager
         {
             try
             {
-                var historyRecords = await _dbContext.Histories
+                List<AddHistoryRecordResponse> historyRecords = await _DbContext.Histories
                     .Where(history => history.CreatedAt >= startTime && history.CreatedAt <= endTime)
-                    .ProjectTo<AddHistoryRecordResponse>(map.ConfigurationProvider)
+                    .ProjectTo<AddHistoryRecordResponse>(_Map.ConfigurationProvider)
                     .ToListAsync();
 
                 return historyRecords;
             }
-            catch (Exception ex)
+            catch
             {
-                // Handle exceptions appropriately
                 return new List<AddHistoryRecordResponse>();
             }
         }

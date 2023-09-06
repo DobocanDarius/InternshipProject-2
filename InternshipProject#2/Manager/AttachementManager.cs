@@ -1,19 +1,18 @@
 ﻿using InternshipProject_2.Models;
 
-namespace InternshipProject_2.Manager
-{
-    public class AttachementManager : IAttachementManager
-    {
-        private readonly Project2Context _context;
+namespace InternshipProject_2.Manager;
 
-        public AttachementManager(Project2Context context)
-        {
-            _context = context;
-        }
-        public async Task AddAsync(Attachement entity)
-        {
-            _context.Attachements.Add(entity);
-            await _context.SaveChangesAsync();
-        }
+public class AttachementManager : IAttachementManager
+{
+    readonly Project2Context _DbContext;
+
+    public AttachementManager(Project2Context dbContext)
+    {
+        _DbContext = dbContext;
+    }
+    public async Task AddAsync(Attachement entity)
+    {
+        _DbContext.Attachements.Add(entity);
+        await _DbContext.SaveChangesAsync();
     }
 }

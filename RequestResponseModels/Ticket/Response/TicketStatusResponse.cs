@@ -1,8 +1,13 @@
 ﻿
-namespace RequestResponseModels.Ticket.Response
+namespace RequestResponseModels.Ticket.Response;
+
+public class TicketStatusResponse
 {
-    public class TicketStatusResponse
+    public string Message 
+    { get; set; }
+
+    public TicketStatusResponse()
     {
-        public string Message { get; set; } 
+        Message = string.Empty;
     }
 }

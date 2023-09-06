@@ -1,7 +1,12 @@
-﻿namespace RequestResponseModels.Ticket.Response
+﻿namespace RequestResponseModels.Ticket.Response;
+
+public class User
 {
-    public class User
+    public string Username 
+    { get; set; }
+
+    public User()
     {
-        public string Username { get; set; }
+        Username = string.Empty;
     }
 }

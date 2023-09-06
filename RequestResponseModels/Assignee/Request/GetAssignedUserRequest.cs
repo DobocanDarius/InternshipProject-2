@@ -1,7 +1,7 @@
-﻿namespace RequestResponseModels.Assignee.Request
+﻿namespace RequestResponseModels.Assignee.Request;
+
+public class GetAssignedUserRequest
 {
-    public class GetAssignedUserRequest
-    {
-        public int TicketId { get; set; }
-    }
+    public int TicketId 
+    { get; set; }
 }

@@ -1,22 +1,16 @@
 ﻿using InternshipProject_2.Helpers;
 using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 using RequestResponseModels.Ticket.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTests.TicketManagerTests
 {
     [TestClass]
     public class ChangeTicketsStatusTest
     {
-        private Mock<Project2Context> _project2Context;
-        private TicketManager _ticketManager;
+        Mock<Project2Context> _project2Context;
+        TicketManager _ticketManager;
         [TestInitialize]
         public void SetUp()
         {
@@ -39,7 +33,7 @@ namespace UnitTests.TicketManagerTests
             _project2Context.Setup(c => c.Tickets.FindAsync(ticketId)).ReturnsAsync(dbTicket);
 
             // Act
-            var result = await _ticketManager.ChangeTicketsStatus(ticketStatusRequest, reporterId, ticketId);
+            RequestResponseModels.Ticket.Response.TicketStatusResponse result = await _ticketManager.ChangeTicketsStatus(ticketStatusRequest, reporterId, ticketId);
 
             // Assert
             _project2Context.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -54,14 +48,14 @@ namespace UnitTests.TicketManagerTests
             int ticketId = 1;
             var ticketStatusRequest = new TicketStatusRequest { Status = (int)(TicketStatus)100 };
 
-            var dbUser = new User { Id = reporterId, Role = "developer" };
-            var dbTicket = new Ticket { Id = ticketId, ReporterId = reporterId, Status = (int)TicketStatus.ToDO };
+            User dbUser = new User { Id = reporterId, Role = "developer" };
+            Ticket dbTicket = new Ticket { Id = ticketId, ReporterId = reporterId, Status = (int)TicketStatus.ToDO };
 
             _project2Context.Setup(c => c.Users.FindAsync(reporterId)).ReturnsAsync(dbUser);
             _project2Context.Setup(c => c.Tickets.FindAsync(ticketId)).ReturnsAsync(dbTicket);
 
             // Act
-            var result = await _ticketManager.ChangeTicketsStatus(ticketStatusRequest, reporterId, ticketId);
+            RequestResponseModels.Ticket.Response.TicketStatusResponse result = await _ticketManager.ChangeTicketsStatus(ticketStatusRequest, reporterId, ticketId);
 
             // Assert
             _project2Context.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);

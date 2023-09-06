@@ -1,30 +1,29 @@
 ﻿using FileSystem.Repository.Interface;
-using FileSystem;
 using Microsoft.Extensions.Configuration;
 
 namespace FileSystem.Repository;
 internal class ConfigurationFactory : IConfigurationFactory
 {
-    private readonly IConfiguration _config;
+    readonly IConfiguration _Config;
     internal ConfigurationFactory(IConfiguration config)
     {
-        _config = config;
+        _Config = config;
     }
     public T Create<T>() where T : IConfigurationBase
     {
         if (typeof(T) == typeof(IMetaDataConfiguration))
         {
-            var connstring = _config.GetValue<string>("ConnectionStrings:Account");
-            var azureTable = _config.GetValue<string>("ConnectionStrings:AzureTable");
+            var connstring = _Config.GetValue<string>("ConnectionStrings:Account");
+            var azureTable = _Config.GetValue<string>("ConnectionStrings:AzureTable");
             return (T)(new MetaDataConfiguration(connstring, azureTable) as IMetaDataConfiguration);
 
         }
         if (typeof(T) == typeof(IBlobConfigurationFactory))
         {
-            var connstring = _config.GetValue<string>("ConnectionStrings:Account");
-            var container = _config.GetValue<string>("ConnectionStrings:Container");
-            var accountName = _config.GetValue<string>("ConnectionStrings:AccountName");
-            var accountKey = _config.GetValue<string>("ConnectionStrings:AccountKey");
+            var connstring = _Config.GetValue<string>("ConnectionStrings:Account");
+            var container = _Config.GetValue<string>("ConnectionStrings:Container");
+            var accountName = _Config.GetValue<string>("ConnectionStrings:AccountName");
+            var accountKey = _Config.GetValue<string>("ConnectionStrings:AccountKey");
             return (T)(new BlobConfiguration(container, connstring, accountName, accountKey) as IBlobConfigurationFactory);
         }
         throw new InvalidOperationException();

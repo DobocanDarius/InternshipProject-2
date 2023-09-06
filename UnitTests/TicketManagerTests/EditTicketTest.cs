@@ -7,8 +7,8 @@ namespace UnitTests.EditTicketTests
     [TestClass]
     public class EditTicketTest
     {
-        private TicketManager _ticketManager;
-        private Project2Context _project2Context;
+        TicketManager _ticketManager;
+        Project2Context _project2Context;
 
         [TestInitialize]
         public void Setup()
@@ -20,7 +20,7 @@ namespace UnitTests.EditTicketTests
         [TestMethod]
         public async Task EditTicketValidRequest()
         {
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -30,7 +30,7 @@ namespace UnitTests.EditTicketTests
             };
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -43,14 +43,14 @@ namespace UnitTests.EditTicketTests
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
 
-            var request = new TicketEditRequest
+            TicketEditRequest request = new TicketEditRequest
             {
                 Title = "111",
                 Body = "111",
                 Priority = "111",
             };
 
-            var response = await _ticketManager.EditTicketAsync(request, ticket.Id, user.Id);
+            RequestResponseModels.Ticket.Response.TicketEditResponse response = await _ticketManager.EditTicketAsync(request, ticket.Id, user.Id);
             Assert.AreEqual("You succesfully edited this ticket!", response.Message);
         }
     }

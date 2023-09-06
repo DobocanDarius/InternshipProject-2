@@ -1,5 +1,6 @@
 ﻿using InternshipProject_2.Manager;
 using InternshipProject_2.Models;
+
 using RequestResponseModels.Watcher.Request;
 using RequestResponseModels.Watcher.Response;
 
@@ -8,8 +9,8 @@ namespace UnitTests
     [TestClass]
     public class WatcherManagerTests
     {
-        private WatcherManager _watchManager;
-        private Project2Context _dbContext;
+        WatcherManager _watchManager;
+        Project2Context _dbContext;
 
         [TestInitialize]
         public void Setup()
@@ -22,7 +23,7 @@ namespace UnitTests
         public async Task WatchTicket_Successful()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -31,7 +32,7 @@ namespace UnitTests
                 CreatedAt = DateTime.Now
 
             };
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -45,7 +46,7 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id, false);
+            WatchRequest request = new WatchRequest(user.Id, ticket.Id, false);
             WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
 
             _dbContext.Users.Remove(user);
@@ -59,7 +60,7 @@ namespace UnitTests
         public async Task WatchTicket_AlreadyWatching()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -68,7 +69,7 @@ namespace UnitTests
                 CreatedAt = DateTime.Now
 
             };
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -82,7 +83,7 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id, false);
+            WatchRequest request = new WatchRequest(user.Id, ticket.Id, false);
             await _watchManager.WatchTicket(request, user.Id);
 
             WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
@@ -97,7 +98,7 @@ namespace UnitTests
         public async Task StopWatchingTicket_Successful()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -106,7 +107,7 @@ namespace UnitTests
                 CreatedAt = DateTime.Now
 
             };
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -120,8 +121,8 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id, true);
-            var result = await _watchManager.WatchTicket(request, user.Id);
+            WatchRequest request = new WatchRequest(user.Id, ticket.Id, true);
+            WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
 
             _dbContext.Users.Remove(user);
             _dbContext.Tickets.Remove(ticket);
@@ -133,7 +134,7 @@ namespace UnitTests
         public async Task WatchAgain_Successful()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -142,7 +143,7 @@ namespace UnitTests
                 CreatedAt = DateTime.Now
 
             };
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -156,11 +157,11 @@ namespace UnitTests
             _dbContext.Users.Add(user);
             _dbContext.Tickets.Add(ticket);
             _dbContext.SaveChanges();
-            var request = new WatchRequest(user.Id, ticket.Id, true);
+            WatchRequest request = new WatchRequest(user.Id, ticket.Id, true);
             await _watchManager.WatchTicket(request, user.Id);
 
-            request.isWatching = false;
-            var result = await _watchManager.WatchTicket(request, user.Id);
+            request.IsWatching = false;
+            WatchResponse result = await _watchManager.WatchTicket(request, user.Id);
 
             _dbContext.Users.Remove(user);
             _dbContext.Tickets.Remove(ticket);

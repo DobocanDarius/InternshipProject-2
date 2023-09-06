@@ -2,5 +2,11 @@
 
 public class WatchResponse
 {
-    public string Message { get; set; }
+    public string Message 
+    { get; set; }
+
+    public WatchResponse()
+    {
+        Message = string.Empty;
+    }
 }

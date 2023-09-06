@@ -8,8 +8,8 @@ namespace UnitTests.AssigneeManagerTests
     [TestClass]
     public class AssignUserToTicketTest
     {
-        private AssigneeManager _assigneeManager;
-        private Project2Context _project2Context;
+        AssigneeManager _assigneeManager;
+        Project2Context _project2Context;
 
         [TestInitialize]
         public void Setup()
@@ -22,7 +22,7 @@ namespace UnitTests.AssigneeManagerTests
         public async Task AssignUserToTicketValidRequest()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -31,7 +31,7 @@ namespace UnitTests.AssigneeManagerTests
                 CreatedAt = DateTime.Now
 
             };
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -44,7 +44,7 @@ namespace UnitTests.AssigneeManagerTests
             _project2Context.Users.Add(user);
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
-            var request = new AssignUserRequest
+            AssignUserRequest request = new AssignUserRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id
@@ -60,7 +60,7 @@ namespace UnitTests.AssigneeManagerTests
         public async Task AssignUserToTicketUserNotExist()
         {
             //Arrange
-            var request = new AssignUserRequest
+            AssignUserRequest request = new AssignUserRequest
             {
                 UserId = 999,
                 TicketId = 2
@@ -76,7 +76,7 @@ namespace UnitTests.AssigneeManagerTests
         public async Task AssignUserToTicketUserNotDeveloper()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -84,7 +84,7 @@ namespace UnitTests.AssigneeManagerTests
                 Role = "reporter",
                 CreatedAt = DateTime.Now
             };
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -97,7 +97,7 @@ namespace UnitTests.AssigneeManagerTests
             _project2Context.Users.Add(user);
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
-            var request = new AssignUserRequest
+            AssignUserRequest request = new AssignUserRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id
@@ -114,7 +114,7 @@ namespace UnitTests.AssigneeManagerTests
         public async Task AssignUserToTicketAssignmentAlreadyExists()
         {
             // Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -122,7 +122,7 @@ namespace UnitTests.AssigneeManagerTests
                 Role = "developer",
                 CreatedAt = DateTime.Now
             };
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -137,7 +137,7 @@ namespace UnitTests.AssigneeManagerTests
             _project2Context.Users.Add(user);
             _project2Context.Tickets.Add(ticket);
             _project2Context.SaveChanges();
-            var existingAssignment = new Assignee
+            Assignee existingAssignment = new Assignee
             {
                 UserId = user.Id,
                 TicketId = ticket.Id
@@ -145,7 +145,7 @@ namespace UnitTests.AssigneeManagerTests
             _project2Context.Assignees.Add(existingAssignment);
             _project2Context.SaveChanges();
 
-            var request = new AssignUserRequest
+            AssignUserRequest request = new AssignUserRequest
             {
                 UserId = user.Id,
                 TicketId = ticket.Id

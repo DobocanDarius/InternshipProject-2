@@ -9,10 +9,10 @@ namespace UnitTests.HistoryManagerTests
     [TestClass]
     public class GetHistoryTest
     {
-        private Project2Context _project2Context;
-        private HistoryManager historyManager;
-        private HistoryWritter historyWritter;
-        private HistoryBodyGenerator historyBodyGenerator;
+        Project2Context _project2Context;
+        HistoryManager historyManager;
+        HistoryWritter historyWritter;
+        HistoryBodyGenerator historyBodyGenerator;
 
         [TestInitialize]
         public void Setup()
@@ -27,7 +27,7 @@ namespace UnitTests.HistoryManagerTests
         public async Task GetHistoryValidResponse()
         {
             //Arrange
-            var user = new User
+            User user = new User
             {
                 Username = "Test",
                 Password = "password",
@@ -37,7 +37,7 @@ namespace UnitTests.HistoryManagerTests
             };
             _project2Context.Users.Add(user);
             _project2Context.SaveChanges();
-            var ticket = new Ticket
+            Ticket ticket = new Ticket
             {
                 Title = "Test",
                 Body = "Test",
@@ -52,25 +52,25 @@ namespace UnitTests.HistoryManagerTests
             _project2Context.SaveChanges();
 
 
-            var request = new GetHistoryRequest { TicketId = ticket.Id };
-            var addHistoryRecordRequest = new AddHistoryRecordRequest
+            GetHistoryRequest request = new GetHistoryRequest { TicketId = ticket.Id };
+            AddHistoryRecordRequest addHistoryRecordRequest = new AddHistoryRecordRequest
             {
                 TicketId = ticket.Id,
                 UserId = user.Id,
                 EventType = HistoryEventType.Create
             };
-            var addHistoryRecordRequest2 = new AddHistoryRecordRequest
+            AddHistoryRecordRequest addHistoryRecordRequest2 = new AddHistoryRecordRequest
             {
                 TicketId = ticket.Id,
                 UserId = user.Id,
                 EventType = HistoryEventType.Close
             };
-            
-            //Act
-            var addResponse = await historyWritter.AddHistoryRecord(addHistoryRecordRequest);
-            var addResponse2 = await historyWritter.AddHistoryRecord(addHistoryRecordRequest2);
 
-            var response = await historyManager.GetHistory(request);
+            //Act
+            RequestResponseModels.History.Response.AddHistoryRecordResponse addResponse = await historyWritter.AddHistoryRecord(addHistoryRecordRequest);
+            RequestResponseModels.History.Response.AddHistoryRecordResponse addResponse2 = await historyWritter.AddHistoryRecord(addHistoryRecordRequest2);
+
+            RequestResponseModels.History.Response.GetHistoryResponse response = await historyManager.GetHistory(request);
 
             //Assert
 
@@ -83,12 +83,12 @@ namespace UnitTests.HistoryManagerTests
         public async Task GetHistoryNoRecords_ResponseContainsErrorMessage()
         {
             // Arrange
-            var ticketId = 999;
-            var request = new GetHistoryRequest { TicketId = ticketId };
+            int ticketId = 999;
+            GetHistoryRequest request = new GetHistoryRequest { TicketId = ticketId };
 
 
             // Act
-            var response = await historyManager.GetHistory(request);
+            RequestResponseModels.History.Response.GetHistoryResponse response = await historyManager.GetHistory(request);
 
             // Assert
            
